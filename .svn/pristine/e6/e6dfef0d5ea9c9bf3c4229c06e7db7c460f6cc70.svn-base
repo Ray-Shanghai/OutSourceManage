@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdOrderDetailInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdOrderDetailInfo" id="sdorderdetailinfoMap"> 
+
+		<result column="detail_order_id" property="detailOrderId"/>
+		<result column="order_id" property="orderId"/>
+		<result column="product_id" property="productId"/>
+		<result column="customer_supplies" property="customerSupplies"/>
+		<result column="product_code" property="productCode"/>
+		<result column="product_name" property="productName"/>
+		<result column="detail_length" property="detailLength"/>
+		<result column="detail_width" property="detailWidth"/>
+		<result column="detail_height" property="detailHeight"/>
+		<result column="is_lid" property="isLid"/>
+		<result column="price" property="price"/>
+		<result column="number" property="number"/>
+		<result column="cost_price" property="costPrice"/>
+		<result column="product_type_id" property="productTypeId"/>
+		<result column="product_grade_id" property="productGradeId"/>
+		<result column="immediately_inventory" property="immediatelyInventory"/>
+		<result column="discount_before_sum" property="discountBeforeSum"/>
+		<result column="money" property="money"/>
+		<result column="tax_rate" property="taxRate"/>
+		<result column="sell_tax" property="sellTax"/>
+		<result column="practical_sell_price" property="practicalSellPrice"/>
+		<result column="price_sell_sum" property="priceSellSum"/>
+		<result column="relevance_number" property="relevanceNumber"/>
+		<result column="take_out_number" property="takeOutNumber"/>
+		<result column="bom_type" property="bomType"/>
+		<result column="file_url" property="fileUrl"/>
+		<result column="file_name" property="fileName"/>
+		<result column="sd_id" property="sdId"/>
+     	
+     	<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo">
+		UPDATE sd_order_detail_info 
+		<set>
+			<if test="customerSupplies!=null and customerSupplies!=''">
+				customer_supplies=#{customerSupplies},
+			</if>
+			<if test="productCode!=null and productCode!=''">
+				product_code=#{productCode},
+			</if>
+			<if test="productName!=null and productName!=''">
+				product_name=#{productName},
+			</if>
+			<if test="detailLength!=null and detailLength!=''">
+				detail_length=#{detailLength},
+			</if>
+			<if test="detailWidth!=null and detailWidth!=''">
+				detail_width=#{detailWidth},
+			</if>
+			<if test="detailHeight!=null and detailHeight!=''">
+				detail_height=#{detailHeight},
+			</if>
+			<if test="isLid!=null and isLid!=''">
+				is_lid=#{isLid},
+			</if>
+			<if test="price!=null and price!=''">
+				price=#{price},
+			</if>
+			<if test="number!=null and number!=''">
+				number=#{number},
+			</if>
+			<if test="costPrice!=null and costPrice!=''">
+				cost_price=#{costPrice},
+			</if>
+			<if test="productTypeId!=null and productTypeId!=''">
+				product_type_id=#{productTypeId},
+			</if>
+			<if test="productGradeId!=null and productGradeId!=''">
+				product_grade_id=#{productGradeId},
+			</if>
+			<if test="immediatelyInventory!=null and immediatelyInventory!=''">
+				immediately_inventory=#{immediatelyInventory},
+			</if>
+			<if test="discountBeforeSum!=null and discountBeforeSum!=''">
+				discount_before_sum=#{discountBeforeSum},
+			</if>
+			<if test="money!=null and money!=''">
+				money=#{money},
+			</if>
+			<if test="taxRate!=null and taxRate!=''">
+				tax_rate=#{taxRate},
+			</if>
+			<if test="practicalSellPrice!=null and practicalSellPrice!=''">
+				practical_sell_price=#{practicalSellPrice},
+			</if>
+			<if test="priceSellSum!=null and priceSellSum!=''">
+				price_sell_sum=#{priceSellSum},
+			</if>
+			<if test="relevanceNumber!=null and relevanceNumber!=''">
+				relevance_number=#{relevanceNumber},
+			</if>
+			<if test="takeOutNumber!=null and takeOutNumber!=''">
+				take_out_number=#{takeOutNumber},
+			</if>
+			<if test="bomType!=null and bomType!=''">
+				bom_type=#{bomType},
+			</if>
+			<if test="lastUpdateTime!=null and lastUpdateTime!=''">
+				last_update_time=#{lastUpdateTime},
+			</if>
+			<if test="lastUpdateUserId!=null and lastUpdateUserId!=''">
+				last_update_user_id=#{lastUpdateUserId},
+			</if>
+			<if test="lastUpdateUserName!=null and lastUpdateUserName!=''">
+				last_update_user_name=#{lastUpdateUserName}
+			</if>
+		</set>
+		where detail_order_id=#{detailOrderId}
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultMap="sdorderdetailinfoMap">
+		SELECT 
+		t.detail_order_id,
+		t.order_id,
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.detail_length,
+		t.detail_width,
+		t.detail_height,
+		t.is_lid,
+		t.price,
+		t.number,
+		t.cost_price,
+		t.product_type_id,
+		t.product_grade_id,
+		t.immediately_inventory,
+		t.discount_before_sum,
+		t.money,
+		t.tax_rate,
+		t.sell_tax,
+		t.practical_sell_price,
+		t.price_sell_sum,
+		t.relevance_number,
+		t.take_out_number,
+		t.bom_type,
+		t.file_url,
+		t.file_name,
+		t.sd_id
+		FROM  sd_order_detail_info t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultMap="sdorderdetailinfoMap">
+		SELECT 
+		t.detail_order_id,
+		t.order_id,
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.detail_length,
+		t.detail_width,
+		t.detail_height,
+		t.is_lid,
+		t.price,
+		t.number,
+		t.cost_price,
+		t.product_type_id,
+		t.product_grade_id,
+		t.immediately_inventory,
+		t.discount_before_sum,
+		t.money,
+		t.tax_rate,
+		t.sell_tax,
+		t.practical_sell_price,
+		t.price_sell_sum,
+		t.relevance_number,
+		t.take_out_number,
+		t.bom_type,
+		t.file_url,
+		t.file_name,
+		t.sd_id
+		FROM  sd_order_detail_info t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultMap="sdorderdetailinfoMap">
+		SELECT  
+		t.detail_order_id,
+		t.order_id,
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.detail_length,
+		t.detail_width,
+		t.detail_height,
+		t.is_lid,
+		t.price,
+		t.number,
+		t.cost_price,
+		t.product_type_id,
+		t.product_grade_id,
+		t.immediately_inventory,
+		t.discount_before_sum,
+		t.money,
+		t.tax_rate,
+		t.sell_tax,
+		t.practical_sell_price,
+		t.price_sell_sum,
+		t.relevance_number,
+		t.take_out_number,
+		t.bom_type,
+		t.file_url,
+		t.file_name,
+		t.sd_id
+		FROM  sd_order_detail_info t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultMap="sdorderdetailinfoMap">
+		SELECT 
+		t.detail_order_id,
+		t.order_id,
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.detail_length,
+		t.detail_width,
+		t.detail_height,
+		t.is_lid,
+		t.price,
+		t.number,
+		t.cost_price,
+		t.product_type_id,
+		t.product_grade_id,
+		t.immediately_inventory,
+		t.discount_before_sum,
+		t.money,
+		t.tax_rate,
+		t.sell_tax,
+		t.practical_sell_price,
+		t.price_sell_sum,
+		t.relevance_number,
+		t.take_out_number,
+		t.bom_type,
+		t.file_url,
+		t.file_name,
+		t.sd_id
+		FROM  sd_order_detail_info t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo">
+	insert into sd_order_detail_info
+	(
+		detail_order_id,
+		order_id,
+		product_id,
+		customer_supplies,
+		product_code,
+		product_name,
+		detail_length,
+		detail_width,
+		detail_height,
+		is_lid,
+		price,
+		number,
+		cost_price,
+		product_type_id,
+		product_grade_id,
+		immediately_inventory,
+		discount_before_sum,
+		money,
+		tax_rate,
+		sell_tax,
+		practical_sell_price,
+		price_sell_sum,
+		relevance_number,
+		take_out_number,
+		bom_type,
+		file_url,
+		file_name,
+		sd_id,
+		remark,
+		status,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME
+	)
+	values
+	(
+		#{detailOrderId},
+		#{orderId},
+		#{productId},
+		#{customerSupplies},
+		#{productCode},
+		#{productName},
+		#{detailLength},
+		#{detailWidth},
+		#{detailHeight},
+		#{isLid},
+		#{price},
+		#{number},
+		#{costPrice},
+		#{productTypeId},
+		#{productGradeId},
+		#{immediatelyInventory},
+		#{discountBeforeSum},
+		#{money},
+		#{taxRate},
+		#{sellTax},
+		#{practicalSellPrice},
+		#{priceSellSum},
+		#{relevanceNumber},
+		#{takeOutNumber},
+		#{bomType},
+		#{fileUrl},
+		#{fileName},
+		#{sdId},
+		#{remark},
+		#{status},
+		now(),
+		#{createUserId},
+		#{createUserName},
+		#{createDepartId},
+		#{createDepartName}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo">
+		delete from sd_order_detail_info where order_id=#{orderId}
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_order_detail_info where 1=1
+	</select>
+</mapper> 
+

@@ -1,0 +1,70 @@
+.product-release-title{color: #333;text-align: center;font-size: 30px;line-height: 74px;}
+.product-main-content{border: 1px solid #dfdfdf;padding: 20px; margin-top: 20px;}
+.product-main-content-center-title {
+    height: 48px;
+    font-size: 18px;
+    line-height: 48px;
+}
+.split-line2 {
+    border-bottom: 1px dashed #ddd;
+}
+
+.inquiry-content-second {
+    margin: 0 auto;
+    width: 98%;
+}
+.inquiry-table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.inquiry-table th {
+    height: 40px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    font-weight: normal;
+    font-size: 15px;
+}
+.product-add{
+    height: 48px;
+    font-size: 14px;
+    line-height: 48px;
+    color: #0099FF;
+    cursor: pointer;
+}
+.product-add .iconfont{font-size: 16px !important; vertical-align: top;color: #0099FF;}
+.table-content{position: relative;}
+.table-content1{position: relative;}
+.delete-info{position: absolute; top:50%; right: 20px; margin-top: -14px;}
+.delete-info .iconfont{font-size: 24px !important; color: #FF0000; cursor: pointer;}
+.file { position: relative;
+display: inline-block;
+	    background: #D0EEFF;
+	    border: 1px solid #99D3F5;
+	    border-radius: 4px;
+	    overflow: hidden;
+	    color: #1E88C7;
+	    line-height: 30px !important;
+	    padding: 0 10px !important;}
+	    
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+.showFileName{
+	display: inline-block;
+    line-height: 30px;
+    vertical-align: middle;
+    margin-top: -24px;
+    color:#247EF2;
+    cursor: pointer;
+    font-size: 18px;
+    }

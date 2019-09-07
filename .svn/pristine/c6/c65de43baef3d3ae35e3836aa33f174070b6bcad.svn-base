@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>表单</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../../css/font/iconfont1.css">
+		<link rel="stylesheet" type="text/css" href="../../css/my.css">
+		<style type="text/css">
+		</style>
+	</head>
+
+	<body>
+		<div style="margin: 15px;">
+			<form class="layui-form" id="form1" action="" style="margin-bottom: 50px !important;">
+				<div id="directorList" class="layui-form-item">
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript" src="../../code/resource/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../code/resource/js/myframe.js"></script>
+		<script type="text/javascript" src="../../code/resource/plugins/layui/layui.js"></script>
+		<script type="text/javascript" src="../../../resources/js/base.js"></script>
+		<script>
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use([ 'paging', 'form', 'element' ],
+				function() {
+					 var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+							paging = layui.paging(),
+							layerTips = parent.layer === undefined ? layui.layer
+									: parent.layer, //获取父窗口的layer对象
+							layer = layui.layer, //获取当前窗口的layer对象
+							form = layui.form();
+					
+							$.ajax({type : 'POST',
+								url : base.serverContet
+								+ '/manager/loginIn/project/queryEmployee.do', //地址
+								async : false,
+								success : function(data) {
+									//alert(data.dirList[1].userName);
+									var dirHtml="";
+									for(var i=0;i<data.empList.length;i++){
+										 dirHtml+="<input type='radio' name='changeId' class='charger'  value='"+data.empList[i].userId+"' title='"+data.empList[i].userName+"'>";
+										 if(i>0&&(i+1)%6==0){
+											 dirHtml+='<br><br>';
+										 }
+									}
+									$("#directorList").empty().append(dirHtml);
+									//单选按钮需要渲染才能使用
+									form.render();
+								},error : function() {
+								}
+								});
+							
+				});
+	
+		</script>
+	</body>
+
+</html>

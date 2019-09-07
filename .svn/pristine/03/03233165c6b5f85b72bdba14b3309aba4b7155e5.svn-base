@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdOrderDetailInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdOrderDetailInfo" id="sdorderdetailinfoMap"> 
+
+		<result column="detail_order_id" property="detailOrderId"/>
+		<result column="order_id" property="orderId"/>
+		<result column="product_id" property="productId"/>
+		<result column="customer_supplies" property="customerSupplies"/>
+		<result column="product_code" property="productCode"/>
+		<result column="product_name" property="productName"/>
+		<result column="detail_length" property="detailLength"/>
+		<result column="detail_width" property="detailWidth"/>
+		<result column="detail_height" property="detailHeight"/>
+		<result column="is_lid" property="isLid"/>
+		<result column="price" property="price"/>
+		<result column="number" property="number"/>
+		<result column="cost_price" property="costPrice"/>
+		<result column="product_type_id" property="productTypeId"/>
+		<result column="product_grade_id" property="productGradeId"/>
+		<result column="immediately_inventory" property="immediatelyInventory"/>
+		<result column="discount_before_sum" property="discountBeforeSum"/>
+		<result column="money" property="money"/>
+		<result column="tax_rate" property="taxRate"/>
+		<result column="sell_tax" property="sellTax"/>
+		<result column="practical_sell_price" property="practicalSellPrice"/>
+		<result column="price_sell_sum" property="priceSellSum"/>
+		<result column="relevance_number" property="relevanceNumber"/>
+		<result column="take_out_number" property="takeOutNumber"/>
+		<result column="bom_type" property="bomType"/>
+		<result column="file_url" property="fileUrl"/>
+		<result column="file_name" property="fileName"/>
+		<result column="sd_id" property="sdId"/>
+
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo">
+		UPDATE sd_order_detail_info set 
+		t.detail_order_id=#{detailOrderId},
+		t.order_id=#{orderId},
+		t.product_id=#{productId},
+		t.customer_supplies=#{customerSupplies},
+		t.product_code=#{productCode},
+		t.product_name=#{productName},
+		t.detail_length=#{detailLength},
+		t.detail_width=#{detailWidth},
+		t.detail_height=#{detailHeight},
+		t.is_lid=#{isLid},
+		t.price=#{price},
+		t.number=#{number},
+		t.cost_price=#{costPrice},
+		t.product_type_id=#{productTypeId},
+		t.product_grade_id=#{productGradeId},
+		t.immediately_inventory=#{immediatelyInventory},
+		t.discount_before_sum=#{discountBeforeSum},
+		t.money=#{money},
+		t.tax_rate=#{taxRate},
+		t.sell_tax=#{sellTax},
+		t.practical_sell_price=#{practicalSellPrice},
+		t.price_sell_sum=#{priceSellSum},
+		t.relevance_number=#{relevanceNumber},
+		t.take_out_number=#{takeOutNumber},
+		t.bom_type=#{bomType},
+		t.file_url=#{fileUrl},
+		t.file_name=#{fileName},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultMap="sdorderdetailinfoMap">
+		SELECT 
+		t.detail_order_id,
+		t.order_id,
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.detail_length,
+		t.detail_width,
+		t.detail_height,
+		t.is_lid,
+		t.price,
+		t.number,
+		t.cost_price,
+		t.product_type_id,
+		t.product_grade_id,
+		t.immediately_inventory,
+		t.discount_before_sum,
+		t.money,
+		t.tax_rate,
+		t.sell_tax,
+		t.practical_sell_price,
+		t.price_sell_sum,
+		t.relevance_number,
+		t.take_out_number,
+		t.bom_type,
+		t.file_url,
+		t.file_name,
+		t.sd_id
+		FROM  sd_order_detail_info t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultMap="sdorderdetailinfoMap">
+		SELECT 
+		t.detail_order_id,
+		t.order_id,
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.detail_length,
+		t.detail_width,
+		t.detail_height,
+		t.is_lid,
+		t.price,
+		t.number,
+		t.cost_price,
+		t.product_type_id,
+		t.product_grade_id,
+		t.immediately_inventory,
+		t.discount_before_sum,
+		t.money,
+		t.tax_rate,
+		t.sell_tax,
+		t.practical_sell_price,
+		t.price_sell_sum,
+		t.relevance_number,
+		t.take_out_number,
+		t.bom_type,
+		t.file_url,
+		t.file_name,
+		t.sd_id
+		FROM  sd_order_detail_info t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultMap="sdorderdetailinfoMap">
+		SELECT  
+		t.detail_order_id,
+		t.order_id,
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.detail_length,
+		t.detail_width,
+		t.detail_height,
+		t.is_lid,
+		t.price,
+		t.number,
+		t.cost_price,
+		t.product_type_id,
+		t.product_grade_id,
+		t.immediately_inventory,
+		t.discount_before_sum,
+		t.money,
+		t.tax_rate,
+		t.sell_tax,
+		t.practical_sell_price,
+		t.price_sell_sum,
+		t.relevance_number,
+		t.take_out_number,
+		t.bom_type,
+		t.file_url,
+		t.file_name,
+		t.sd_id
+		FROM  sd_order_detail_info t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultMap="sdorderdetailinfoMap">
+		SELECT 
+		t.detail_order_id,
+		t.order_id,
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.detail_length,
+		t.detail_width,
+		t.detail_height,
+		t.is_lid,
+		t.price,
+		t.number,
+		t.cost_price,
+		t.product_type_id,
+		t.product_grade_id,
+		t.immediately_inventory,
+		t.discount_before_sum,
+		t.money,
+		t.tax_rate,
+		t.sell_tax,
+		t.practical_sell_price,
+		t.price_sell_sum,
+		t.relevance_number,
+		t.take_out_number,
+		t.bom_type,
+		t.file_url,
+		t.file_name,
+		t.sd_id
+		FROM  sd_order_detail_info t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo">
+	insert into sd_order_detail_info
+	(
+		detail_order_id,
+		order_id,
+		product_id,
+		customer_supplies,
+		product_code,
+		product_name,
+		detail_length,
+		detail_width,
+		detail_height,
+		is_lid,
+		price,
+		number,
+		cost_price,
+		product_type_id,
+		product_grade_id,
+		immediately_inventory,
+		discount_before_sum,
+		money,
+		tax_rate,
+		sell_tax,
+		practical_sell_price,
+		price_sell_sum,
+		relevance_number,
+		take_out_number,
+		bom_type,
+		file_url,
+		file_name,
+		sd_id
+	)
+	values
+	(
+		#{detailOrderId},
+		#{orderId},
+		#{productId},
+		#{customerSupplies},
+		#{productCode},
+		#{productName},
+		#{detailLength},
+		#{detailWidth},
+		#{detailHeight},
+		#{isLid},
+		#{price},
+		#{number},
+		#{costPrice},
+		#{productTypeId},
+		#{productGradeId},
+		#{immediatelyInventory},
+		#{discountBeforeSum},
+		#{money},
+		#{taxRate},
+		#{sellTax},
+		#{practicalSellPrice},
+		#{priceSellSum},
+		#{relevanceNumber},
+		#{takeOutNumber},
+		#{bomType},
+		#{fileUrl},
+		#{fileName},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdOrderDetailInfo">
+		delete from sd_order_detail_info where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdOrderDetailInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_order_detail_info where 1=1
+	</select>
+</mapper> 
+

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysRoleInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysRoleInfo" id="SysRoleInfoMapForSqlserver"> 
+
+		<result column="ROLE_ID" property="roleId"/>
+		<result column="ROLE_NAME" property="roleName"/>
+		<result column="ROLE_DESC" property="roleDesc"/>
+		<result column="FUNCTION_IDS" property="functionIds"/>
+		<result column="FUNCTION_OPERATE_IDS" property="functionOperateIds"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_TEAM_ID" property="createTeamId"/>
+		<result column="CREATE_TEAM_NAME" property="createTeamName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="CREATE_UNIT_ID" property="createUnitId"/>
+		<result column="CREATE_UNIT_Name" property="createUnitName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_TEAM_ID" property="lastUpdateTeamId"/>
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<result column="LAST_UPDATE_UNIT_ID" property="lastUpdateUnitId"/>
+		<result column="LAST_UPDATE_UNIT_Name" property="lastUpdateUnitName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	<update id="updateForSqlserver" parameterType="com.sd.farmework.pojo.SysRoleInfo">
+		UPDATE sys_role_info set 
+		ROLE_DESC=#{roleDesc},
+		FUNCTION_IDS=#{functionIds},
+		STATUS=#{status}
+		where ROLE_ID=#{roleId}
+	</update>
+		<update id="updatePowerForSqlserver" parameterType="com.sd.farmework.pojo.SysRoleInfo">
+		UPDATE sys_role_info t set 
+		t.ROLE_DESC=#{roleDesc},
+		t.FUNCTION_OPERATE_IDS=#{functionOperateIds},
+		t.STATUS=#{status}
+		where   ROLE_ID=#{roleId}
+	</update>
+	<select id="queryByPkIdForSqlserver" parameterType="String"  resultMap="SysRoleInfoMapForSqlserver">
+		SELECT 
+		t.ROLE_ID,
+		t.ROLE_NAME,
+		t.ROLE_DESC,
+		t.FUNCTION_IDS,
+		t.FUNCTION_OPERATE_IDS,
+		t.STATUS
+		FROM  sys_role_info t 
+		where  ROLE_ID = #{roleId}
+	</select>
+	 
+	<select id="queryFunctionForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo"  resultMap="SysRoleInfoMapForSqlserver">
+		select function_ids  from sys_user_role t , sys_role_info t1 where  t.role_id =t1.role_id and t.user_id = #{userId}
+	</select>
+	
+	
+	<select id="queryListByPageForSqlserver" parameterType="com.sd.farmework.pojo.SysRoleInfo"  resultMap="SysRoleInfoMapForSqlserver">
+		<![CDATA[ 
+		select top ${pageSize} * from( 
+		SELECT row_number()OVER(order by create_time desc) rw,
+		t.ROLE_ID,
+		t.ROLE_NAME,
+		t.ROLE_DESC,
+		t.FUNCTION_IDS,
+		t.FUNCTION_OPERATE_IDS,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  sys_role_info t
+		where ROLE_ID not in(select top #{startRecod} ROLE_ID from sys_role_info)
+		) t where t.rw > ${startRecod}
+ 		 ]]> 
+	</select>
+	<select id="queryListForSqlserver" parameterType="com.sd.farmework.pojo.SysRoleInfo"  resultMap="SysRoleInfoMapForSqlserver">
+		SELECT 
+		t.ROLE_ID,
+		t.ROLE_NAME,
+		t.ROLE_DESC,
+		t.FUNCTION_IDS,
+		t.FUNCTION_OPERATE_IDS,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  sys_role_info t 
+	</select>
+	<insert id="addForSqlserver" parameterType="com.sd.farmework.pojo.SysRoleInfo" >
+	insert into sys_role_info
+	(
+		ROLE_ID,
+		ROLE_NAME,
+		ROLE_DESC,
+		FUNCTION_IDS,
+		FUNCTION_OPERATE_IDS,
+		STATUS,
+	    create_user_id,
+	    create_user_name,
+	    create_depart_id,
+	    create_depart_name
+	 )
+	 values
+	 (
+		#{roleId},
+		#{roleName},
+		#{roleDesc},
+		#{functionIds},
+		'',
+		#{status},
+		#{createUserId},
+	    #{createUserName},
+	    #{createDepartId},
+	    #{createDepartName}
+	)
+	</insert>
+	<delete id="deleteForSqlserver">
+		delete from sys_role_info where 1=2 
+	</delete>
+	<select id="queryCountForSqlserver"  parameterType="com.sd.farmework.pojo.SysRoleInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sys_role_info where 1=1
+	</select>
+</mapper> 
+

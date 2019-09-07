@@ -1,0 +1,228 @@
+package com.sd.farmework.controller; 
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.sd.farmework.service.SdBasicInfoService;
+import com.sd.farmework.service.SysUserInfoService;
+import com.sd.farmework.services.util.wx.WeixinUtil;
+import com.sd.farmework.services.util.wx.WxConstant;
+import com.sd.farmework.pojo.SdBasicInfo; 
+import com.sd.farmework.pojo.SysUserInfo;
+import com.sd.farmework.common.BaseInfo;
+import com.sd.farmework.common.HttpSessionProvider;
+import com.sd.farmework.common.JSONUtils;
+
+import net.sf.json.JSONArray;
+
+import org.apache.log4j.Logger;
+import org.springframework.ui.Model;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import  javax.servlet.http.HttpServletRequest;
+import  javax.servlet.http.HttpServletResponse;
+import  javax.servlet.http.HttpSession;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+/** 
+ * 个人中心
+ * @author Administrator 
+ * 
+ */ 
+ @Controller
+ @Scope("prototype")
+ @RequestMapping(value="/personCenter")
+public class PersonalCenterController{ 
+    @Autowired
+    private SysUserInfoService sysUserInfoService;
+    @Autowired
+    private SdBasicInfoService sdBasicInfoService;
+    @Autowired
+    private WxConstant wxConstant;
+    /**
+     * 获取当前登录用户信息
+     * @param session
+     * @param request
+     * @param response
+     * @param model
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryloginUser",method = RequestMethod.POST)
+    public void queryloginUser(HttpSession session,HttpServletRequest request,HttpServletResponse response,Model model){
+    	try {
+    		HttpSessionProvider sessionProvider=new HttpSessionProvider();
+        	SysUserInfo sysUserInfo=sessionProvider.getCurrentUserSession(session, request, response);
+        	List list=sdBasicInfoService.queryOrderCountByStatus(null); //查询每个状态下的订单数量
+        	int queRenNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 queRenNum=((SdBasicInfo) list.get(0)).getOrderCount();
+        	 }
+        	 int caigouNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 caigouNum=((SdBasicInfo) list.get(1)).getOrderCount();
+        	 }
+        	 int baojiaNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 baojiaNum=((SdBasicInfo) list.get(2)).getOrderCount();
+        	 }
+        	 int hedingNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 hedingNum=((SdBasicInfo) list.get(3)).getOrderCount();
+        	 }
+        	 int jianyanNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 jianyanNum=((SdBasicInfo) list.get(4)).getOrderCount();
+        	 }
+        	 int peiliaoNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 peiliaoNum=((SdBasicInfo) list.get(5)).getOrderCount();
+        	 }
+        	 int caiqieNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 caiqieNum=((SdBasicInfo) list.get(6)).getOrderCount();
+        	 }
+        	 int shengchanNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 shengchanNum=((SdBasicInfo) list.get(7)).getOrderCount();
+        	 }
+        	 int wanchenNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 wanchenNum=((SdBasicInfo) list.get(8)).getOrderCount();
+        	 }
+        	 int yanshouNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 yanshouNum=((SdBasicInfo) list.get(9)).getOrderCount();
+        	 }
+        	 int wanjieNum=0;
+        	 if(((SdBasicInfo) list.get(0)).getOrderCount()!=null){
+        		 wanjieNum=((SdBasicInfo) list.get(10)).getOrderCount();
+        	 }
+        	int totalCount=(baojiaNum+hedingNum+jianyanNum+peiliaoNum+caiqieNum+shengchanNum+wanchenNum+yanshouNum+wanjieNum);
+        	int zhipaiCount=(caigouNum+jianyanNum);
+        	int baojiaCount=(baojiaNum+hedingNum);
+        	int shengcanCount=(peiliaoNum+caiqieNum+shengchanNum+wanchenNum+yanshouNum+wanjieNum);
+        	Map<String,Object> map = new HashMap<String,Object>();
+        	map.put("code","000");
+        	map.put("sysUserInfo", sysUserInfo);
+        	map.put("queRenNum",queRenNum);
+        	map.put("caigouNum",caigouNum);
+        	map.put("baojiaNum",baojiaNum);
+        	map.put("hedingNum",hedingNum);
+        	map.put("jianyanNum",jianyanNum);
+        	map.put("peiliaoNum",peiliaoNum);
+        	map.put("caiqieNum",caiqieNum);
+        	map.put("shengchanNum",shengchanNum);
+        	map.put("wanchenNum",wanchenNum);
+        	map.put("yanshouNum",yanshouNum);
+        	map.put("wanjieNum",wanjieNum);
+        	map.put("totalCount",totalCount);
+        	map.put("zhipaiCount",zhipaiCount);
+        	map.put("baojiaCount",baojiaCount);
+        	map.put("shengcanCount",shengcanCount);
+        	
+        	JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+    	
+    }
+    /**
+    * 查询不分页列表
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param model
+    * @return
+    */
+    @RequestMapping(value = "/queryList",method = RequestMethod.POST)
+    public String  queryList(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdBasicInfo sdbasicinfo,Model model){
+    	Map<String,Object> map = new HashMap<String,Object>();
+    	try {
+	   		List list = sysUserInfoService.queryList(sdbasicinfo);	
+	   		if(list.size() > 0){
+				map.put("code", "000");
+			}else{
+				map.put("code", "001");
+			}
+	   		map.put("rows", JSONArray.fromObject(list));
+			map.put("msg", "success");
+			JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+		return null;
+	}
+    
+    
+     
+    /**
+     * 获取页面需要的配置信息的参数
+     * @param session
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     */
+    @ResponseBody 
+    @RequestMapping(value = "/getJsTicket",method = RequestMethod.POST)
+    public Map<String, String>  queryListByPage(HttpSession session,HttpServletRequest request,HttpServletResponse response,Model model,String url){
+    	Map<String, String> map = new HashMap<String, String>();  
+		try {
+			map=WeixinUtil.getJsSDKMap(wxConstant, url);
+		} catch (Exception e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return map;
+	}
+    /**
+    * 通过主键查询一条信息
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param model
+    * @return
+    */
+    @RequestMapping(value = "/queryByPkId",method = RequestMethod.POST)
+    public String  queryByPkId(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdBasicInfo sdbasicinfo,Model model,String pkId){
+		try {
+			sysUserInfoService.queryByPkId(pkId);	
+		} catch (Exception e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+    /**
+    * 通过任意条件查询一条信息
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param model
+    * @return
+    */
+    @RequestMapping(value = "/query",method = RequestMethod.POST)
+    public String  query(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdBasicInfo sdbasicinfo,Model model){
+		try {
+			sysUserInfoService.query(sdbasicinfo);	
+		} catch (Exception e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+}

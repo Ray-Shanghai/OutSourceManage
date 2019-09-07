@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdBasicInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdBasicInfo" id="sdbasicinfoMap"> 
+		<result column="basic_id" property="basicId"/>
+		<result column="basic_name" property="basicName"/>
+		<result column="basic_type" property="basicType"/>
+		<result column="basic_index" property="basicIndex"/>
+		<result column="is_virtual" property="isVirtual"/>
+		<result column="order_count" property="orderCount"/>
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdBasicInfo">
+		UPDATE sd_basic_info set 
+		t.basic_id=#{basicId},
+		t.basic_name=#{basicName},
+		t.basic_type=#{basicType},
+		t.basic_index=#{basicIndex}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdBasicInfo"  resultMap="sdbasicinfoMap">
+		SELECT 
+		t.basic_id,
+		t.basic_name,
+		t.basic_type,
+		t.basic_index
+		FROM  sd_basic_info t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdBasicInfo"  resultMap="sdbasicinfoMap">
+		SELECT 
+		t.basic_id,
+		t.basic_name,
+		t.basic_type,
+		t.basic_index
+		FROM  sd_basic_info t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdBasicInfo"  resultMap="sdbasicinfoMap">
+		SELECT  
+		t.basic_id,
+		t.basic_name,
+		t.basic_type,
+		t.basic_index
+		FROM  sd_basic_info t 
+	    LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdBasicInfo"  resultMap="sdbasicinfoMap">
+		SELECT 
+		t.basic_id,
+		t.basic_name,
+		t.basic_type,
+		t.basic_index,
+		t.is_virtual
+		FROM  sd_basic_info t 
+		where t.is_virtual = 1
+	</select>
+	<select id="queryOrderCountByStatusForMysql" parameterType="com.sd.farmework.pojo.SdBasicInfo"  resultMap="sdbasicinfoMap">
+		SELECT 
+		t.basic_name,
+		t.basic_index,
+		t.is_virtual,
+		count(s.order_id) as order_count
+		FROM  sd_basic_info t left join sd_order_info s
+		on s.data_state=t.basic_index where t.is_virtual = 1
+		<if test="remark!=null and remark!='-1'">
+			AND t.basic_index in (${remark})
+		</if>
+		<if test="createTime!=null and createTime!=''">
+			<![CDATA[ AND unix_timestamp(s.CREATE_TIME) >= unix_timestamp(#{createTime}) ]]> 
+		</if>
+		<if test="lastUpdateTime!=null and lastUpdateTime!=''">
+			<![CDATA[ AND unix_timestamp(s.CREATE_TIME) <= unix_timestamp(#{lastUpdateTime}) ]]> 
+		</if>
+		group by t.basic_name,t.basic_index,t.is_virtual
+		order by t.basic_index
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdBasicInfo">
+	insert into sd_basic_info
+	(
+		basic_id,
+		basic_name,
+		basic_type,
+		basic_index
+	)
+	values
+	(
+		#{basicId},
+		#{basicName},
+		#{basicType},
+		#{basicIndex}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdBasicInfo">
+		delete from sd_basic_info where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdBasicInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_basic_info where 1=1
+	</select>
+</mapper> 
+

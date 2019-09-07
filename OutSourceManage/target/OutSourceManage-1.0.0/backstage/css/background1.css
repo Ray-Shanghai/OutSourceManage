@@ -1,0 +1,20 @@
+.beg-layout-container .beg-layout-header {
+    background-color: #d135df !important;
+    background-image: none !important;
+}
+
+.layui-nav-tree .layui-nav-child, .layui-nav-tree .layui-nav-child a:hover {
+    color: #d135df !important;
+}
+.layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover {
+    background-color: #d135df !important;
+    color: #fff !important;
+}
+
+.layui-nav-tree .layui-nav-bar {
+	background-color: #d135df !important;}
+	
+
+.layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
+    background-color: #f60 !important;
+}

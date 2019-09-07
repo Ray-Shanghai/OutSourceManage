@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>订单中心</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+		<link rel="stylesheet" href="css/dist/css/swiper.min.css" />
+		<style>
+			.nav-list{background: #fff;}
+			.nav-list .swiper-slide{text-align: center; height:0.8rem; line-height: 0.8rem; font-size: 0.28rem;}
+			.nav-list .swiper-slide.active{color:#366fc6; border-bottom: 3px solid #366fc6;}
+		</style>
+	</head>
+	<body class="bgcolor-grayf8">
+		<div class="header">
+			<div class="header-left"><a class="iconfont icon-llmainpageback" onclick="window.history.go(-1)"></a></div>
+			<div class="title">订单列表</div>
+		</div>
+		<div class="content pt-106 pb-100">
+			<div class="search-client">
+				<div class="row">
+					<div class="col-10 pr-10"><input type="text" placeholder="搜索订单编号"></div>
+					<div class="col-2"><a class="search-btn"><span class="iconfont icon-chaxun"></span></a></div>						
+				</div>
+		    </div>
+		    <div class="nav-list">
+		    	<div class="swiper-container">
+			        <div class="swiper-wrapper">
+			        	<div class="swiper-slide active">待分配</div>
+			        	<div class="swiper-slide">未报价</div>
+			            <div class="swiper-slide">报价核定中</div>
+			            <div class="swiper-slide">待检验</div>
+			            <div class="swiper-slide">配料</div>
+			            <div class="swiper-slide">裁切</div>
+			            <div class="swiper-slide">生产</div>
+			            <div class="swiper-slide">完成</div>
+			            <div class="swiper-slide">验收</div>
+			            <div class="swiper-slide">完结</div>
+			            <div class="swiper-slide">作废</div>
+			        </div>
+			    </div>
+		    </div>
+		    <div class="tablenav-content">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail1.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">待分配</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>
+		    		<li onclick="window.location.href='OrderDatail1.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">待分配</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail2.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">待报价</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail3.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">报价核定中</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail4.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">待检验</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail5.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">配料</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail5.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">裁切</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail5.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">生产</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail5.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">完成</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail5.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">验收</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail5.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">完结</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		    <div class="tablenav-content" style="display: none;">
+		    	<ul>
+		    		<li onclick="window.location.href='OrderDatail5.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">作废</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>		    		
+		    	</ul>
+		    </div>
+		</div>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
+    <script type="text/javascript" src="css/dist/js/swiper.min.js" ></script>
+    <script>
+	    var swiper = new Swiper('.swiper-container', {
+	        slidesPerView: 3.6,
+	        paginationClickable: true,
+	    });
+	    
+	    
+	    
+
+        $(function(){	
+			$('.nav-list .swiper-slide').click(function(){
+				var navindex = $(this).index();
+				$('.nav-list .swiper-slide').removeClass('active').eq(navindex).addClass('active');
+				$('.tablenav-content').hide().eq(navindex).show();
+			});
+		})
+    </script>
+</html>

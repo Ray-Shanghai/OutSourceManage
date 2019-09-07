@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdOrderAssignMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdOrderAssign" id="sdorderassignMap"> 
+
+		<result column="order_assign_id" property="orderAssignId"/>
+		<result column="order_id" property="orderId"/>
+		<result column="assign_user_id" property="assignUserId"/>
+		<result column="accept_user_name" property="acceptUserName"/>
+		<result column="is_look" property="isLook"/>
+		<result column="look_date" property="lookDate"/>
+		<result column="assign_type" property="assignType"/>
+		<result column="sd_id" property="sdId"/>
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdOrderAssign">
+		UPDATE sd_order_assign set 
+		t.order_assign_id=#{orderAssignId},
+		t.order_id=#{orderId},
+		t.assign_user_id=#{assignUserId},
+		t.accept_user_name=#{acceptUserName},
+		t.is_look=#{isLook},
+		t.look_date=#{lookDate},
+		t.assign_type=#{assignType},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdOrderAssign"  resultMap="sdorderassignMap">
+		SELECT 
+		t.order_assign_id,
+		t.order_id,
+		t.assign_user_id,
+		t.accept_user_name,
+		t.is_look,
+		t.look_date,
+		t.assign_type,
+		t.sd_id
+		FROM  sd_order_assign t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdOrderAssign"  resultMap="sdorderassignMap">
+		SELECT 
+		t.order_assign_id,
+		t.order_id,
+		t.assign_user_id,
+		t.accept_user_name,
+		t.is_look,
+		t.look_date,
+		t.assign_type,
+		t.sd_id
+		FROM  sd_order_assign t 
+		where  1 =1 
+		<if test="acceptUserName!=null and acceptUserName!=''">
+			AND accept_user_name=#{acceptUserName}
+		</if>
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdOrderAssign"  resultMap="sdorderassignMap">
+		SELECT  
+		t.order_assign_id,
+		t.order_id,
+		t.assign_user_id,
+		t.accept_user_name,
+		t.is_look,
+		t.look_date,
+		t.assign_type,
+		t.sd_id
+		FROM  sd_order_assign t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdOrderAssign"  resultMap="sdorderassignMap">
+		SELECT 
+		t.order_assign_id,
+		t.order_id,
+		t.assign_user_id,
+		t.accept_user_name,
+		t.is_look,
+		t.look_date,
+		t.assign_type,
+		t.sd_id
+		FROM  sd_order_assign t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdOrderAssign">
+	insert into sd_order_assign
+	(
+		order_id,
+		assign_user_id,
+		accept_user_name,
+		is_look,
+		look_date,
+		assign_type
+	)
+	values
+	(
+		#{orderId},
+		#{assignUserId},
+		#{acceptUserName},
+		#{isLook},
+		#{lookDate},
+		#{assignType}
+	)
+	</insert>
+	<!-- 批量添加 -->
+	<insert id="addBatchForMysql" parameterType="java.util.List">
+	insert into sd_order_assign
+	(
+		order_id,
+		assign_user_id,
+		accept_user_name,
+		is_look,
+		look_date,
+		assign_type,
+	  CREATE_USER_ID,
+	  CREATE_USER_NAME,
+	  CREATE_DEPART_ID,
+	  CREATE_DEPART_NAME
+	)
+	values
+	 <foreach collection="list" separator="," item="assign">
+	(
+		#{assign.orderId},
+		#{assign.assignUserId},
+		#{assign.acceptUserName},
+		#{assign.isLook},
+		#{assign.lookDate},
+		#{assign.assignType},
+		 #{assign.createUserId},
+		 #{assign.createUserName},
+		 #{assign.createDepartId},
+		 #{assign.createDepartName}
+	)
+	</foreach>
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdOrderAssign">
+		delete from sd_order_assign where order_id=#{orderId}
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdOrderAssign"  resultType="java.lang.Integer">
+   		select    count(*) from sd_order_assign where 1=1
+	</select>
+</mapper> 
+

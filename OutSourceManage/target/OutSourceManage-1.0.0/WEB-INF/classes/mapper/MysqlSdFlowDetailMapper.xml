@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdFlowDetailMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdFlowDetail" id="sdFlowDetailMapMysql"> 
+		<result column="flow_detail_id" property="flowDetailId"/>
+ 		<result column="flow_base_id" property="flowBaseId"/>
+ 		<result column="function_id" property="functionId"/>
+		<result column="flow_detail_name" property="flowDetailName"/>
+		<result column="flow_order" property="flowOrder"/>
+		<result column="flow_operate_function_id" property="flowOperateFunctionId"/>
+		<result column="flow_union_filed" property="flowUnionFiled"/>
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	 <select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdFlowDetail"  resultMap="sdFlowDetailMapMysql">
+	 SELECT * FROM(
+		SELECT ROWNUM RW,a.*
+		FROM (
+		 select flow_detail_id,
+	       flow_detail_name,
+	       flow_base_id,
+	       function_id,
+	       flow_order,
+	       flow_operate_function_id,
+		   flow_union_filed
+		   from sd_flow_detail where flow_base_id =#{flowBaseId}  
+		   order by flow_order asc
+		   ) a )
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+	</select>
+	 <select id="queryCountForMysql" parameterType="com.sd.farmework.pojo.SdFlowDetail"  resultType="int">
+		 select count(*)
+		   from sd_flow_detail where flow_base_id =#{flowBaseId}  
+	</select>
+	 <select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdFlowDetail"  resultMap="sdFlowDetailMapMysql">
+		 select flow_detail_id,
+	       flow_detail_name,
+	       flow_base_id,
+	       function_id,
+	       flow_order,
+	       flow_operate_function_id,
+	       flow_union_filed
+		   from sd_flow_detail where 1=1
+		    <if test="flowBaseId !=null and flowBaseId !=''">
+		     and  flow_base_id =#{flowBaseId}
+		   </if>  
+		    <if test="flowOrder !=null and flowOrder !=''">
+		     and  flow_order =#{flowOrder}
+		   </if>
+		   <if test="functionId !=null and functionId !=''">
+		     and  function_Id =#{functionId}
+		   </if> 
+		   <if test="flowOperateFunctionId !=null and flowOperateFunctionId !=''">
+		     and  flow_operate_function_id =#{flowOperateFunctionId}
+		   </if> 
+		   order by flow_order asc
+	</select>
+ 	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdFlowDetail">
+ 		update sd_flow_detail
+  		set  
+	       flow_detail_name = #{flowDetailName},
+	       <if test="flowOrder !=null and flowOrder !=''">
+	       	flow_order=#{flowOrder},
+	       </if>
+	       <if test="flowOperateFunctionId !=null and flowOperateFunctionId !=''">
+	       	flow_operate_function_id=#{flowOperateFunctionId},
+	       </if>
+	       <if test="flowUnionFiled !=null and flowUnionFiled !=''">
+	       	flow_union_filed=#{flowUnionFiled},
+	       </if>
+	       function_id = #{functionId}
+		where flow_detail_id = #{flowDetailId}
+ 	</update>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdFlowDetail">
+	<selectKey keyProperty="flowDetailId" resultType="String" order="BEFORE">
+			select fill_str_get_seq('sd_flow_detail_seq',10,'L') from dual
+	</selectKey>
+	
+		insert into sd_flow_detail
+		  (flow_detail_id,
+		   flow_detail_name,
+		   flow_base_id,
+		   function_id,
+		   flow_order,
+		   flow_operate_function_id,
+		   flow_union_filed)
+		values
+		  (#{flowDetailId},
+		   #{flowDetailName},
+		   #{flowBaseId},
+		   #{functionId},
+		   (select nvl(max(flow_order)+1,1) from sd_flow_detail where flow_base_id=#{flowBaseId}),
+		   #{flowOperateFunctionId},
+		   #{flowUnionFiled})
+	</insert>
+	
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdFlowDetail">
+	  delete from sd_flow_detail where 1=1 
+	  <if test="flowBaseId !=null and flowBaseId !=''">
+	  	and flow_base_id=#{flowBaseId}
+	  </if>
+	  <if test="flowDetailId !=null and flowDetailId !=''">
+	  	and flow_detail_id=#{flowDetailId}
+	  </if>
+	</delete>
+	
+</mapper> 
+

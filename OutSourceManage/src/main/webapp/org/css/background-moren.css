@@ -1,0 +1,20 @@
+.beg-layout-container .beg-layout-header {
+    background-color: #da0211 !important;
+    background-image:url(../images/xiaofang.jpg) !important;
+}
+
+.layui-nav-tree .layui-nav-child, .layui-nav-tree .layui-nav-child a:hover {
+    color: #da0211 !important;
+}
+.layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover {
+    background-color: #da0211 !important;
+    color: #fff !important;
+}
+
+.layui-nav-tree .layui-nav-bar {
+	background-color: #da0211 !important;}
+	
+
+.layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
+    background-color: #f6e94d !important;
+}

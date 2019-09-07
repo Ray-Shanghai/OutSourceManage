@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdOrderInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdOrderInfo" id="sdorderinfoMap"> 
+
+		<result column="order_id" property="orderId"/>
+		<result column="order_nuber" property="orderNuber"/>
+		<result column="customer_id" property="customerId"/>
+		<result column="customer_name" property="customerName"/>
+		<result column="customer_address" property="customerAddress"/>
+		<result column="delivery_date" property="deliveryDate"/>
+		<result column="suggest_delivery_date" property="suggestDeliveryDate"/>
+		<result column="order_price" property="orderPrice"/>
+		<result column="cost_price" property="costPrice"/>
+		<result column="commercial_price" property="commercialPrice"/>
+		<result column="procurement_user_id" property="procurementUserId"/>
+		<result column="checkout_user_id" property="checkoutUserId"/>
+		<result column="data_state" property="dataState"/>
+		<result column="sd_id" property="sdId"/>
+
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo">
+		UPDATE sd_order_info set 
+		t.order_id=#{orderId},
+		t.order_nuber=#{orderNuber},
+		t.customer_id=#{customerId},
+		t.customer_name=#{customerName},
+		t.customer_address=#{customerAddress},
+		t.delivery_date=#{deliveryDate},
+		t.suggest_delivery_date=#{suggestDeliveryDate},
+		t.order_price=#{orderPrice},
+		t.cost_price=#{costPrice},
+		t.commercial_price=#{commercialPrice},
+		t.procurement_user_id=#{procurementUserId},
+		t.checkout_user_id=#{checkoutUserId},
+		t.data_state=#{dataState},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT 
+		t.order_id,
+		t.order_nuber,
+		t.customer_id,
+		t.customer_name,
+		t.customer_address,
+		t.delivery_date,
+		t.suggest_delivery_date,
+		t.order_price,
+		t.cost_price,
+		t.commercial_price,
+		t.procurement_user_id,
+		t.checkout_user_id,
+		t.data_state,
+		t.sd_id
+		FROM  sd_order_info t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT 
+		t.order_id,
+		t.order_nuber,
+		t.customer_id,
+		t.customer_name,
+		t.customer_address,
+		t.delivery_date,
+		t.suggest_delivery_date,
+		t.order_price,
+		t.cost_price,
+		t.commercial_price,
+		t.procurement_user_id,
+		t.checkout_user_id,
+		t.data_state,
+		t.sd_id
+		FROM  sd_order_info t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT  
+		t.order_id,
+		t.order_nuber,
+		t.customer_id,
+		t.customer_name,
+		t.customer_address,
+		t.delivery_date,
+		t.suggest_delivery_date,
+		t.order_price,
+		t.cost_price,
+		t.commercial_price,
+		t.procurement_user_id,
+		t.checkout_user_id,
+		t.data_state,
+		t.sd_id
+		FROM  sd_order_info t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT 
+		t.order_id,
+		t.order_nuber,
+		t.customer_id,
+		t.customer_name,
+		t.customer_address,
+		t.delivery_date,
+		t.suggest_delivery_date,
+		t.order_price,
+		t.cost_price,
+		t.commercial_price,
+		t.procurement_user_id,
+		t.checkout_user_id,
+		t.data_state,
+		t.sd_id
+		FROM  sd_order_info t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo">
+	insert into sd_order_info
+	(
+		order_id,
+		order_nuber,
+		customer_id,
+		customer_name,
+		customer_address,
+		delivery_date,
+		suggest_delivery_date,
+		order_price,
+		cost_price,
+		commercial_price,
+		procurement_user_id,
+		checkout_user_id,
+		data_state,
+		sd_id
+	)
+	values
+	(
+		#{orderId},
+		#{orderNuber},
+		#{customerId},
+		#{customerName},
+		#{customerAddress},
+		#{deliveryDate},
+		#{suggestDeliveryDate},
+		#{orderPrice},
+		#{costPrice},
+		#{commercialPrice},
+		#{procurementUserId},
+		#{checkoutUserId},
+		#{dataState},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo">
+		delete from sd_order_info where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_order_info where 1=1
+	</select>
+</mapper> 
+

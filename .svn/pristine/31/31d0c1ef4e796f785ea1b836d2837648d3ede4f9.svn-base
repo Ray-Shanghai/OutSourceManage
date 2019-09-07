@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>格式</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		
+		<link rel="stylesheet" type="text/css" href="../../../css/common.css"/>
+		<link rel="stylesheet" href="../../../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../../css/my.css" />
+		<link rel="stylesheet" href="../../../css/font/iconfont1.css" />
+	</head>
+	<body>
+		<div class="function-content">
+		    <div class="function-left">
+		    	 <div class="title">未使用的格式</div>
+		    	 <div class="function-box">
+		    	 	<ul id="items">
+		    	 		<li class="">格式10</li>
+		    	 		<li>格式1</li>
+		    	 		<li>格式2</li>
+		    	 		<li>格式3</li>
+		    	 		<li>格式4</li>
+		    	 		<li>格式5</li>
+		    	 		<li>格式6</li>
+		    	 		<li>格式7</li>
+		    	 		<li>格式8</li>
+		    	 		<li>格式9</li>
+		    	 	</ul>
+		    	 </div>
+		    </div>
+		    <div class="function-middle">
+		    	 <div class="box-btn"><span class="fa fa-arrow-right"></span></div>
+		    	 <div class="box-btn"><span class="fa fa-arrow-left"></span></div>
+		    	 <div class="box-btn"><span class="fa fa-arrow-down"></span></div>
+		    	 <div class="box-btn"><span class="fa fa-arrow-up"></span></div>
+		    </div>
+		    <div class="function-right">
+		    	<div class="title">已使用的格式</div>
+		    	<div class="function-box">
+		    		<ul id="items1">
+		    	 		<li class="">格式11</li>
+		    	 		<li>格式12</li>
+		    	 		<li>格式13</li>
+		    	 		<li>格式14</li>
+		    	 		<li>格式15</li>
+		    	 		<li>格式16</li>
+		    	 		<li>格式17</li>
+		    	 		<li>格式18</li>
+		    	 		<li>格式19</li>
+		    	 	</ul>
+		    	</div>
+		    </div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../../js/jquery.min.js" ></script>
+	<script type="text/javascript" src="../../../js/Sortable.min.js" ></script>
+	<script>
+		var el = document.getElementById('items');
+        new Sortable(el);
+        
+        var el = document.getElementById('items1');
+        new Sortable(el);
+		
+		$(function(){
+			$('.function-box ul li').click(function(){
+				if($(this).hasClass('selected')){
+					$(this).removeClass('selected');
+				}else{
+					$(this).addClass('selected');
+				}	
+			});
+		})
+	</script>
+</html>

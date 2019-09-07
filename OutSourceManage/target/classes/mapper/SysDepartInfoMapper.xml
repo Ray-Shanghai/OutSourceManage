@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysDepartInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysDepartInfo" id="SysDepartInfoMap"> 
+
+		<result column="UNIT_ID" property="unitId"/>
+		<result column="UNIT_NAME" property="unitName"/>
+		<result column="PARENT_DEPART_ID" property="parentDepartId"/>
+		<result column="depart_seque" property="departSeque"/>
+		<result column="IS_VIRTUAL" property="isVirtual"/>
+		<result column="NODE_TYPE" property="nodeType"/>
+		<result column="DEPART_ID" property="departId"/>
+		<result column="DEPART_NAME" property="departName"/>
+		<result column="DEPART_DESC" property="departDesc"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+ 
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+ 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+ 
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		 
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	<update id="update" parameterType="com.sd.farmework.pojo.SysDepartInfo">
+		UPDATE SYS_DEPART_INFO t set 
+		t.STATUS=#{status},
+		t.DEPART_NAME=#{departName},
+		t.DEPART_DESC=#{departDesc},
+		last_update_TIME=sysdate,
+        last_update_user_id = #{lastUpdateUserId},
+        last_update_user_name = #{lastUpdateUserName},
+        last_update_depart_id = #{lastUpdateDepartId},
+        last_update_depart_name = #{lastUpdateDepartName}
+       
+		where DEPART_ID=#{departId}
+	</update>
+	<select id="queryByPkId"  parameterType="String"  resultMap="SysDepartInfoMap">
+		 select depart_id,  decode(length(#{departId}),
+    9,(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{departId},0,3)  ),
+    15,(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{departId},0,3)  )||'-'||
+        (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{departId},0,9)  ),   
+    
+     21,(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{departId},0,3)  )||'-'||
+        (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{departId},0,9))||'-'||
+         (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{departId},0,15)   ),   
+
+     ''
+         )||
+        '-'|| depart_name  depart_name, depart_desc, unit_id, unit_name, parent_depart_id, depart_seque, is_virtual, node_type, remark, status, create_time, create_user_id, create_user_name, create_depart_id, create_depart_name,  last_update_time, last_update_user_id, last_update_user_name,  last_update_depart_id, last_update_depart_name from sys_depart_info 
+		where depart_id = #{departId}
+	</select>
+	
+	<select id="getDepartInfoByParentIdCount"  parameterType="com.sd.farmework.pojo.SysDepartInfo"  resultType="java.lang.Integer">
+		SELECT 
+		count(*)
+		FROM  SYS_DEPART_INFO t 
+		where  PARENT_DEPART_ID=#{parentDepartId} and STATUS ='Y'   
+		
+	</select>
+	
+	<select id="getDepartInfoByLikeParentIdCount"  parameterType="com.sd.farmework.pojo.SysDepartInfo"  resultType="java.lang.Integer">
+		SELECT 
+		count(*)
+		FROM  SYS_DEPART_INFO t 
+		where  PARENT_DEPART_ID like #{parentDepartId}||'%' and STATUS ='Y'   
+		<if test="isVirtual!='' and isVirtual!=null">
+		
+		and is_Virtual = #{isVirtual}
+		</if>
+		  <if test="nodeTypes!='' and nodeTypes!=null">
+		  
+			    and
+			NODE_TYPE in 
+				<foreach item="item" index="index" collection="nodeTypes" open="(" separator="," close=")">  
+	 		 #{item}  
+	 		</foreach> 
+		  </if>
+		
+	</select>
+	
+	<select id="getDepartInfoByParentId" parameterType="com.sd.farmework.pojo.SysDepartInfo"  resultMap="SysDepartInfoMap">
+		<![CDATA[ 
+		SELECT RW,a.*
+		FROM (
+		SELECT ROWNUM RW,
+    depart_id,
+    
+   
+    decode(length(#{parentDepartId}),
+    6,(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,3)  ),
+    12,(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,3)  )||'-'||
+        (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,9)  ),   
+    
+     18,(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,3)  )||'-'||
+        (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,9))||'-'||
+         (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,15)   ),   
+ 24,(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,3)  )||'-'||
+        (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,9))||'-'||
+         (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,15))||'-'||
+         (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(#{parentDepartId},0,21))
+         
+         
+         ,
+     ''
+         )||
+        '-'|| depart_name  depart_name,
+       depart_desc,
+       unit_id,
+       unit_name,
+       
+       
+       parent_depart_id,
+       depart_seque,
+       is_virtual,
+       node_type,
+       remark,
+       create_time,
+       status,
+       create_user_id,
+       create_user_name,
+       create_depart_id,
+       create_depart_name
+    FROM  SYS_DEPART_INFO t where    PARENT_DEPART_ID=#{parentDepartId} and STATUS ='Y' 
+ 		
+ 		
+ 		
+ 		) a 
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+		]]> 
+		
+	</select>
+	
+	
+	<select id="queryListByPage" parameterType="com.sd.farmework.pojo.SysDepartInfo"  resultMap="SysDepartInfoMap">
+		<![CDATA[ 
+		SELECT RW,a.*
+		FROM (
+		SELECT ROWNUM RW,
+		depart_id,
+       depart_name,
+       depart_desc,
+       unit_id,
+       unit_name,
+       parent_depart_id,
+       depart_seque,
+       is_virtual,
+       node_type,
+       remark,
+       status,
+       create_time,
+       create_user_id,
+       create_user_name,
+       create_depart_id,
+       create_depart_name
+		FROM  SYS_DEPART_INFO t 
+ 		) a 
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+		]]> 
+	</select>
+	<select id="queryList" parameterType="com.sd.farmework.pojo.SysDepartInfo"  resultMap="SysDepartInfoMap">
+		select * from sys_depart_info
+		 t where NODE_TYPE in 
+		
+		<foreach item="item" index="index" collection="nodeTypes" open="(" separator="," close=")">  
+ 		 #{item}  
+ 		</foreach> 
+ 		 
+		 and STATUS = 'Y'   order by depart_id asc
+	</select>
+	<insert id="addUnit" parameterType="com.sd.farmework.pojo.SysDepartInfo"  >
+	
+  <selectKey keyProperty="departId" resultType="String" order="BEFORE" >
+    		 select 
+ 
+(decode(to_char(max(depart_id)+1),'',#{parentDepartId}||'001',to_char(max(depart_id)+1),'00'||to_char(max(depart_id)+1)))
+ 
+  from sys_depart_info t
+ where t.parent_depart_id = #{parentDepartId}
+  			</selectKey>
+	
+			insert into sys_depart_info
+		  (depart_id,
+		   depart_name,
+		   depart_desc,
+		   unit_id,
+		   unit_name,
+		   parent_depart_id,
+		   depart_seque,
+		   is_virtual,
+		   node_type,
+		    status,
+		    create_user_id,
+		   create_user_name, 
+		   create_depart_id,
+		   create_depart_name )
+		values
+		  (#{departId},
+		   #{departName},
+		   #{departDesc},
+		   #{departId},
+		   #{departName},
+		   #{parentDepartId},
+		 (select nvl(max(depart_seque)+1,0) from sys_depart_info t where t.parent_depart_id=#{parentDepartId}),
+		    1,
+		   #{nodeType},
+		    #{status},
+		   #{createUserId},
+		    #{createUserName},
+		 
+		    #{createDepartId},
+		    #{createDepartName} )
+
+	</insert>
+	<insert id="addUnitDepart" parameterType="com.sd.farmework.pojo.SysDepartInfo"  >
+	
+			insert into sys_depart_info
+		  (depart_id,
+		   depart_name,
+		   depart_desc,
+		   unit_id,
+		   unit_name,
+		   parent_depart_id,
+		   depart_seque,
+		   is_virtual,
+		   node_type,
+		    create_user_id,
+		   create_user_name, 
+		   create_depart_id,
+		   create_depart_name )
+		values
+		  (#{departId}||'001',
+		  	'部门',
+		  '部门',
+		   #{departId},
+		   #{departName},
+		   #{departId},
+		 (select nvl(max(depart_seque)+1,0) from sys_depart_info t where t.parent_depart_id=#{parentDepartId}),
+		    '0',
+		   2,
+		   #{createUserId},
+		    #{createUserName}, 
+		    #{createDepartId},
+		    #{createDepartName} )
+
+	</insert>
+	<insert id="addUnitRole" parameterType="com.sd.farmework.pojo.SysDepartInfo"  >
+	
+			insert into sys_depart_info
+		  (depart_id,
+		   depart_name,
+		   depart_desc,
+		   unit_id,
+		   unit_name,
+		   parent_depart_id,
+		   depart_seque,
+		   is_virtual,
+		   node_type,
+		    create_user_id,
+		   create_user_name, 
+		   create_depart_id,
+		   create_depart_name )
+		values
+		  (#{departId}||'002',
+		  	'角色',
+		  '角色',
+		   #{departId},
+		   #{departName},
+		   #{departId},
+		 (select nvl(max(depart_seque)+1,0) from sys_depart_info t where t.parent_depart_id=#{parentDepartId}),
+		    '0',
+		   5,
+		   #{createUserId},
+		    #{createUserName}, 
+		    #{createDepartId},
+		    #{createDepartName} )
+
+	</insert>
+	
+	<insert id="addDepart" parameterType="com.sd.farmework.pojo.SysDepartInfo"  >
+	
+  <selectKey keyProperty="departId" resultType="String" order="BEFORE" >
+    		 select 
+ 
+(decode(to_char(max(depart_id)+1),'',#{parentDepartId}||'001',to_char(max(depart_id)+1),'00'||to_char(max(depart_id)+1)))
+ 
+  from sys_depart_info t
+ where t.parent_depart_id = #{parentDepartId}
+  			</selectKey>
+	
+			insert into sys_depart_info
+		  (depart_id,
+		   depart_name,
+		   depart_desc,
+		   unit_id,
+		   unit_name,
+		   parent_depart_id,
+		   depart_seque,
+		   is_virtual,
+		   node_type,
+		    status,
+		    create_user_id,
+		   create_user_name, 
+		   create_depart_id,
+		   create_depart_name )
+		values
+		  (#{departId},
+		   #{departName},
+		   #{departDesc},
+		   substr(#{parentDepartId},0,9),
+		  ( select depart_name from SYS_DEPART_INFO t where depart_id =substr(#{parentDepartId},0,9) ),
+		   #{parentDepartId},
+		 (select nvl(max(depart_seque)+1,0) from sys_depart_info t where t.parent_depart_id=#{parentDepartId}),
+		   1,
+		   #{nodeType},
+		    #{status},
+		   #{createUserId},
+		    #{createUserName}, 
+		    #{createDepartId},
+		    #{createDepartName} )
+
+	</insert>
+	
+	<insert id="addDepartTeam" parameterType="com.sd.farmework.pojo.SysDepartInfo"  >
+			insert into sys_depart_info
+		  (depart_id,
+		   depart_name,
+		   depart_desc,
+		   unit_id,
+		   unit_name,
+		   parent_depart_id,
+		   depart_seque,
+		   is_virtual,
+		   node_type,
+		    status,
+		    create_user_id,
+		   create_user_name, 
+		   create_depart_id,
+		   create_depart_name )
+		values
+		  (#{departId}||'001',
+		   '班组',
+		   #{departDesc},
+ 		substr(#{parentDepartId},0,9),
+		  ( select depart_name from SYS_DEPART_INFO t where depart_id =substr(#{parentDepartId},0,9) ),
+		   #{departId},
+		 (select nvl(max(depart_seque)+1,0) from sys_depart_info t where t.parent_depart_id=#{parentDepartId}),
+		    0,
+		   4,
+		    #{status},
+		   #{createUserId},
+		    #{createUserName}, 
+		    #{createDepartId},
+		    #{createDepartName} )
+
+	</insert>
+	
+	<insert id="addDepartRole" parameterType="com.sd.farmework.pojo.SysDepartInfo"  >
+			insert into sys_depart_info
+		  (depart_id,
+		   depart_name,
+		   depart_desc,
+		   unit_id,
+		   unit_name,
+		   parent_depart_id,
+		   depart_seque,
+		   is_virtual,
+		   node_type,
+		    status,
+		    create_user_id,
+		   create_user_name, 
+		   create_depart_id,
+		   create_depart_name )
+		values
+		  (#{departId}||'002',
+		   '角色',
+		   #{departDesc},
+ 			substr(#{parentDepartId},0,9),
+		  ( select depart_name from SYS_DEPART_INFO t where depart_id =substr(#{parentDepartId},0,9) ),
+		   #{departId},
+		 (select nvl(max(depart_seque)+1,0) from sys_depart_info t where t.parent_depart_id=#{parentDepartId}),
+		    0,
+		   5,
+		    #{status},
+		   #{createUserId},
+		    #{createUserName},
+		    #{createDepartId},
+		    #{createDepartName})
+
+	</insert>
+	<insert id="addTeam" parameterType="com.sd.farmework.pojo.SysDepartInfo"  >
+  <selectKey keyProperty="departId" resultType="String" order="BEFORE" >
+    		 select 
+ 
+(decode(to_char(max(depart_id)+1),'',#{parentDepartId}||'001',to_char(max(depart_id)+1),'00'||to_char(max(depart_id)+1)))
+ 
+  from sys_depart_info t
+ where t.parent_depart_id = #{parentDepartId}
+  			</selectKey>
+			insert into sys_depart_info
+		  (depart_id,
+		   depart_name,
+		   depart_desc,
+		   unit_id,
+		   unit_name,
+		   parent_depart_id,
+		   depart_seque,
+		   is_virtual,
+		   node_type,
+		    status,
+		    create_user_id,
+		   create_user_name, 
+		   create_depart_id,
+		   create_depart_name )
+		values
+		  (#{departId},
+		   #{departName},
+		   #{departDesc},
+ 			substr(#{parentDepartId},0,9),
+		  ( select depart_name from SYS_DEPART_INFO t where depart_id =substr(#{parentDepartId},0,9) ),
+		   #{parentDepartId},
+		 (select nvl(max(depart_seque)+1,0) from sys_depart_info t where t.parent_depart_id=#{parentDepartId}),
+		    1,
+		   #{nodeType},
+		    #{status},
+		   #{createUserId},
+		    #{createUserName}, 
+		    #{createDepartId},
+		    #{createDepartName} )
+	</insert>
+	
+	<insert id="addTeamRole" parameterType="com.sd.farmework.pojo.SysDepartInfo"  >
+			insert into sys_depart_info
+		  (depart_id,
+		   depart_name,
+		   depart_desc,
+		   unit_id,
+		   unit_name,
+		   parent_depart_id,
+		   depart_seque,
+		   is_virtual,
+		   node_type,
+		    status,
+		    create_user_id,
+		   create_user_name,
+		   create_depart_id,
+		   create_depart_name)
+		values
+		  (#{departId}||'002',
+		   '角色',
+		   #{departDesc},
+ 			substr(#{parentDepartId},0,9),
+		  ( select depart_name from SYS_DEPART_INFO t where depart_id =substr(#{parentDepartId},0,9) ),
+		   #{departId},
+		   (select nvl(max(depart_seque)+1,0) from sys_depart_info t where t.parent_depart_id=#{parentDepartId}),
+		    0,
+		   5,
+		    #{status},
+		   #{createUserId},
+		    #{createUserName}, 
+		    #{createDepartId},
+		    #{createDepartName} )
+
+	</insert>
+	
+	
+	
+	<insert id="addRoleUnitRole" parameterType="com.sd.farmework.pojo.SysDepartInfo"  >
+	
+		      <selectKey keyProperty="departId" resultType="String" order="BEFORE" >
+    		 select 
+ 
+(decode(to_char(max(depart_id)+1),'',#{parentDepartId}||'001',to_char(max(depart_id)+1),'00'||to_char(max(depart_id)+1)))
+ 
+  from sys_depart_info t
+ where t.parent_depart_id = #{parentDepartId}
+  			</selectKey>
+	
+			insert into sys_depart_info
+		  (depart_id,
+		   depart_name,
+		   depart_desc,
+		   unit_id,
+		   unit_name,
+		   parent_depart_id,
+		   depart_seque,
+		   is_virtual,
+		   node_type,
+		    create_user_id,
+		   create_user_name, 
+		   create_depart_id,
+		   create_depart_name )
+		values
+		  (#{departId},
+		  	#{departName},
+		  '角色',
+		  substr(#{parentDepartId},0,9),
+		  ( select depart_name from SYS_DEPART_INFO t where depart_id =substr(#{parentDepartId},0,9) ),
+		   #{parentDepartId},
+		 (select nvl(max(depart_seque)+1,0) from sys_depart_info t where t.parent_depart_id=#{parentDepartId}),
+		    '1',
+		   5,
+		   #{createUserId},
+		    #{createUserName}, 
+		    #{createDepartId},
+		    #{createDepartName} )
+
+	</insert>
+	
+	<delete id="delete">
+		delete from SYS_DEPART_INFO where 1=2 
+	</delete>
+	<select id="queryCount"  parameterType="com.sd.farmework.pojo.SysDepartInfo"  resultType="java.lang.Integer">
+   		select    count(*) from SYS_DEPART_INFO where 1=1
+	</select>
+</mapper> 
+

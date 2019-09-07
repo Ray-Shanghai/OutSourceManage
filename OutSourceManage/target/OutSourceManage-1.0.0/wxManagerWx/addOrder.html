@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>新增订单</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+		<style type="text/css">
+			.autocomplete{
+				    border: 1px solid #9ACCFB;
+			        background-color: white;
+			        text-align: left;
+			}
+		    .autocomplete li {
+		        list-style-type: none;
+		        font-size: 14px;
+		    }
+		    .clickable {
+		        cursor: default;
+		    }
+		    .highlight {
+		        background-color: #57a3f1;
+		    }
+		    .col-8 input[type='date']{   
+		    	 font-size: 0.30rem;
+			    color: #333;
+			    width: 100%;
+			    height: 0.6rem;
+			    border: 1px solid #ddd;
+			    padding-left: 0.2rem;
+		    }
+		     .redSpan{font-size: 20px;
+    		color: red;
+    		}
+		</style>
+	</head>
+	<body class="bgcolor-grayf8">
+	<form id="form1">
+		<div class="header">
+			<div class="header-left"><a class="iconfont icon-llmainpageback" href="index.html"></a></div>
+			<div class="title">新增订单</div>
+			<div class="header-right"><a class="title-search" id="baocun"><span class="iconfont icon-baocun"></span></a></div>
+		</div>
+		<div class="content pt-106">
+			<div class="list-content">
+				<div class="title-purchase"><span class="shu-width-3"></span>订单信息</div>
+				<ul>
+					<li class="row">
+						<div class="col-4"><span class="redSpan">*</span>客户名称：</div>
+						<div class="col-8"><input type="text" name="customerName" list="customerList"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4"><span class="redSpan">*</span>客户地址：</div>
+						<div class="col-8"><input type="text" name="customerAddress"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4"><span class="redSpan">*</span>交货日期：</div>
+						<div class="col-8"><input type="date" name="deliveryDate"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4">建议交货日期：</div>
+						<div class="col-8"><input type="date" name="suggestDeliveryDate"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4">订单价格：</div>
+						<div class="col-8"><input type="text" name="orderPrice"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4"><span class="redSpan">*</span>成本价格：</div>
+						<div class="col-8"><input type="text" name="costPrice"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4">商务报价：</div>
+						<div class="col-8"><input type="text" name="commercialPrice"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4"><span class="redSpan">*</span>客户订单号：</div>
+						<div class="col-8"><input type="text" name="customerNo"/></div>
+					</li>
+				</ul>
+			</div>
+			<div class="list-content" style="background: #f8f8f8;">
+				<div class="title-purchase"><span class="shu-width-3"></span>物料信息</div>
+				<div class="info-supply mb-30 bgcolor-white">
+					<ul class="table-content">
+						<input type="hidden" name="productStandard" >
+						<input type="hidden" name="productOther" >
+						<input type="hidden" name="productInnerLength">
+						<input type="hidden" name="productInnerWidth">
+						<input type="hidden" name="productInnerHeight">
+						<li class="row">
+							<div class="col-4"><span class="redSpan">*</span>产品名称：</div>
+							<div class="col-8"><input type="text"  name="productName" /></div>
+						</li>
+						<li class="row">
+							<div class="col-4">客户料号：</div>
+							<div class="col-8"><input type="text" name="customerSupplies" /></div>
+						</li>
+						<li class="row">
+							<div class="col-4"><span class="redSpan">*</span>产品代码：</div>
+							<div class="col-8"><input type="text" name="productCode" /></div>
+						</li>
+						<li class="row">
+							<div class="col-4">成本核算：</div>
+							<div class="col-8"><input type="text" name="costPrice" /></div>
+						</li>
+						<li class="row">
+							<div class="col-4"><span class="redSpan">*</span>长：</div>
+							<div class="col-8"><input type="text" name="productLength" placeholder="单位（mm）"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4"><span class="redSpan">*</span>宽：</div>
+							<div class="col-8"><input type="text"  name="productWidth" placeholder="单位（mm）"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4"><span class="redSpan">*</span>高：</div>
+							<div class="col-8"><input type="text" name="productHeight" placeholder="单位（mm）"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4"><span class="redSpan">*</span>是否带盖：</div>
+							<div class="col-8"><select name="isLid">
+							<option value="0">是</option>
+							<option value="1">否</option>
+							</select>
+							</div>
+						</li>
+						<li class="row">
+							<div class="col-4"><span class="redSpan">*</span>类别：</div>
+							<div class="col-8"><select name="productTypeId">
+							
+							</select></div>
+						</li>
+						<li class="row">
+							<div class="col-4"><span class="redSpan">*</span>材质：</div>
+							<div class="col-8"><select name="productGradeId">
+							
+							</select></div>
+						</li>
+						<li class="row">
+							<div class="col-4">单价：</div>
+							<div class="col-8"><input type="text" name="price"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">数量：</div>
+							<div class="col-8"><input type="text" name="number"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">即时库存：</div>
+							<div class="col-8"><input type="text" name="immediatelyInventory"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">整单折前金额：</div>
+							<div class="col-8"><input type="text" name="discountBeforeSum"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">金额：</div>
+							<div class="col-8"><input type="text" name="money"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">税率：</div>
+							<div class="col-8"><input type="text" name="taxRate"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">销项税额：</div>
+							<div class="col-8"><input type="text" name="sellTax"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">实际含税单价：</div>
+							<div class="col-8"><input type="text" name="practicalSellPrice"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">价税合计：</div>
+							<div class="col-8"><input type="text" name="priceSellSum"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">关联数量：</div>
+							<div class="col-8"><input type="text" name="relevanceNumber"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">出库数量：</div>
+							<div class="col-8"><input type="text" name="takeOutNumber"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">BOM类别：</div>
+							<div class="col-8"><input type="text" name="bomType"/></div>
+						</li>
+					</ul>
+					<div class="delete-info"><span class="iconfont icon-jianhao color-red" onclick="delFile(this)"></span></div>
+				</div>
+			</div>
+			<div class="list-content mb-30">
+				<div class="title-purchase"><span class="shu-width-3"></span>订单分配<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul>
+					<li class="row">
+				  	  	<div class="col-4">分配采购经理：</div>
+				  	  	<div class="col-8">
+				  	  	 	<select name="procurementUserId">
+				  	  	 		
+				  	  	 	</select>
+				  	  	</div>
+				    </li>
+				    <li class="row">
+				  	  	<div class="col-4">分配检验经理：</div>
+				  	  	<div class="col-8">
+				  	  		<select name="checkoutUserId">
+				  	  			
+				  	  		</select>
+				  	  	</div>
+				    </li>
+				</ul>
+		    </div>	
+		</div>
+		<div class="add-info"><span class="iconfont icon-tianjia" onclick="addFile()"></span></div>
+		</form>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/js/base.js"></script>
+    <script type="text/javascript" src="../resources/login/layui/layui.js"></script>
+    <script type="text/javascript" src="js/layer.js" ></script>
+    <script type="text/javascript" src="js/checkCusNo.js"></script>
+    <script type="text/javascript" src="js/wxAddOrder.js"></script>
+    <script>
+    					//   添加删除 
+		function addFile() {
+			var len = $(".info-supply").length;
+			var tag = $(".info-supply").eq(len-1);
+			
+			var htmlStr =  $(tag).prop("outerHTML");
+				tag.after(htmlStr);
+				 
+		  $(".info-supply").eq(len).find("input").each(function(index,obj){
+		  		$(obj).val("");
+		  		productChange();
+		  		onloadTypeAndGrade(len);
+		  });
+		 }
+
+		function delFile(tag) {
+			if($(".info-supply").length > 1) {
+				$(tag).parent().parent().remove();
+			} else {
+				alert("只有一行不能再删除");
+			}
+		}
+    </script>
+</html>

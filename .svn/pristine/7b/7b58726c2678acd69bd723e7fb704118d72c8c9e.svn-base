@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+		.autocomplete {
+	        border: 1px solid #9ACCFB;
+	        background-color: white;
+	        text-align: left;
+    	}
+    	.autocomplete li {
+	        list-style-type: none;
+	        font-size: 14px;
+    	}
+    	.clickable {
+        	cursor: default;
+    	}
+    	.highlight {
+        	background-color: #57a3f1;
+    	}
+		.lightbox{
+			position: fixed;
+		    top: 0px;
+		    left: 0px;
+		    height: 100%;
+		    width: 100%;
+		    z-index: 7;
+		    display: block;
+	        background-color: rgba(0, 0, 0,.3);
+		    display: none;
+		}
+		.pop,#pdfContainer{
+			position: absolute;
+		    left: 50%;
+		    top:5%;
+			width: 893px;
+		    height: 100%;
+		    margin-left: -446.5px;
+		    z-index: 9;
+		}
+		.eye{
+			width:0.05rem;
+			padding-left:0.45rem;
+		}
+		 #imgpic{
+			position: absolute;
+		    left: 50%;
+		    top:5%;
+			width: 893px;
+		    height: 900px;
+		    margin-left: -446.5px;
+		    z-index: 9;
+		} 
+		#closeImg{
+	        position: absolute;
+		    left: 86%;
+		    top: 4%;
+		    z-index: 100;
+		    width: 40px;
+		    height: 40px;
+		}

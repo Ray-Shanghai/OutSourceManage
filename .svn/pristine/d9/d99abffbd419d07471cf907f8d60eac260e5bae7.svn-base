@@ -1,0 +1,18 @@
+/**
+ * 状态修改相关js
+ */
+//获取当前状态，展示之后的所有状态
+$("#supply-btn").click(function(){
+	$.ajax({
+		url:base.serverContent+"/manager/loginIn/SdOrderInfo/updateOrder.do",
+		type:"post",
+		data:$("#form1").serialize(),
+		dataType:"json",
+		success:function(data){
+			if(data.code="000"){
+				parent.location.reload();
+			}
+		},error:function(data){}
+		
+	});
+});

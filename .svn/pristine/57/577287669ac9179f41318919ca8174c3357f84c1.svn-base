@@ -1,0 +1,44 @@
+/**
+ * 
+ */
+$(function(){
+	$.ajax({
+		url:base.serverContent+"/personCenter/queryByPushSet.do",
+		type:'POST',
+		async:false,
+		dataType:'json',
+		success:function(data){
+			var userhtml='<span class="userNameSpan">'+data.userName+'</span>&ensp;<span class="iconfont icon-icon-test"></span>';
+			$(".name-word").html(userhtml);
+			var html='<div class="person-class"><ul><li class="active" onclick="yearmonthactive(this)">月度</li><li onclick="yearmonthactive(this)">年度</li></ul><div class="line-height-16"></div></div>'
+					+'<div class="person-content"><div class="person-number">&emsp;成交量：<span >'+data.totalNum+'</span>件</div>'
+					+'<div class="person-number">&emsp;销售额：<span class="totalPrice">'+data.totalPrice+'</span>元</div>'
+					+'<div class="person-number">预计收益：<span class="yujiMoney">'+data.yujiMoney+'</span>元</div>'
+					+'</div>'
+					+'<div class="person-content" style="display: none;">'
+					+'<div class="person-number">&emsp;成交量：<span class="totalCount2">'+data.totalCount2+'</span>件</div>'
+					+'<div class="person-number">&emsp;销售额：<span class="totalPrice2">'+data.totalPrice2+'</span>元</div>'
+					+'<div class="person-number">预计收益：<span class="yujiMoney2">'+data.yujiMoney2+'</span>元</div>'
+					+'</div>'
+					+'<div class="person-img"><img src="images/money.png" width="260"/></div>';
+			
+			$(".personal").html(html);
+			/*$(".totalCount").html(data.totalCount);
+			$(".totalPrice").html(data.totalPrice);
+			$(".yujiMoney").html(data.yujiMoney);
+			$(".totalCount2").html(data.totalCount2);
+			$(".totalPrice2").html(data.totalPrice2);
+			$(".yujiMoney2").html(data.yujiMoney2);*/
+		},error:function(data){}
+	});
+	
+	
+})
+
+function yearmonthactive(t){
+	var index = $(t).index();
+	$('.person-class ul li').removeClass('active').eq(index).addClass('active');
+	$('.person-content').hide().eq(index).show();
+}
+		
+

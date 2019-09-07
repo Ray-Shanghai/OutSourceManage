@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>设置审批人</title>
+    <link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/icon.css">
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+ 	<script type="text/javascript" src="../../../resources/js/base.js"></script>
+
+</head>
+<body>
+	<table id="list_data" cellspacing="0" cellpadding="0"> 
+    <thead> 
+        <tr>  
+         	<th data-options="field:'userId',width:100" >用户编号</th>
+        	<th data-options="field:'userName',width:150" >用户名称</th>
+         	<th data-options="field:'departName',width:150" >所属部门</th>
+	    </tr> 
+    </thead> 
+</table>  
+</body>
+</html>
+
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+		 $('#list_data').datagrid({ 
+        iconCls:'icon-edit',//图标 
+        width: 800, 
+        height:200, 
+        nowrap: false, 
+        striped: true, 
+        border: true, 
+        collapsible:true,//是否可折叠的 
+        fit: true,//自动大小 
+        url:base.serverContet+'/manager/loginIn/approven/queryUserList.do?approvenRuleId=${approvenRuleId}', 
+        remoteSort:false,  
+        pageSize: 15,//每页显示的记录条数，默认为10 
+     	pageList: [5,10,15],//可以设置每页记录条数的列表 
+        idField:'user_id', 
+        singleSelect:true,//是否单选 
+        pagination:true,//分页控件 
+        rownumbers:true,//行号 
+        onClickRow: function(index, data) {
+        	var row = $('#list_data').datagrid('getSelected');
+         },toolbar: [{ 
+            text: '保存', 
+            iconCls: 'icon-add', 
+            handler: function() { 
+            	var row = $('#list_data').datagrid('getSelected');
+            	if(row==null){
+            		alert("请选择一行！");
+            		return false;
+            	}
+            	var approvenFunctionId ="";
+            	var approvenFunctionName ="";
+            	var approvenFunctionRuleId ="";
+            	var approvenFunctionRuleName ="";
+
+            	  if(window.location.search.split("?").length>1){
+            	    approvenFunctionId =window.location.search.split("?")[1].split("=")[1].split("&")[0];
+            	    approvenFunctionName =unescape(window.location.search.split("?")[1].split("=")[2].split("&")[0]);
+            	    approvenFunctionRuleId =window.location.search.split("?")[1].split("=")[3].split("&")[0];
+            	    approvenFunctionRuleName =unescape(window.location.search.split("?")[1].split("=")[4].split("&")[0]);
+
+            	  }
+            	 
+            	var  approvenUserId=row.userId;
+            	var data = {approvenRuleId:approvenFunctionRuleId,
+            			    approvenRuleName:approvenFunctionRuleName,
+            			    approvenFunctionId:approvenFunctionId,
+            			    approvenFunctionName:approvenFunctionName,
+            			    approvenUserId:approvenUserId};
+            	$.ajax({ 	
+               		url : base.serverContet+'/manager/loginIn/approven/approvenFunctionRulePersonAdd.do',  
+             		method:"POST", 
+            		data: data, 
+            		success: function(data){
+            			alert(JSON.parse(data).msg);
+                  }});
+            } 
+        }] 
+    });
+   
+		//设置分页控件 
+	    var p = $('#list_data').datagrid('getPager'); 
+	    
+	    $(p).pagination({ 
+	        method : 'POST',
+	        loading:true,
+	        beforePageText: '第',//页数文本框前显示的汉字 
+	        afterPageText: '页    共 {pages} 页', 
+	        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录', 
+	        onBeforeRefresh:function(){
+	            $(this).pagination('loading');
+	            alert('before refresh');
+	            $(this).pagination('loaded');
+	        },
+	        onRefresh:function(){
+	        	   $(this).pagination('loading');
+		            alert('before onRefresh');
+		            $(this).pagination('loaded');
+	        	
+	        }
+	    });  
+	    $(p).pagination('loading');
+		
+});
+		
+	</script>
+   

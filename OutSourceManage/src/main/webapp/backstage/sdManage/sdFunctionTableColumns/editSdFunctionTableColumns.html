@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>系统信息</title>
+ 	<link href="../../assets/css/dpl-min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/bui-min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/page-min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+    <script type="text/javascript"
+	src="../../../resources/loginIn/sdManage/editSdFunctionTableColumns.js"></script> 
+</head>
+<body>
+	<div class="container">
+    <form id ="J_Form" class="form-horizontal">
+      <h3>基本信息</h3>
+       <div class="row">
+        <div class="control-group span18">
+          <label class="control-label"><s>*</s>表名名称：</label>
+          <div class="controls">
+          	<input name='functionDbTableId' id="functionDbTableId" type="hidden" />
+            <input  type="text" name="functionDbTableName" id="functionDbTableName" data-messages="{regexp:'输入的内容必须以字母开头和结尾,可以有下划线'}" data-rules="{required:true,regexp:/^[a-zA-Z][a-zA-Z_]*[a-zA-Z]$/}">
+          </div>
+        </div>
+      </div>
+       <div class="row">
+        <div class="control-group span15">
+          <label class="control-label"><s>*</s>表名描述：</label>
+          <div class="controls control-row4">
+            <textarea name="functionDbTableDesc" id="functionDbTableDesc"  data-rules="{required:true}"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="control-group span12">
+          <label class="control-label"><s>*</s>表名类型：</label>
+          <div class="controls">
+            <select name="functionDbTableTypeId" id="functionDbTableTypeName"  data-rules="{required:true}"></select>
+          </div>
+        </div>
+      </div>
+      <hr/>
+      <h3>表字段</h3>
+      <div class="row">
+        <div class="span21 offset1 control-row-auto">
+          <div id="grid"></div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="form-actions offset3">
+          <button type="submit" class="button button-primary">保存</button>
+          <button type="button" onclick="javascript:history.go(0)" class="button">重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+   <script type="text/javascript" src="../../assets/js/jquery-1.8.1.min.js"></script>
+  <script type="text/javascript" src="../../assets/js/bui-min.js"></script>
+  <script type="text/javascript" src="../../assets/js/config-min.js"></script>
+  <script src="../../../resources/js/base.js"></script>
+  <script type="text/javascript">
+    BUI.use('common/page');
+  </script>
+  
+<script type="text/javascript">
+var tableId=window.location.search.split("=")[1];
+BUI.use(['bui/grid','bui/data','bui/form'],function (Grid,Data,Form) {
+    var columns = [{title : '列名称',dataIndex :'functionDbTableColumnsName',width:150,editor : {xtype : 'text',messages:{regexp:'输入的内容必须以字母开头和结尾,可以有下划线'},rules:{required:true,regexp:/^[a-zA-Z][a-zA-Z_]*[a-zA-Z]$/}}},
+            {title : '列描述',dataIndex :'functionDbTableColumnsDesc',width:100,editor : {xtype : 'text',rules:{required:true}}},
+            {title : '列类型',dataIndex :'functionDbTableColumnsType',renderer:function(value,obj){
+            	if(value=='text'){
+    		   		return 'text';
+    		   	}
+    		   	if(value=='doubles'){
+    		   		return 'double';
+    		   	}
+    		   	if(value=='number'){
+    		   		return 'number';
+    		   	}
+            },
+    		width:100,editor : {xtype : 'select',items:{text : 'text',number : 'number',doubles:'double'},rules:{required:true}}},
+            {title : '列长度',dataIndex :'dbTableColumnsValueLength',editor : {xtype : 'text'}},
+            {title : '列默认值',dataIndex :'dbTableColumnsDefault',width:100,editor : {xtype : 'text'}},
+            {title : '列是否可为空',dataIndex :'dbTableColumnsIsNull',renderer:function(value,obj){
+              	return value=="0"?"是":"否";
+            },
+            width:100,editor : {xtype : 'select',items:{0 : '是',1 : '否'},rules:{required:true}}},
+            {title : '列是否为主键',dataIndex :'dbTableColumnsIsPk',renderer:function(value,obj){
+            	  	return value=="0"?"是":"否";
+            	  },
+            width:100,editor : {xtype : 'select',items:{0 : '是',1 : '否'},rules:{required:true}}},
+            {title : '列是否唯一约束',dataIndex :'dbTableColumnsIsUk',renderer:function(value,obj){
+              	return value=="0"?"是":"否";
+            },
+            width:150,editor : {xtype : 'select',items:{0 : '是',1 : '否'},rules:{required:true}}}
+          ],
+      store = new Data.Store({
+    	  url : base.serverContet+'/manager/loginIn/SdFunctionDbTable/queryByPkId.do?pkId='+tableId,
+    	  autoLoad:true,
+    	  pageSize:11
+          }),
+      editing = new Grid.Plugins.CellEditing(),
+      grid = new Grid.Grid({
+        render : '#grid',
+        columns : columns,
+        width : 700,
+        forceFit : true,
+        store : store,
+        plugins : [editing],
+        tbar:{
+            items : [{
+              btnCls : 'button button-small',
+              text : '<i class="icon-plus"></i>添加',
+              listeners : {
+                'click' : addFunction
+              }
+            },
+            {
+              btnCls : 'button button-small',
+              text : '<i class="icon-remove"></i>删除',
+              listeners : {
+                'click' : delFunction
+              }
+            }]
+        }
+
+      });
+    grid.render();
+    function addFunction(){
+    	var data={functionDbTableColumnsName :'',functionDbTableColumnsDesc:'',functionDbTableColumnsType:'text',dbTableColumnsValueLength:'50',
+    			dbTableColumnsDefault:'',dbTableColumnsIsNull:'0',dbTableColumnsIsPk:'1',dbTableColumnsIsUk:'1'};
+      store.add(data);
+      editing.edit(data,'functionDbTableColumnsName'); //添加记录后，直接编辑
+    }
+
+    function delFunction(){
+      var selections = grid.getSelection();
+      store.remove(selections);
+    }
+    
+    BUI.use('bui/form',function (Form) {
+        var f1 = new Form.Form({
+        srcNode : '#J_Form'
+      	}).render();
+       
+    		$("#J_Form").submit(function() {  
+      		if(f1.isValid()&&editing.isValid()){
+      			var columnsResultStr=store.getResult();
+      			var columnsResultJsonStr=JSON.stringify(columnsResultStr);
+          		$.ajax({  
+              		type : 'POST',  
+               		url : base.serverContet+'/manager/loginIn/SdFunctionDbTable/update.do?col='+columnsResultJsonStr+"&functionId="+window.location.search.split("&")[1]+"&functionDbTableTypeName="+$("#functionDbTableTypeName option:selected").text(),  
+             		data: $('#J_Form').serialize(),  
+              		async : false,  
+              		success : function(data) {  
+                	  	if(data.code=="000"){
+                		  BUI.Message.Alert('信息保存成功',function(){
+                			//  top.topManager.reloadPage(pageId)
+                			  top.topManager.closePage();
+                	        },'info');
+                       	  }else{
+                       		window.parent.alertTip(data);
+                       	  }
+              		   },error : function() {
+              			 BUI.Message.Alert('系统异常，请稍后再试。。',function(){
+             	        },'info');
+              		   }  
+          		});  
+          		return false;
+     		}else{
+     			BUI.Message.Alert('请确保必填项全部填写完成。',function(){
+    	        },'info');
+     			return false;
+     		}
+    	});
+    	return false;
+    } );
+
+
+  });
+</script>
+</body>
+<script type="text/javascript" >
+$(function(){
+	
+});
+</script>

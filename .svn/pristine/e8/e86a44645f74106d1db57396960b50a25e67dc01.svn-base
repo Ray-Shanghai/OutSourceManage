@@ -1,0 +1,1 @@
+ <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="OutSourceManage" password="shida123456"  type="javax.sql.DataSource" url="jdbc:mysql://192.168.1.250:3306/outsourcemanage?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true" username="root"/> 

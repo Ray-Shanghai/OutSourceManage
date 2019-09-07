@@ -1,0 +1,15 @@
+package com.sd.farmework.service; 
+
+import java.util.List;
+
+import com.sd.farmework.pojo.SdBasicInfo;
+import com.sd.farmework.pojo.SdOrderComplain;
+
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+public interface SdOrderComplainService  extends BaseInfoService{
+	public List queryOrderCountByStatus(SdOrderComplain sdOrderComplain);
+}

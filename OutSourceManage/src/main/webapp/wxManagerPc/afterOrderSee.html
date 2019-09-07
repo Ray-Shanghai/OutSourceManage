@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>跟踪详情</title>
+		<link rel="stylesheet" href="datas/layui/css/layui.css" />
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/purchase.css" />
+		<link rel="stylesheet" href="css/table.css" />
+		<link rel="stylesheet" href="css/zy.css" />
+		<link rel="stylesheet" href="font/iconfont.css" />
+		<link rel="stylesheet" href="css/my.css" />
+		<link rel="stylesheet" href="css/orderDetail.css" />
+		<script type="text/javascript" src="/OutSourceManage/wxManagerPc/pdf/build/pdf.js"></script>
+		<script type="text/javascript" src="/OutSourceManage/wxManagerPc/pdf/build/pdf.worker.js"></script>
+	</head>
+	<body>
+        <div class="content mb-20">
+        	<div class="container content-box">
+				<div class="product-main-content">
+					<div class="ml-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">订单信息</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important;">
+						<tbody>
+							<input type="hidden" name="orderId">
+							<tr class="fl">
+								<th valign="middle">客户名称：</th>
+								<td><input type="text" style="width:416px;" class="lg-input" name="customerName" value=""  disabled=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">客户地址：</th>
+								<td><input type="text" style="width:416px;" class="lg-input" name="customerAddress" value=""  disabled=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">交货日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm rq-input fl" id="retime1" value="2017-08-01" name="deliveryDate" disabled="">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">建议交货日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm rq-input fl" id="retime2" value="2017-08-01" name="suggestDeliveryDate" disabled="">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">订单价格：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="orderPrice"  disabled=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">成本价格：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="costPrice"  disabled=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">商务报价：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="commercialPrice"  disabled=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">客户订单号：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="customerNo"  disabled=""></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="ml-20 mt-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">物料信息</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<div id="content"></div>
+				   
+					
+					<!-- pdf容器 -->
+					 <div class="lightbox" id="lightbox">
+						<div id="pop" class="pop" style="display: none;">
+						<a href="javascript:close()"
+						style="position: absolute; z-index: 999999999;top: 6%;left: 66%;color: red; display: inline-block; width: 80px; height: 30px;"
+						id="close">关闭</a>
+							<iframe src="" frameborder="0" id="pdfContainer" name="pdfContainer" style="width:100%;heght:100%;"></iframe>
+						</div>
+					</div>
+					<div id="imgDiv" style="display: none;">
+						<img alt="关闭" width="20" height="20" id="closeImg" src="/OutSourceManage/wxManagerPc/images/false.jpg">
+						<img id="imgpic" src="" width="365" height="365" style="z-index: 1">
+						
+					</div>
+					
+				   <div class="ml-20 mt-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">跟踪详情</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<ul class="layui-timeline ml-20 mt-20" id="content2">
+					  <!-- <li class="layui-timeline-item">
+					    <i class="layui-icon layui-timeline-axis"></i>
+					    <div class="layui-timeline-content layui-text">
+					      <h3 class="layui-timeline-title">8月18日</h3>
+					      <p style="font-size: 14px; color: #333;">跟踪人：陈某某</p>
+					      <p style="font-size: 14px;">跟踪状态：<span class="color-green">完结</span></p>
+					      <p>备注：打开撒客户多撒好看的看啥看好的撒开了很多卡萨刘爱上肯定还是卡客户的萨科技活动看撒娇德华撒开了的萨洛克</p>
+					    </div>
+					  </li> -->
+					</ul>  
+				</div>
+        	</div> 	
+       </div>
+        <script type="text/javascript" src="js/jquery.min.js" ></script>
+        <script type="text/javascript" src="laydate/laydate.js" ></script>
+		<script type="text/javascript" src="js/myframe.js"></script>
+        <script type="text/javascript" src="plugins/layui/layui.js" ></script>
+		<script type="text/javascript" src="../resources/js/base.js"></script>
+		<script  type="text/javascript" src="pdf/build/pdf.js"></script>
+		<script type="text/javascript" src="js/jquery.media.js"></script>
+		<script type="text/javascript" src="js/orderPub.js"></script>
+		<script type="text/html" id="partTpl">
+		{{#  layui.each(d.sdorderinfo.detailList, function(index, item){ }}
+				<div class="table-content">
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important; padding-bottom: 30px; border-bottom: 1px solid #ddd;display: block;">
+					<tbody>
+						<tr class="fl">
+									<th valign="middle">产品名称：</th>
+									<td><div class="productName"><input type="text" style="width:160px;" class="lg-input"  name="productName" value="{{item.productName}}" autocomplete="off" placeholder="请输入产品名称"></div></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;客户料号：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="customerSupplies" value="{{item.customerSupplies}}" placeholder=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;产品代码：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="productCode" value="{{item.productCode}}" placeholder=""></td>
+								</tr>
+								
+								<tr class="fl">
+									<th valign="middle">&emsp;成本核算：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="costPrice" value="{{item.costPrice}}" placeholder="核算成本"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;长：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="detailLength" value="{{item.detailLength}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;宽：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="detailWidth" value="{{item.detailWidth}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;高：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="detailHeight" value="{{item.detailHeight}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;是否带盖：</th>
+									<td colspan="2" id="selectpaytime">
+										<input name="isLid" class="lg-input"  value="{{item.isLid==0?'需要带盖':'不需要带盖'}}" style="width:160px;">
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="price" value="{{item.price}}"></td>
+								</tr>
+								<tr class="fl ml-30">
+									<th valign="middle">&emsp;&emsp;数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="number" value="{{item.number}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;类别：</th>
+									<td colspan="2" id="selectpaytime">
+										<select id="productTypeId{{index}}" class="select" style="width:160px; margin-right: 10px;">
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;材质：</th>
+									<td colspan="2" id="selectpaytime">
+										<select id="productGradeId{{index}}" class="select" style="width:160px;">
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">即时库存：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="immediatelyInventory" value="{{item.immediatelyInventory}}"></td>
+								</tr>								
+								<tr class="fl">
+									<th valign="middle">整单折前金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="discountBeforeSum" value="{{item.discountBeforeSum}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="money" value="{{item.money}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;税率：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="taxRate" value="{{item.taxRate}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">销项税额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="sellTax" value="{{item.sellTax}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">实际含税单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="practicalSellPrice" value="{{item.practicalSellPrice}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;价税合计：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="priceSellSum" value="{{item.priceSellSum}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;关联数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="relevanceNumber" value="{{item.relevanceNumber}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">出库数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="takeOutNumber" value="{{item.takeOutNumber}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&nbsp;&nbsp;BOM类别：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="bomType" value="{{item.bomType}}"></td>
+								</tr>
+								<tr class="fl" style="height: 44px;line-height: 34px;">
+									<th valign="middle">&emsp;&emsp;图纸：</th>
+									<td>
+										<span class="showFileName" style="margin-top: -2px;">
+											<div >
+											<a class='media' onclick='showPdf("/OutSourceManage/{{item.fileUrl}}&resouceName={{item.fileName}}",true)'>{{item.fileName}}</a>
+											</div>
+										</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+				   </div>
+		{{# }); }}
+		</script>
+		<script type="text/html" id="trackTpl">
+		{{#  layui.each(d.trackList, function(index, item){ }}
+				<li class="layui-timeline-item">
+					    <i class="layui-icon layui-timeline-axis"></i>
+					    <div class="layui-timeline-content layui-text">
+					      <h3 class="layui-timeline-title">{{item.createTime}}</h3>
+					      <p style="font-size: 14px; color: #333;">跟踪人：{{item.createUserName}}</p>
+					      <p style="font-size: 14px;">跟踪状态：<span class="color-green">{{item.dataStateName}}</span></p>
+					      <p>备注：{{item.remark}}</p>
+					    </div>
+				</li>
+		{{# }); }}
+		</script>
+		<script type="text/javascript">
+			$(function(){
+				 var orderId2=window.location.search.split("?")[1];
+				$.ajax({
+					url:base.serverContent+"/SdOrderTrack/queryList.do",
+					type:"post",
+					data:{'orderId':orderId2},
+					dataType:"json",
+					success:function(data){
+						if(data.code="000"){
+							layui.use(['form','laytpl'], function(){
+								var laytpl = layui.laytpl;
+								
+								laytpl(trackTpl.innerHTML).render(data, function(html){
+									$("#content2").html(html);
+								});
+							});
+						}
+					},error:function(data){}
+					
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysUserRoleMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysUserRole" id="SysUserRoleMapForSqlserver"> 
+
+		<result column="USER_ID" property="userId"/>
+		<result column="ROLE_ID" property="roleId"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_TEAM_ID" property="createTeamId"/>
+		<result column="CREATE_TEAM_NAME" property="createTeamName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="CREATE_UNIT_ID" property="createUnitId"/>
+		<result column="CREATE_UNIT_Name" property="createUnitName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_TEAM_ID" property="lastUpdateTeamId"/>
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<result column="LAST_UPDATE_UNIT_ID" property="lastUpdateUnitId"/>
+		<result column="LAST_UPDATE_UNIT_Name" property="lastUpdateUnitName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	  
+	<select id="queryForSqlserver" parameterType="com.sd.farmework.pojo.SysUserRole"  resultMap="SysUserRoleMapForSqlserver">
+		SELECT 
+		t.USER_ID,
+		t.ROLE_ID,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  sys_user_role t 
+		where USER_ID=#{userId}
+	</select>
+
+	<select id="queryListByPageForSqlserver" parameterType="com.sd.farmework.pojo.SysUserRole"  resultMap="SysUserRoleMapForSqlserver">
+		<![CDATA[
+		select top ${pageSize} * from( 
+		SELECT row_number()OVER(order by create_time desc) rw,
+		t.USER_ID,
+		t.ROLE_ID,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  sys_user_role t 
+		where (USER_ID+ROLE_ID) not in(select top #{startRecod} (USER_ID+ROLE_ID) from sys_role_info)
+		) t where t.rw > ${startRecod}
+		]]> 
+	</select>
+	<select id="queryListForSqlserver" parameterType="com.sd.farmework.pojo.SysUserRole"  resultMap="SysUserRoleMapForSqlserver">
+		SELECT 
+		t.USER_ID,
+		t.ROLE_ID,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  sys_user_role t 
+	</select>
+	<insert id="addForSqlserver" parameterType="com.sd.farmework.pojo.SysUserRole">
+	insert into sys_user_role
+	(
+		USER_ID,
+		ROLE_ID,
+	    create_user_id,
+	    create_user_name,
+	    create_depart_id,
+	    create_depart_name
+	)
+	values
+	(
+		#{userId},
+		#{roleId},
+	    #{createUserId},
+	    #{createUserName},
+	    #{createDepartId},
+	    #{createDepartName}
+	)
+	</insert>
+	<delete id="deleteForSqlserver" parameterType="com.sd.farmework.pojo.SysUserRole">
+		delete from sys_user_role where USER_ID=#{userId} 
+	</delete>
+</mapper> 
+

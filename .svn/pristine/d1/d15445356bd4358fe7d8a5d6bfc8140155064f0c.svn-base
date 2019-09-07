@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdSupplierInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdSupplierInfo" id="sdsupplierinfoMap"> 
+
+		<result column="supplier_id" property="supplierId"/>
+		<result column="supplier_name" property="supplierName"/>
+		<result column="supplier_address" property="supplierAddress"/>
+		<result column="balance_type" property="balanceType"/>
+		<result column="bank_account" property="bankAccount"/>
+		<result column="account_holder" property="accountHolder"/>
+		<result column="opening_bank" property="openingBank"/>
+		<result column="contact_name" property="contactName"/>
+		<result column="mobilephone" property="mobilephone"/>
+		<result column="sd_id" property="sdId"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_USER_NAME" property="lastUpdateUserName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo">
+		UPDATE sd_supplier_info t set 
+		t.supplier_name=#{supplierName},
+		t.supplier_address=#{supplierAddress},
+		t.balance_type=#{balanceType},
+		t.bank_account=#{bankAccount},
+		t.account_holder=#{accountHolder},
+		t.opening_bank=#{openingBank},
+		t.LAST_UPDATE_TIME=now(),
+		t.LAST_UPDATE_USER_ID=#{lastUpdateUserId},
+		t.LAST_UPDATE_USER_NAME=#{lastUpdateUserName},
+		t.LAST_UPDATE_DEPART_ID=#{lastUpdateDepartId},
+		t.LAST_UPDATE_DEPART_NAME=#{lastUpdateDepartName}
+		where supplier_id=#{supplierId}
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultMap="sdsupplierinfoMap">
+		SELECT 
+		t.supplier_id,
+		t.supplier_name,
+		t.supplier_address,
+		t.balance_type,
+		t.bank_account,
+		t.account_holder,
+		t.opening_bank,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_supplier_info t 
+		where supplier_id=#{supplierId}
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultMap="sdsupplierinfoMap">
+		SELECT 
+		t.supplier_id,
+		t.supplier_name,
+		t.supplier_address,
+		t.balance_type,
+		t.bank_account,
+		t.account_holder,
+		t.opening_bank,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_supplier_info t 
+		where  1 = 1 
+		<if test="supplierName !=null and supplierName !=''">
+			and t.supplier_name like concat('%',#{supplierName},'%')	
+		</if>
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultMap="sdsupplierinfoMap">
+		SELECT  
+		t.supplier_id,
+		t.supplier_name,
+		t.supplier_address,
+		t.balance_type,
+		t.bank_account,
+		t.account_holder,
+		t.opening_bank,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME,
+		ifnull(t1.contact_name,'') as contact_name,
+		ifnull(t1.mobilephone,'') as mobilephone,
+		ifnull(t1.is_default,'') as is_default
+		FROM  sd_supplier_info t
+		left join sd_supplier_contact t1 on t1.supplier_id = t.supplier_id and t1.is_default = 1
+		where 1=1 
+		<if test="supplierName !=null and supplierName !=''">
+			and t.supplier_name like concat('%',#{supplierName},'%')	
+		</if>
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultMap="sdsupplierinfoMap">
+		SELECT 
+		t.supplier_id,
+		t.supplier_name,
+		t.supplier_address,
+		t.balance_type,
+		t.bank_account,
+		t.account_holder,
+		t.opening_bank,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME 
+		FROM  sd_supplier_info t where 1 = 1 
+		<if test="supplierName !=null and supplierName !=''">
+			and t.supplier_name like concat('%',#{supplierName},'%')	
+		</if>
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo" useGeneratedKeys="true" keyProperty="supplierId">
+	insert into sd_supplier_info
+	(
+		supplier_name,
+		supplier_address,
+		balance_type,
+		bank_account,
+		account_holder,
+		opening_bank,
+		remark,
+		status,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME
+	)
+	values
+	(
+		#{supplierName},
+		#{supplierAddress},
+		#{balanceType},
+		#{bankAccount},
+		#{accountHolder},
+		#{openingBank},
+		#{remark},
+		'Y',
+		now(),
+		#{createUserId},
+		#{createUserName},
+		#{createDepartId},
+		#{createDepartName}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo">
+		delete from sd_supplier_info where supplier_id=#{supplierId}
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultType="java.lang.Integer">
+   		select    count(*) FROM  sd_supplier_info t
+		left join sd_supplier_contact t1 on t1.supplier_id = t.supplier_id and t1.is_default = 1
+		where 1=1 
+		<if test="supplierName !=null and supplierName !=''">
+			and t.supplier_name like concat('%',#{supplierName},'%')
+		</if>
+	</select>
+</mapper> 
+

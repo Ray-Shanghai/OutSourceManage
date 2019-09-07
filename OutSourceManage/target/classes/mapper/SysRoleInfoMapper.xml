@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysRoleInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysRoleInfo" id="SysRoleInfoMap"> 
+
+		<result column="ROLE_ID" property="roleId"/>
+		<result column="ROLE_NAME" property="roleName"/>
+		<result column="ROLE_DESC" property="roleDesc"/>
+		<result column="FUNCTION_IDS" property="functionIds"/>
+		<result column="FUNCTION_OPERATE_IDS" property="functionOperateIds"/>
+		<result column="prorata" property="prorata"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+ 
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+ 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+ 
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	<update id="update" parameterType="com.sd.farmework.pojo.SysRoleInfo">
+		UPDATE SYS_ROLE_INFO t set 
+		t.ROLE_DESC=#{roleDesc},
+		t.FUNCTION_IDS=#{functionIds},
+		t.STATUS=#{status}
+		where   ROLE_ID=#{roleId}
+	</update>
+		<update id="updatePower" parameterType="com.sd.farmework.pojo.SysRoleInfo">
+		UPDATE SYS_ROLE_INFO t set 
+		t.ROLE_DESC=#{roleDesc},
+		t.FUNCTION_OPERATE_IDS=#{functionOperateIds},
+		t.STATUS=#{status}
+		where   ROLE_ID=#{roleId}
+	</update>
+	<select id="queryByPkId" parameterType="String"  resultMap="SysRoleInfoMap">
+		SELECT 
+		t.ROLE_ID,
+		t.ROLE_NAME,
+		t.ROLE_DESC,
+		t.FUNCTION_IDS,
+		t.FUNCTION_OPERATE_IDS,
+		t.STATUS
+		FROM  SYS_ROLE_INFO t 
+		where  ROLE_ID = #{roleId}
+	</select>
+	 
+	<select id="queryFunction" parameterType="com.sd.farmework.pojo.SysUserInfo"  resultMap="SysRoleInfoMap">
+		select function_ids  from SYS_USER_ROLE t , sys_role_info t1 where  t.role_id =t1.role_id and t.user_id = #{userId}
+	</select>
+	
+	
+	<select id="queryListByPage" parameterType="com.sd.farmework.pojo.SysRoleInfo"  resultMap="SysRoleInfoMap">
+		<![CDATA[ 
+		SELECT RW,a.*
+		FROM (
+		SELECT ROWNUM RW,
+		t.ROLE_ID,
+		t.ROLE_NAME,
+		t.ROLE_DESC,
+		t.FUNCTION_IDS,
+		t.FUNCTION_OPERATE_IDS,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  SYS_ROLE_INFO t 
+ 		) a 
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+		]]> 
+	</select>
+	<select id="queryList" parameterType="com.sd.farmework.pojo.SysRoleInfo"  resultMap="SysRoleInfoMap">
+		SELECT 
+		t.ROLE_ID,
+		t.ROLE_NAME,
+		t.ROLE_DESC,
+		t.FUNCTION_IDS,
+		t.FUNCTION_OPERATE_IDS,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  SYS_ROLE_INFO t 
+	</select>
+	<insert id="add" parameterType="com.sd.farmework.pojo.SysRoleInfo" >
+	insert into SYS_ROLE_INFO
+	(
+		ROLE_ID,
+		ROLE_NAME,
+		ROLE_DESC,
+		FUNCTION_IDS,
+		FUNCTION_OPERATE_IDS,
+		STATUS,
+		
+		    create_user_id,
+		   create_user_name ,
+		   create_depart_id,
+		   create_depart_name 
+	)
+	values
+	(
+		#{roleId},
+		#{roleName},
+		#{roleDesc},
+		#{functionIds},
+		'',
+		#{status},
+		#{createUserId},
+		    #{createUserName} ,
+		    #{createDepartId},
+		    #{createDepartName} 
+	)
+	</insert>
+	<delete id="delete">
+		delete from SYS_ROLE_INFO where 1=2 
+	</delete>
+	<select id="queryCount"  parameterType="com.sd.farmework.pojo.SysRoleInfo"  resultType="java.lang.Integer">
+   		select    count(*) from SYS_ROLE_INFO where 1=1
+	</select>
+</mapper> 
+

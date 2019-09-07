@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdProductGradeMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdProductGrade" id="sdproductgradeMap"> 
+
+		<result column="product_grade_id" property="productGradeId"/>
+		<result column="product_grade_name" property="productGradeName"/>
+		<result column="product_grade_index" property="productGradeIndex"/>
+		<result column="sd_id" property="sdId"/>
+
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade">
+		UPDATE sd_product_grade set 
+		t.product_grade_id=#{productGradeId},
+		t.product_grade_name=#{productGradeName},
+		t.product_grade_index=#{productGradeIndex},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade"  resultMap="sdproductgradeMap">
+		SELECT 
+		t.product_grade_id,
+		t.product_grade_name,
+		t.product_grade_index,
+		t.sd_id
+		FROM  sd_product_grade t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade"  resultMap="sdproductgradeMap">
+		SELECT 
+		t.product_grade_id,
+		t.product_grade_name,
+		t.product_grade_index,
+		t.sd_id
+		FROM  sd_product_grade t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade"  resultMap="sdproductgradeMap">
+		SELECT  
+		t.product_grade_id,
+		t.product_grade_name,
+		t.product_grade_index,
+		t.sd_id
+		FROM  sd_product_grade t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade"  resultMap="sdproductgradeMap">
+		SELECT 
+		t.product_grade_id,
+		t.product_grade_name,
+		t.product_grade_index,
+		t.sd_id
+		FROM  sd_product_grade t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade">
+	insert into sd_product_grade
+	(
+		product_grade_id,
+		product_grade_name,
+		product_grade_index,
+		sd_id
+	)
+	values
+	(
+		#{productGradeId},
+		#{productGradeName},
+		#{productGradeIndex},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade">
+		delete from sd_product_grade where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdProductGrade"  resultType="java.lang.Integer">
+   		select    count(*) from sd_product_grade where 1=1
+	</select>
+</mapper> 
+

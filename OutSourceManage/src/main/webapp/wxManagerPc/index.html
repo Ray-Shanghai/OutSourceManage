@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>首页</title>
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/purchase.css" />
+		<link rel="stylesheet" href="css/table.css" />
+		<link rel="stylesheet" href="css/zy.css" />
+		<link rel="stylesheet" href="font/iconfont.css" />
+	</head>
+	<body>
+		<div class="header">
+			<div class="header-logo"><img src="images/angelic_logo.png" style="vertical-align: bottom;"/>全球木质包装智能服务商</div>
+			<div class="header-search"><input type="text"><button>搜索</button></div>
+			<div class="header-right">
+				<span class="iconfont icon-renyuan1"></span>
+				<span class="name-word"><!-- <span class="userNameSpan"></span>&ensp;<span class="iconfont icon-icon-test"></span> --></span>
+			    <div class="personal">
+			    	<!-- <div class="person-class">
+			    		<ul>
+			    			<li class="active">月度</li>
+			    			<li>年度</li>
+			    		</ul>
+			    		<div class="line-height-16"></div>
+			    	 </div>
+			    	<div class="person-content">
+			    		<div class="person-number">&emsp;成交量：<span class="totalCount"></span>件</div>
+			    		<div class="person-number">&emsp;销售额：<span class="totalPrice"></span>元</div>
+			    		<div class="person-number">预计收益：<span class="yujiMoney"></span>元</div>
+			    	</div>
+			    	<div class="person-content" style="display: none;">
+			    		<div class="person-number">&emsp;成交量：<span class="totalCount2"></span>件</div>
+			    		<div class="person-number">&emsp;销售额：<span class="totalPrice2"></span>元</div>
+			    		<div class="person-number">预计收益：<span class="yujiMoney2"></span>元</div>
+			    	</div>
+			    	<div class="person-img"><img src="images/money.png" width="260"/></div> -->
+			   </div>
+			</div>
+		</div>
+		<div class="login-content register-ct">
+			<div class="index-ct">
+				<ul style="margin: 0 auto; width: 1500px;" class="index-ct-1">
+					<li onclick="window.location.href='addOrder.html'">
+						<div class="left-shade">
+							<div class="shade-icon"><img src="images/1.png"/><div class="shade"></div></div>
+							<p class="word-title">新增订单</p>
+						</div>
+						<img src="images/jiantou.png" class="arrow-right"/>
+					</li>
+					<li onclick="window.location.href='listOrder.html?2'">
+						<div class="left-shade">
+							<div class="shade-icon"><img src="images/2.png"/><div class="shade"></div></div>
+							<p class="word-number queRenNum"></p>
+							<p class="word-title" style="margin-top: 5px;">订单确认</p>
+						</div>
+						<img src="images/jiantou.png" class="arrow-right"/>
+						<div class="info-detail">
+							<ul>
+								<li>待确认的订单<span class="fr"><span class="number-class queRenNum"></span>个</span></li>
+							</ul>
+						</div>
+					</li>
+					<li onclick="toListOrder()">
+						<div class="left-shade">
+							<div class="shade-icon"><img src="images/3.png"/><div class="shade"></div></div>
+							<p class="word-number totalCount"></p>
+							<p class="word-title" style="margin-top: 5px;">订单中心</p>
+						</div>
+						<img src="images/jiantou.png" class="arrow-right"/>
+						<div class="info-detail">
+							<ul>
+								<li>待报价的订单<span class="fr"><span class="number-class baojiaNum" ></span>个</span></li>
+								<li>报价核定中的订单<span class="fr"><span class="number-class hedingNum"></span>个</span></li>
+								<li>待检验的订单<span class="fr"><span class="number-class jianyanNum"></span>个</span></li>
+								<li>配料的订单<span class="fr"><span class="number-class peiliaoNum"></span>个</span></li>
+								<li>裁剪的订单<span class="fr"><span class="number-class caiqieNum"></span>个</span></li>
+								<li>生产的订单<span class="fr"><span class="number-class shengchanNum"></span>个</span></li>
+								<li>完成的订单<span class="fr"><span class="number-class wanchenNum"></span>个</span></li>
+								<li>验收的订单<span class="fr"><span class="number-class yanshouNum"></span>个</span></li>
+								<li>完结的订单<span class="fr"><span class="number-class wanjieNum"></span>个</span></li>
+							</ul>
+						</div>
+					</li>
+					<li onclick="window.location.href='assignOrder.html'">
+						<div class="left-shade">
+							<div class="shade-icon"><img src="images/4.png"/><div class="shade"></div></div>
+							<p class="word-number zhipaiCount" ></p>
+							<p class="word-title" style="margin-top: 5px;">指派订单</p>
+						</div>
+						<img src="images/jiantou.png" class="arrow-right"/>
+						<div class="info-detail">
+							<ul>
+								<li>待指派的订单<span class="fr"><span class="number-class caigouNum"></span>个</span></li>
+								<li>待检验的订单<span class="fr"><span class="number-class jianyanNum"></span>个</span></li>
+							</ul>
+						</div>
+					</li>
+					<li onclick="window.location.href='listOrder.html?4'">
+						<div class="left-shade">
+							<div class="shade-icon"><img src="images/5.png"/><div class="shade"></div></div>
+							<p class="word-number baojiaCount"></p>
+							<p class="word-title" style="margin-top: 5px;">订单报价</p>
+						</div>
+						<img src="images/jiantou.png" class="arrow-right"/>
+						<div class="info-detail">
+							<ul>
+								<li>待报价的订单<span class="fr"><span class="number-class baojiaNum"></span>个</span></li>
+								<li>报价核定中的订单<span class="fr"><span class="number-class hedingNum"></span>个</span></li>
+							</ul>
+						</div>
+					</li>
+					<li onclick="window.location.href='listOrder.html?allLink'">
+						<div class="left-shade">
+							<div class="shade-icon"><img src="images/6.png"/><div class="shade"></div></div>
+							<p class="word-number shengcanCount"></p>
+							<p class="word-title" style="margin-top: 5px;">订单生产</p>
+						</div>
+						<img src="images/jiantou.png" class="arrow-right"/>
+						<div class="info-detail">
+							<ul>
+								<li>配料的订单<span class="fr"><span class="number-class peiliaoNum"></span>个</span></li>
+								<li>裁剪的订单<span class="fr"><span class="number-class caiqieNum"></span>个</span></li>
+								<li>生产的订单<span class="fr"><span class="number-class shengchanNum"></span>个</span></li>
+								<li>完成的订单<span class="fr"><span class="number-class wanchenNum"></span>个</span></li>
+								<li>验收的订单<span class="fr"><span class="number-class yanshouNum"></span>个</span></li>
+								<li>完结的订单<span class="fr"><span class="number-class wanjieNum"></span>个</span></li>
+							</ul>
+						</div>
+					</li>
+					<li onclick="window.location.href='listOrder.html?11'">
+						<div class="left-shade">
+							<div class="shade-icon"><img src="images/7.png"/><div class="shade"></div></div>
+							<p class="word-number yanshouNum"></p>
+							<p class="word-title" style="margin-top: 5px;">检验</p>
+						</div>
+						<img src="images/jiantou.png" class="arrow-right"/>
+						<div class="info-detail">
+							<ul>
+								<li>待验收的订单<span class="fr"><span class="number-class yanshouNum"></span>个</span></li>
+							</ul>
+						</div>
+					</li>
+					<li onclick="window.location.href='listOrder.html?12'">
+						<div class="left-shade">
+							<div class="shade-icon"><img src="images/8.png"/><div class="shade"></div></div>
+							<p class="word-number wanjieNum"></p>
+							<p class="word-title" style="margin-top: 5px;">完结</p>
+						</div>
+						<div class="info-detail">
+							<ul>
+								<li>已完结的订单<span class="fr"><span class="number-class wanjieNum"></span>个</span></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="footer">安捷包装（苏州）股份有限公司</div>
+		<script src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/myframe.js"></script>
+        <script type="text/javascript" src="plugins/layui/layui.js" ></script>
+		<script type="text/javascript" src="../resources/js/base.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/title.js"></script>
+	</body>
+</html>

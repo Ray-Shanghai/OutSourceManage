@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysAttachmentInfoMapper"> 
+
+		<resultMap type="com.sd.farmework.pojo.SysAttachmentInfo" id="SysAttachmentInfoMap"> 
+
+		<result column="ATTACHMENT_ID" property="attachmentId"/>
+		<result column="ATTACHMENT_NAME" property="attachmentName"/>
+		<result column="FILE_PATH" property="filePath"/>
+		<result column="SOURCE_ID" property="sourceId"/>
+		<result column="SOURCE_TABLE" property="sourceTable"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_USER_NAME" property="lastUpdateUserName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+		 
+	</resultMap>
+	
+	<!-- 根据主键修改方法 -->
+	<update id="update" parameterType="com.sd.farmework.pojo.SysAttachmentInfo">
+		update SYS_ATTACHMENT_INFO set 
+       		ATTACHMENT_NAME = #{attachmentName},
+       		FILE_PATH = #{filePath},
+       		SOURCE_ID = #{sourceId},
+       		SOURCE_TABLE = #{sourceTable},
+       		REMARK = #{remark},
+       		status = #{status},
+       		last_update_TIME = sysDate,
+        	last_update_user_id = #{lastUpdateUserId},
+        	last_update_user_name = #{lastUpdateUserName},
+        	last_update_depart_id = #{lastUpdateDepartId},
+        	last_update_depart_name = #{lastUpdateDepartName} 
+		where ATTACHMENT_ID = #{attachmentId}
+		
+	</update>
+	
+	<!-- 查询数据 方法 -->
+	<select id="query" parameterType="com.sd.farmework.pojo.SysAttachmentInfo"  resultMap="SysAttachmentInfoMap">
+		
+		SELECT 
+			t.ATTACHMENT_ID,
+			t.ATTACHMENT_NAME,
+			t.FILE_PATH,
+       		t.SOURCE_ID,
+       		t.SOURCE_TABLE,
+	       	t.remark,
+	       	( case t.status when 'Y' then '启用' when 'N' then '禁用' end ) as status,
+	       	t.create_time,
+	       	t.create_user_id,
+	       	t.create_user_name,
+	       	t.create_depart_id,
+	       	t.create_depart_name,
+	       	t.last_update_time,
+	        t.last_update_user_id,
+	        t.last_update_user_name,
+	        t.last_update_depart_id,
+	        t.last_update_depart_name
+		FROM  SYS_ATTACHMENT_INFO t 
+		where 1=1 
+		<if test="attachmentId !=null and attachmentId !='' ">
+			and t.ATTACHMENT_ID = #{attachmentId}
+		</if>
+		<if test="attachmentName !=null and attachmentName !='' ">
+			and t.ATTACHMENT_NAME like '%'||#{attachmentName}||'%'
+		</if>
+		<if test="sourceId !=null and sourceId !='' ">
+			and t.SOURCE_ID = #{sourceId}
+		</if>
+		<if test="sourceTable !=null and sourceTable !='' ">
+			and t.SOURCE_TABLE = #{sourceTable}
+		</if>
+		<if test="status !=null and status !=''">
+			and t.status = #{status}
+		</if>
+	</select>
+	
+	<!-- 查询数据分页方法 -->
+	<select id="queryListByPage" parameterType="com.sd.farmework.pojo.SysAttachmentInfo"  resultMap="SysAttachmentInfoMap">
+		 
+		select * from (SELECT ROWNUM RW,a.* FROM (
+			select  t.ATTACHMENT_ID,
+					t.ATTACHMENT_NAME,
+					t.FILE_PATH,
+		       		t.SOURCE_ID,
+		       		t.SOURCE_TABLE,
+			       	t.remark,
+			       	( case t.status when 'Y' then '启用' when 'N' then '禁用' end ) as status,
+			       	t.create_time,
+			       	t.create_user_id,
+			       	t.create_user_name,
+			       	t.create_depart_id,
+			       	t.create_depart_name,
+			       	t.last_update_time,
+			        t.last_update_user_id,
+			        t.last_update_user_name,
+			        t.last_update_depart_id,
+			        t.last_update_depart_name
+  			from  SYS_ATTACHMENT_INFO t 
+			where  1=1 
+			<if test="attachmentId !=null and attachmentId !='' ">
+				and t.ATTACHMENT_ID = #{attachmentId}
+			</if>
+			<if test="attachmentName !=null and attachmentName !='' ">
+				and t.ATTACHMENT_NAME like '%'||#{attachmentName}||'%'
+			</if>
+			<if test="sourceId !=null and sourceId !='' ">
+				and t.SOURCE_ID = #{sourceId}
+			</if>
+			<if test="sourceTable !=null and sourceTable !='' ">
+				and t.SOURCE_TABLE = #{sourceTable}
+			</if>
+			<if test="status !=null and status !=''">
+				and t.status = #{status}
+			</if>
+ 		) a) t
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND
+		(#{pageSize} *
+		(#{currPage} - 1)) + #{pageSize}
+		  
+	</select>
+	
+	<!-- 查询数据不分页方法 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.SysAttachmentInfo"  resultMap="SysAttachmentInfoMap">
+		
+		select 
+			t.ATTACHMENT_ID,
+			t.ATTACHMENT_NAME,
+			t.FILE_PATH,
+       		t.SOURCE_ID,
+       		t.SOURCE_TABLE,
+	       	t.remark,
+	       	( case t.status when 'Y' then '启用' when 'N' then '禁用' end ) as status,
+	       	t.create_time,
+	       	t.create_user_id,
+	       	t.create_user_name,
+	       	t.create_depart_id,
+	       	t.create_depart_name,
+	       	t.last_update_time,
+	        t.last_update_user_id,
+	        t.last_update_user_name,
+	        t.last_update_depart_id,
+	        t.last_update_depart_name
+  		FROM  SYS_ATTACHMENT_INFO t 
+		where 1=1 
+		<if test="attachmentId !=null and attachmentId !='' ">
+			and t.ATTACHMENT_ID = #{attachmentId}
+		</if>
+		<if test="attachmentName !=null and attachmentName !='' ">
+			and t.ATTACHMENT_NAME like '%'||#{attachmentName}||'%'
+		</if>
+		<if test="sourceId !=null and sourceId !='' ">
+			and t.SOURCE_ID = #{sourceId}
+		</if>
+		<if test="sourceTable !=null and sourceTable !='' ">
+			and t.SOURCE_TABLE = #{sourceTable}
+		</if>
+		
+		<if test="status !=null and status !=''">
+			and t.status = #{status}
+		</if>
+	</select>
+	
+	<!-- 根据主键查询 -->
+	<select id="queryByPkId" parameterType="String"  resultMap="SysAttachmentInfoMap">
+		select * from SYS_ATTACHMENT_INFO t 
+		where   t.ATTACHMENT_ID = #{attachmentId}
+	</select>
+	
+	<!-- 新增数据方法 -->
+	<insert id="add" parameterType="com.sd.farmework.pojo.SysAttachmentInfo" >
+	
+	  	<selectKey keyProperty="attachmentId" resultType="String" order="BEFORE" >
+	 		select fill_str_get_seq('sys_attachment_info_seq',10,'L') from dual
+	  	</selectKey>
+	
+		insert into SYS_ATTACHMENT_INFO
+  			(
+       		 ATTACHMENT_ID,
+			 ATTACHMENT_NAME,
+			 FILE_PATH,
+       		 SOURCE_ID,
+       		 SOURCE_TABLE,
+       		 
+	       	 remark,
+	       	 status,
+	       	 create_time,
+	       	 create_user_id,
+	       	 create_user_name,
+	       	 create_depart_id,
+	       	 create_depart_name)
+		values
+  			(#{attachmentId},
+  			 #{attachmentName},
+  			 #{filePath},
+  			 #{sourceId},
+  			 #{sourceTable},
+  			 #{remark},
+  			 #{status},
+  			 sysDate,
+  			 #{createUserId},
+  			 #{createUserName},
+  			 #{createDepartId},
+  			 #{createDepartName}
+   			 )
+	</insert>
+	
+	<!-- 根据主键删除数据方法 -->
+	<delete id="delete" parameterType="com.sd.farmework.pojo.SysAttachmentInfo">
+		delete from SYS_ATTACHMENT_INFO where ATTACHMENT_ID = #{attachmentId}
+	</delete>
+	
+	<!-- 查询数据总数方法 -->
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.SysAttachmentInfo"  resultType="java.lang.Integer">
+   		select count(*) from SYS_ATTACHMENT_INFO where 1=1
+   		<if test="attachmentId !=null and attachmentId !='' ">
+			and ATTACHMENT_ID = #{attachmentId}
+		</if>
+		<if test="attachmentName !=null and attachmentName !='' ">
+			and ATTACHMENT_NAME like '%'||#{attachmentName}||'%'
+		</if>
+		<if test="sourceId !=null and sourceId !='' ">
+			and SOURCE_ID = #{sourceId}
+		</if>
+		<if test="sourceTable !=null and sourceTable !='' ">
+			and SOURCE_TABLE = #{sourceTable}
+		</if>
+		<if test="status !=null and status !=''">
+			and status = #{status}
+		</if>
+	</select>
+</mapper> 
+

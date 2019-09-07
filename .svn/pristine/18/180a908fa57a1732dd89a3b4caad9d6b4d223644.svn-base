@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+	http://www.springframework.org/schema/util 
+	http://www.springframework.org/schema/util/spring-util-3.1.xsd 
+	http://www.springframework.org/schema/jee 
+	http://www.springframework.org/schema/jee/spring-jee-3.1.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd  
+	http://www.springframework.org/schema/data/mongo  
+    http://www.springframework.org/schema/data/mongo/spring-mongo.xsd 
+    http://www.springframework.org/schema/task   
+    http://www.springframework.org/schema/task/spring-task-3.1.xsd"
+
+	default-lazy-init="true">
+
+	<!-- Annotation配置..*映射当前目录下所有文件 -->
+	<context:component-scan base-package="com.sd.farmework"
+		use-default-filters="false">
+		<context:include-filter type="aspectj"
+			expression="com.sd.farmework.service..*" />
+		<context:include-filter type="aspectj"
+			expression="com.sd.farmework.mapper..*" />
+	</context:component-scan>
+
+	<!-- 自定义配置 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:common.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 在类中使用文件中配置的属性 -->
+	<util:properties id="propertiesConfig"
+		location="classpath:dreamcard.dev.properties" />
+
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>${jndiName}</value>
+		</property>
+	</bean>
+	<bean id="propertiesConstant" class="com.sd.farmework.common.PropertiesConstant">   
+    	<property name="filePath" value="${filePath}" /> 
+    	<property name="serverDomain" value="${serverDomain}" /> 
+    	
+	</bean>
+	<bean id="wxConstant" class="com.sd.farmework.services.util.wx.WxConstant">   
+    	<property name="wxAppId" value="wx1d3b41e646164be4" /> 
+    	<property name="wxSecret" value="555b435983fb071ee219e109359f9cd9" /> 
+	</bean> 
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="vendorProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="SQL Server">sqlserver</prop>
+				<prop key="DB2">db2</prop>
+				<prop key="Oracle">oracle</prop>
+				<prop key="MySQL">mysql</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+		<property name="properties" ref="vendorProperties" />
+	</bean>
+	<!-- 配置SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:/mapper/*.xml" />
+		<property name="databaseIdProvider" ref="databaseIdProvider" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.sd.farmework.mapper" />
+		<property name="markerInterface" value="com.sd.farmework.mapper.BaseMapper" />
+	</bean>
+
+	<!-- 配置事务管理器，注意这里的dataSource和SqlSessionFactoryBean的dataSource要一致，不然事务就没有作用了 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="baseTransactionProxy"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="del*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="edit*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="up*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="doApp*">PROPAGATION_REQUIRED,-Exception</prop>
+			</props>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<value>baseTransactionProxy</value>
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<value>*ServiceImpl</value>
+			</list>
+		</property>
+	</bean>
+	
+ 
+        <bean id="timeHandler" class="com.sd.farmework.aop.TimeHandler" />
+        
+        <aop:config>
+            <aop:aspect id="time" ref="timeHandler">
+                <aop:pointcut id="addAllMethod" expression="execution(* com.sd.farmework.mapper.*Mapper.*(..))" />
+                <aop:around method="aroundTime" pointcut-ref="addAllMethod"/>
+            </aop:aspect>
+        </aop:config>
+	
+	<task:annotation-driven />
+	<task:scheduled-tasks>
+<!-- 每天凌晨一点执行 -->
+		<task:scheduled ref="myTaskXml" method="lookSign" cron="0 0 5 * * ?" />
+	</task:scheduled-tasks>
+	<bean id="myTaskXml" class="com.sd.farmework.task.MyTimerTask"></bean>
+	<context:component-scan base-package="com.sd.farmework.task" />
+	
+</beans>

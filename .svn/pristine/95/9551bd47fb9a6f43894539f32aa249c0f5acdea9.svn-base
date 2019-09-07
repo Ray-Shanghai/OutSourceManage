@@ -1,0 +1,97 @@
+/**
+ * 订单列表相关js
+ */
+
+//订单确认
+function confirmAssignInfo(orderId){
+	//判断用户是否有确认权限
+	
+	layer.open({
+		type: 2,
+		title: '订单确认',
+		shadeClose: true,
+		shade: [0.6, '#393D49'],
+		maxmin: true, //开启最大化最小化按钮
+		area: ['1200px', '80%'],
+		content: 'confirmAssignInfo.html?'+orderId,
+		btn: ['确认','取消'],
+		btnAlign: 'c',
+		skin: 'layui-layer-red',
+		yes : function( index,layero) {
+			$.ajax({type : 'POST',
+				url : base.serverContent+ '/manager/loginIn/SdOrderInfo/confirmOrder.do',
+				data :{orderId:orderId,dataState:'3'},//修改订单状态
+				async : false,
+				success : function(data) {
+						if (data.code == "000") {
+							
+							layer.alert('订单确认成功',{icon : 6},
+									function(index2){
+									layer.close(index2);
+									layer.close(index);
+									window.location.reload();}
+											);
+							 
+						} else {
+							layer.alert('确认失败',{icon : 2});
+							 
+						 }
+					},
+					error : function() {
+					}
+				});
+		}
+	});
+}
+
+function offerInfo(orderId) {
+	//判断该用户是否有报价权限
+	
+	layer.open({
+		type: 2,
+		title: '报价',
+		shadeClose: true,
+		shade: [0.6, '#393D49'],
+		maxmin: true, //开启最大化最小化按钮
+		area: ['1200px', '80%'],
+		content: 'listOrderOffer.html?'+orderId,
+		/*btn: ['确定','取消'],
+		btnAlign: 'c',*/
+		skin: 'layui-layer-red'
+	});
+}
+
+function offerAll(orderId) {
+	//判断用户是否有筛选权限
+	
+	layer.open({
+		type: 2,
+		title: '筛选报价',
+		shadeClose: true,
+		shade: [0.6, '#393D49'],
+		maxmin: true, //开启最大化最小化按钮
+		area: ['1200px', '80%'],
+		content: 'listOrderOfferAll.html?'+orderId,
+		/*btn: ['确定','取消'],
+		btnAlign: 'c',*/
+		skin: 'layui-layer-red'
+	});
+}
+
+
+function changeStatus(orderId) {
+	//判断用户是否有修改权限
+	
+	layer.open({
+		type: 2,
+		title: '修改状态',
+		shadeClose: true,
+		shade: [0.6, '#393D49'],
+		maxmin: true, //开启最大化最小化按钮
+		area: ['1200px', '80%'],
+		content: 'listOrderEdit.html?'+orderId,
+		/*btn: ['确定','取消'],
+		btnAlign: 'c',*/
+		skin: 'layui-layer-red'
+	});
+}

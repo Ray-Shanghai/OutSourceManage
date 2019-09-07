@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysFunctionInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysFunctionInfo" id="SysFunctionInfoMapForMysql"> 
+		<result column="TYPE_ID" property="typeId"/>
+		<result column="FUNCTION_TYPE" property="functionType"/>
+		<result column="FUNCTION_ID" property="functionId"/>
+		<result column="FUNCTION_NAME" property="functionName"/>
+		<result column="FUNCTION_DESC" property="functionDesc"/>
+		<result column="PARENT_FUNCTION_ID" property="parentFunctionId"/>
+		<result column="FUNCTION_URL" property="functionUrl"/>
+		<result column="FUNCTION_SEQUE" property="functionSeque"/>
+		<result column="IS_VIRTUAL" property="isVirtual"/>
+		<result column="DICTIONARY_ID" property="dictionaryId"/>
+		<result column="DICTIONARY_NAME" property="dictionaryName"/>
+		<result column="FUNCTION_ICON" property="functionIcon"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_TEAM_ID" property="createTeamId"/>
+		<result column="CREATE_TEAM_NAME" property="createTeamName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="CREATE_UNIT_ID" property="createUnitId"/>
+		<result column="CREATE_UNIT_Name" property="createUnitName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_TEAM_ID" property="lastUpdateTeamId"/>
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<result column="LAST_UPDATE_UNIT_ID" property="lastUpdateUnitId"/>
+		<result column="LAST_UPDATE_UNIT_Name" property="lastUpdateUnitName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SysFunctionInfo">
+		UPDATE sys_function_info set 
+	    TYPE_ID = #{typeId},
+		FUNCTION_NAME=#{functionName},
+		FUNCTION_URL=#{functionUrl},
+		FUNCTION_DESC=#{functionDesc},
+		FUNCTION_ICON=#{functionIcon},
+		STATUS=#{status},
+		last_update_TIME=now(),
+        last_update_user_id = #{lastUpdateUserId},
+        last_update_user_name = #{lastUpdateUserName},
+        last_update_depart_id = #{lastUpdateDepartId},
+        last_update_depart_name = #{lastUpdateDepartName}
+		where FUNCTION_Id=#{functionId}
+	</update>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SysFunctionInfo"  resultMap="SysFunctionInfoMapForMysql">
+		select function_id,
+       function_name,
+       function_desc,
+       FUNCTION_ICON,
+       parent_function_id,
+       function_url,
+       function_seque,
+       is_virtual,
+       function_type,
+       remark,
+       status,
+       TYPE_ID,
+       create_time,
+       create_user_id,
+       create_user_name,
+       create_depart_id,
+       create_depart_name
+  from sys_function_info
+		where  parent_function_id =#{parentFunctionId}
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SysFunctionInfo"  resultMap="SysFunctionInfoMapForMysql">
+		<![CDATA[ 
+		  
+		 
+		SELECT  
+		function_id,
+       function_name,
+       function_desc,
+       FUNCTION_ICON,
+       parent_function_id,
+       function_url,
+       function_seque,
+       is_virtual,
+       function_type,
+       remark,
+       status,
+       TYPE_ID,
+       create_time,
+       create_user_id,
+       create_user_name,
+       create_depart_id,
+       create_depart_name
+		FROM  sys_function_info t  where parent_function_id =#{parentFunctionId}  
+ 		order by function_seque asc
+ 		  LIMIT  #{startRecod},#{pageSize} 
+ 		]]> 
+	</select>
+	<select id="queryByPkIdForMysql"  parameterType="String"  resultMap="SysFunctionInfoMapForMysql">
+		SELECT 
+		t.FUNCTION_ID,
+		t.FUNCTION_NAME,
+		t.FUNCTION_DESC,
+		t.FUNCTION_ICON,
+		t.PARENT_FUNCTION_ID,
+		t.FUNCTION_URL,
+		t.is_Virtual,
+		t.FUNCTION_SEQUE,
+		t.STATUS,
+		TYPE_ID,
+		t.function_type
+		FROM  sys_function_info t where  FUNCTION_ID = #{functionId} 
+	</select>
+	<select id="queryByPkparentFunctionIdForMysql"  parameterType="String"  resultMap="SysFunctionInfoMapForMysql">
+		SELECT 
+		t.FUNCTION_ID,
+		t.FUNCTION_NAME,
+		t.FUNCTION_DESC,
+		t.FUNCTION_ICON,
+		t.PARENT_FUNCTION_ID,
+		t.FUNCTION_URL,
+		TYPE_ID,
+		t.is_Virtual,
+		t.FUNCTION_SEQUE,
+		t.STATUS,
+		t.function_type,
+		DICTIONARY_ID
+		FROM  sys_function_info t where  PARENT_FUNCTION_ID = #{parentFunctionId} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SysFunctionInfo"  resultMap="SysFunctionInfoMapForMysql">
+		SELECT 
+		t.FUNCTION_ID,
+		t.FUNCTION_NAME,
+		t.FUNCTION_DESC,
+		t.FUNCTION_ICON,
+		t.PARENT_FUNCTION_ID,
+		t.FUNCTION_URL,
+		TYPE_ID,
+		t.is_Virtual,
+		t.FUNCTION_SEQUE,
+		t.STATUS,
+		t.function_type
+		FROM  sys_function_info t where STATUS='Y' order by FUNCTION_ID ,FUNCTION_SEQUE asc
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SysFunctionInfo">
+	<selectKey keyProperty="functionId" resultType="String" order="BEFORE">
+ 
+ select if (
+  max(function_id)  is  null = 1,
+  concat(#{parentFunctionId},'001'),
+  if (
+    LENGTH(max(function_id) + 1) = LENGTH(#{parentFunctionId})+2,
+    concat('0',(max(function_id) + 1)) ,concat('00',(max(function_id) + 1))
+  )
+) from sys_function_info   where parent_function_id=#{parentFunctionId}
+	</selectKey>
+	
+	
+	<!--selectKey keyProperty="functionSeque" resultType="String" order="BEFORE">
+select if(
+  max(FUNCTION_SEQUE) is null = 1,
+  1,max(FUNCTION_SEQUE)+1
+) from sys_function_info where parent_function_id=#{parentFunctionId}
+	</selectKey-->
+	
+	
+	insert into sys_function_info
+  (TYPE_ID,function_id,
+   function_name,
+   function_desc,
+   function_icon,
+   parent_function_id,
+   function_url,
+   function_seque,
+   is_virtual,
+   function_type,
+DICTIONARY_ID,
+DICTIONARY_Name,   
+    status,
+    create_user_id,
+   create_user_name,
+   create_depart_id,
+   create_depart_name)
+values
+  (#{typeId},#{functionId},
+   #{functionName},
+   #{functionDesc},
+   #{functionIcon},
+   #{parentFunctionId},
+   #{functionUrl},
+   1,
+   0,
+   #{functionType},
+   #{dictionaryId},
+   #{dictionaryName},
+    #{status},
+    #{createUserId},
+    #{createUserName},
+    #{createDepartId},
+    #{createDepartName})
+
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SysFunctionInfo" >
+		delete from sys_function_info where parent_function_id = #{parentFunctionId}
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SysFunctionInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sys_function_info where   parent_function_id =#{parentFunctionId}
+	</select>
+</mapper> 
+

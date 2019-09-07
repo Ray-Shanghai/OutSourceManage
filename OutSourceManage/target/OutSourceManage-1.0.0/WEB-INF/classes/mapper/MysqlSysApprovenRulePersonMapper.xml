@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysApprovenRulePersonMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysApprovenRulePerson" id="SysApprovenRulePersonMapForMysql"> 
+
+		<result column="RULE_ORDER" property="ruleOrder"/>
+		<result column="APPROVEN_DEPART_ID" property="approvenDepartId"/>
+		<result column="APPROVEN_DEPART_NAME" property="approvenDepartName"/>
+		<result column="APPROVEN_PERSON_ID" property="approvenPersonId"/>
+		<result column="APPROVEN_RULE_ID" property="approvenRuleId"/>
+		<result column="APPROVEN_RULE_NAME" property="approvenRuleName"/>
+		<result column="APPROVEN_FUNCTION_ID" property="approvenFunctionId"/>
+		<result column="APPROVEN_FUNCTION_NAME" property="approvenFunctionName"/>
+		<result column="APPROVEN_USER_ID" property="approvenUserId"/>
+		<result column="APPROVEN_USER_NAME" property="approvenUserName"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_TEAM_ID" property="createTeamId"/>
+		<result column="CREATE_TEAM_NAME" property="createTeamName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="CREATE_UNIT_ID" property="createUnitId"/>
+		<result column="CREATE_UNIT_Name" property="createUnitName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_TEAM_ID" property="lastUpdateTeamId"/>
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<result column="LAST_UPDATE_UNIT_ID" property="lastUpdateUnitId"/>
+		<result column="LAST_UPDATE_UNIT_Name" property="lastUpdateUnitName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	
+	<update id="updateBatchForMysql" parameterType="java.util.List" >
+		begin
+		<foreach collection="list" item="item" separator=";">
+		<![CDATA[ 
+			update SYS_APPROVEN_RULE_PERSON set rule_order=(select rw from (select (@rowNum:=@rowNum+1) rw,a.* from(select * from sys_approven_rule_person where approven_rule_id=#{item.approvenRuleId} order by rule_order)a,(Select (@rowNum :=0) b )d where approven_person_id=#{item.approvenPersonId})c ) where approven_person_id=#{item.approvenPersonId}
+		]]> 
+		</foreach>
+		;end;
+	</update>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson" >
+		update sys_approven_rule_person set rule_order=#{ruleOrder}
+ 		where APPROVEN_PERSON_ID=#{approvenPersonId}
+	</update>
+	
+	<select id="queryPersonCountForMysql" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson"   resultType="java.lang.Integer">
+		SELECT 
+		count(*)
+		FROM  sys_approven_rule_person t 
+		where  1 =1  and approven_rule_id =#{approvenRuleId} and
+        approven_function_id=#{approvenFunctionId} and
+        approven_user_id=#{approvenUserId}
+	</select>
+	<select id="queryByPkIdForMysql" parameterType="java.lang.String"   resultMap="SysApprovenRulePersonMap">
+		SELECT   * FROM  SYS_APPROVEN_RULE_PERSON t  	where   APPROVEN_PERSON_ID=#{approvenPersonId}
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson"  resultMap="SysApprovenRulePersonMapForMysql">
+		<![CDATA[ 
+		 
+		SELECT 
+		t.APPROVEN_PERSON_ID,
+		t.APPROVEN_RULE_ID,
+		t.APPROVEN_RULE_NAME,
+		t.APPROVEN_FUNCTION_ID,
+		t.APPROVEN_FUNCTION_NAME,
+		t.APPROVEN_USER_ID,
+		t.APPROVEN_USER_NAME,
+		t.APPROVEN_DEPART_NAME,
+		t.RULE_ORDER,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  SYS_APPROVEN_RULE_PERSON t where APPROVEN_RULE_ID = #{approvenRuleId} order by rule_order
+ 		 LIMIT  #{startRecod},#{pageSize}
+ 		]]> 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson"  resultMap="SysApprovenRulePersonMapForMysql">
+		SELECT 
+		t.APPROVEN_PERSON_ID,
+		t.APPROVEN_RULE_ID,
+		t.APPROVEN_RULE_NAME,
+		t.APPROVEN_FUNCTION_ID,
+		t.APPROVEN_FUNCTION_NAME,
+		t.APPROVEN_USER_ID,
+		t.APPROVEN_USER_NAME,
+		APPROVEN_DEPART_NAME,
+		t.RULE_ORDER,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  sys_approven_rule_person t where APPROVEN_RULE_ID = #{approvenRuleId} order by rule_order 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson" >
+	  	insert into SYS_APPROVEN_RULE_PERSON
+	(
+		APPROVEN_RULE_ID,
+		APPROVEN_RULE_NAME,
+		APPROVEN_FUNCTION_ID,
+		APPROVEN_FUNCTION_NAME,
+		APPROVEN_USER_ID,
+		APPROVEN_USER_NAME,
+		 
+		APPROVEN_DEPART_ID,
+		APPROVEN_DEPART_NAME,
+		 
+		rule_order   ,
+		 create_user_id,
+   create_user_name, 
+   create_depart_id,
+   create_depart_name 
+	)
+	 select 
+		#{approvenRuleId},
+		#{approvenRuleName},
+		#{approvenFunctionId},
+		#{approvenFunctionName},
+		USER_ID,USER_NAME,
+		 
+		DEPART_ID,
+		DEPART_NAME,
+		 
+		(select IFNULL(max(t.rule_order),0)+1 from SYS_APPROVEN_RULE_PERSON t where approven_rule_id =#{approvenRuleId}),
+			#{createUserId},
+		    #{createUserName}, 
+		    #{createDepartId},
+		    #{createDepartName} 
+	 from sys_user_info t  where user_id=#{approvenUserId} 
+	</insert>
+	<delete id="deleteForMysql"  parameterType="com.sd.farmework.pojo.SysApprovenRulePerson" >
+		delete from sys_approven_rule_person where   APPROVEN_PERSON_ID=#{approvenPersonId}
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SysApprovenRulePerson"  resultType="java.lang.Integer">
+   		select    count(*) from sys_approven_rule_person where  APPROVEN_RULE_ID = #{approvenRuleId} 
+	</select>
+</mapper> 
+

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>指派订单详情</title>
+		<link rel="stylesheet" href="../plugins/layui/css/layui.css" />
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/purchase.css" />
+		<link rel="stylesheet" href="css/table.css" />
+		<link rel="stylesheet" href="css/zy.css" />
+		<link rel="stylesheet" href="font/iconfont.css" />
+		<link rel="stylesheet" href="css/my.css" />
+		<link rel="stylesheet" href="css/orderDetail.css" />
+		<script type="text/javascript" src="/OutSourceManage/wxManagerPc/pdf/build/pdf.js"></script>
+		<script type="text/javascript" src="/OutSourceManage/wxManagerPc/pdf/build/pdf.worker.js"></script>
+			
+	</head>
+	<body>
+        <div class="content mt-10 mb-20">
+        	<div class="container content-box">
+				<div class="product-main-content">
+					<div class="ml-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">订单信息</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important;">
+						<tbody>
+							<input type="hidden" name="orderId">
+							<tr class="fl">
+								<th valign="middle">客户名称：</th>
+								<td><input type="text" style="width:416px;" class="lg-input" name="customerName" value="" placeholder="上海十达科技" disabled=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">客户地址：</th>
+								<td><input type="text" style="width:416px;" class="lg-input" name="customerAddress" value="" placeholder="上海市宝山区" disabled=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">交货日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm rq-input fl" id="retime1" value="2017-08-01" name="deliveryDate" disabled="">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">建议交货日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm rq-input fl" id="retime2" value="2017-08-01" name="suggestDeliveryDate" disabled="">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">订单价格：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="orderPrice" value="3000元" disabled=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">成本价格：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="costPrice" value="2000元" disabled=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">商务报价：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="commercialPrice" value="4000元" disabled=""></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="ml-20 mt-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">物料信息</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<div id="content"></div>
+					<!-- <div class="table-content">
+						<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important; padding-bottom: 30px; border-bottom: 1px solid #ddd;display: block;">
+							<tbody>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;客户料号：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location"  disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">产品代码：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location"  disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">产品名称：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location"  placeholder="请输入产品名称"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;长：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location"  disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;宽：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location"  disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;高：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location"  disabled=""></td>
+								</tr>
+								<tr class="fl" style="height: 44px;line-height: 34px;">
+									<th valign="middle">是否带盖：</th>
+									<td><label><input value="1" name="a" type="radio" checked="" disabled="">需要带盖</label><label><input value="2" name="a" class="ml-20" type="radio" disabled="">不需要带盖</label></td>
+								</tr>
+								<tr class="fl ml-30">
+									<th valign="middle">数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="3000" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;类别：</th>
+									<td colspan="2" id="selectpaytime">
+										<select name="paytime" class="select" style="width:160px;" disabled="">
+											<option>请选择</option>
+											<option value="1">类别一</option>
+											<option value="2" selected="">类别二</option>
+											<option value="3">类别三</option>
+											<option value="4">类别四</option>						
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&ensp;材质：</th>
+									<td colspan="2" id="selectpaytime">
+										<select name="paytime" class="select" style="width:160px;" disabled="">
+											<option>请选择</option>
+											<option value="1">材质一</option>
+											<option value="2">材质二</option>
+											<option value="3" selected="">材质三</option>
+											<option value="4">材质四</option>						
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&nbsp;&nbsp;&nbsp;即时库存：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="4400" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="8500元" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">整单折前金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="6500元" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&ensp;&nbsp;金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="4500元" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&nbsp;税率：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="10%" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;销项税额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="300元" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">实际含税单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="300元" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">价税合计：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="4000元" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">关联数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="3000个" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;出库数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="2000个" disabled=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&ensp;BOM类别：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="类别2" disabled=""></td>
+								</tr>
+								<tr class="fl" style="height: 44px;line-height: 34px;">
+									<th valign="middle">上传图纸：</th>
+									<td>
+									    <span class="showFileName" style="margin-top: -2px;">5445455454.jpg</span>
+									</td>
+								</tr> 
+							</tbody>
+						</table>
+				   </div>
+				   -->
+				   <div class="ml-20 mt-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">选择人员</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<div class="layui-form-item row mt-20 ml-20">
+						<div class="layui-inline col-12">
+							<a href="javascript:void(0);" class="layui-btn layui-btn-mini layui-btn-danger" style="height: 26px;line-height: 10px;padding: 10px 16px;" onclick="addInfo()">
+								选择检验人员
+							</a>
+						</div>
+						<div class="layui-inline col-12">
+							<label class="layui-form-label" style="width:102px;">检验人员：</label>
+							<div class="layui-input-inline" style="width: 500px;">
+								<input type="text" name="username" lay-verify="required" autocomplete="off" class="layui-input">
+								<input type="hidden" name="userIds">
+							</div>
+						</div>
+					</div>
+					<!-- pdf容器 -->
+					 <div class="lightbox" id="lightbox">
+						<div id="pop" class="pop" style="display: none;">
+						<a href="javascript:close()"
+						style="position: absolute; z-index: 999999999;top: 6%;left: 66%;color: red; display: inline-block; width: 80px; height: 30px;"
+						id="close">关闭</a>
+							<iframe src="" frameborder="0" id="pdfContainer" name="pdfContainer" style="width:100%;heght:100%;"></iframe>
+						</div>
+					</div>
+					<div id="imgDiv" style="display: none;">
+						<img alt="关闭" width="20" height="20" id="closeImg" src="/OutSourceManage/wxManagerPc/images/false.jpg">
+						<img id="imgpic" src="" width="365" height="365">
+						
+					</div>
+					<p class="mb-40 mt-100" style="text-align: center;"><button type="button" id="supply-btn" class="orange-md-btn">确定</button></p>
+				</div>
+        	</div> 	
+        </div>
+        <script type="text/javascript" src="../js/jquery.min.js" ></script>
+        <script type="text/javascript" src="laydate/laydate.js" ></script>
+		<script type="text/javascript" src="../js/myframe.js"></script>
+        <script type="text/javascript" src="../plugins/layui/layui.js" ></script>
+		<script type="text/javascript" src="../../resources/js/base.js"></script>
+		<script type="text/javascript" src="../js/jquery.media.js"></script>
+		<script type="text/html" id="partTpl">
+		{{#  layui.each(d.sdorderinfo.detailList, function(index, item){ }}
+				<div class="table-content">
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important; padding-bottom: 30px; border-bottom: 1px solid #ddd;display: block;">
+					<tbody>
+						<tr class="fl">
+									<th valign="middle">产品名称：</th>
+									<td><div class="productName"><input type="text" style="width:160px;" class="lg-input"  name="productName" value="{{item.productName}}" autocomplete="off" placeholder="请输入产品名称"></div></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;客户料号：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="customerSupplies" value="{{item.customerSupplies}}" placeholder=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;产品代码：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="productCode" value="{{item.productCode}}" placeholder=""></td>
+								</tr>
+								
+								<tr class="fl">
+									<th valign="middle">&emsp;成本核算：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="costPrice" value="{{item.costPrice}}" placeholder="核算成本"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;长：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="detailLength" value="{{item.detailLength}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;宽：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="detailWidth" value="{{item.detailWidth}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;高：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="detailHeight" value="{{item.detailHeight}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;是否带盖：</th>
+									<td colspan="2" id="selectpaytime">
+										<input name="isLid" class="lg-input"  value="{{item.isLid==0?'需要带盖':'不需要带盖'}}" style="width:160px;">
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="price" value="{{item.price}}"></td>
+								</tr>
+								<tr class="fl ml-30">
+									<th valign="middle">&emsp;&emsp;数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="number" value="{{item.number}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;类别：</th>
+									<td colspan="2" id="selectpaytime">
+										<select name="productTypeId{{index}}" class="select" style="width:160px; margin-right: 10px;">
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;材质：</th>
+									<td colspan="2" id="selectpaytime">
+										<select name="productGradeId{{index}}" class="select" style="width:160px;">
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">即时库存：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="immediatelyInventory" value="{{item.immediatelyInventory}}"></td>
+								</tr>								
+								<tr class="fl">
+									<th valign="middle">整单折前金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="discountBeforeSum" value="{{item.discountBeforeSum}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="money" value="{{item.money}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;税率：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="taxRate" value="{{item.taxRate}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">销项税额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="sellTax" value="{{item.sellTax}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">实际含税单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="practicalSellPrice" value="{{item.practicalSellPrice}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;价税合计：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="priceSellSum" value="{{item.priceSellSum}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;关联数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="relevanceNumber" value="{{item.relevanceNumber}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">出库数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="takeOutNumber" value="{{item.takeOutNumber}}"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&nbsp;&nbsp;BOM类别：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="bomType" value="{{item.bomType}}"></td>
+								</tr>
+								<tr class="fl" style="height: 44px;line-height: 34px;">
+									<th valign="middle">&emsp;&emsp;图纸：</th>
+									<td>
+										<span class="showFileName" style="margin-top: -2px;">
+											<div >
+											<a class='media' onclick='showPdf("/OutSourceManage/{{item.fileUrl}}&resouceName={{item.fileName}}",true)'>{{item.fileName}}</a>
+											</div>
+										</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+				   </div>
+		{{# }); }}
+		</script>
+		<script>
+		 var orderId=window.location.search.split("?")[1];
+		$(function() {  
+		  //alert(orderId);
+			
+	        $('a.media').media({width:800, height:600});  
+	    }); 
+			lay('#version').html('-v'+ laydate.v);
+			
+			//执行一个laydate实例
+			laydate.render({
+			  elem: '#retime' //指定元素
+			});
+			laydate.render({
+			  elem: '#retime1' //指定元素
+			});
+			laydate.render({
+			  elem: '#retime2' //指定元素
+			});
+			layui.use(['form', 'layedit', 'laydate','laytpl'], function(){
+				var form = layui.form()
+				  ,layer = layui.layer
+				  ,layedit = layui.layedit
+				  ,laydate = layui.laydate;		  
+				});
+				$.ajax({
+					type : 'POST',
+					url : base.serverContent+ '/manager/loginIn/SdOrderInfo/queryByPkId.do',
+					data : {orderId:orderId},
+					async : false,
+					success : function(data) {
+						for ( var key in data.sdorderinfo) {
+							var value=data.sdorderinfo[key];
+							//订单表数据
+							$("input[name="+key+"]").val(value);
+							
+						}
+						
+						
+						layui.use(['form','laytpl'], function(){
+							var laytpl = layui.laytpl;
+							
+							laytpl(partTpl.innerHTML).render(data, function(html){
+								$("#content").html(html);
+							});
+							
+							
+							for(var j=0;j<data.sdorderinfo.detailList.length;j++){
+								//获取类别数据
+								 $.ajax( {
+							        url :base.serverContent+'/SdProductType/queryList.do', //服务器的地址 
+							        dataType : 'json', //返回数据类型 
+							        type : 'GET', //请求类型 
+							        async: false,
+							        success : function(result) {
+							            if (result.code==0) {
+							           	 for(var i=0;i<result.rows.length;i++){
+							           		 
+							           		 if(data.sdorderinfo.detailList[j].productTypeId==result.rows[i].productTypeId){
+							           			$("select[name='productTypeId"+j+"']").append(new Option(result.rows[i].productTypeName,result.rows[i].productTypeId,true,true));
+							           		 }else{
+							           			$("select[name='productTypeId"+j+"']").append(new Option(result.rows[i].productTypeName,result.rows[i].productTypeId));
+							           		 }
+							           	}
+							           }
+							       },error:function(){}
+							       
+								 });
+								 
+								 //获取材质数据
+								 $.ajax( {
+								        url :base.serverContent+'/SdProductGrade/queryList.do', //服务器的地址 
+								        dataType : 'json', //返回数据类型 
+								        type : 'GET', //请求类型 
+								        async: false,
+								        success : function(result2) {
+								            if (result2.code==0) {
+								           	 for(var i=0;i<result2.rows.length;i++){
+								           		 if(data.sdorderinfo.detailList[j].productGradeId==result2.rows[i].productGradeId){
+								           			$("select[name='productGradeId"+j+"']").append(new Option(result2.rows[i].productGradeName,result2.rows[i].productGradeId,true,true));
+								           		 }else{
+								           			$("select[name='productGradeId"+j+"']").append(new Option(result2.rows[i].productGradeName,result2.rows[i].productGradeId));
+								           		 }
+								           	}
+								           }
+								       },error:function(){}
+								 });
+							}
+							
+							
+							layui.form().render();
+						});
+						
+						
+					},error : function() {
+					}
+				});
+			
+			/*查看pdf文档*/
+			function showPdf(url,isShow){
+				if(base.isNotBlank(url)){
+					var arr=url.split('.');
+				    var type=arr[arr.length-1];
+				}
+				if(type=='jpg'||type=='png'||type=='gif'){
+					$("#imgpic").attr("src",url);
+					$("#imgDiv").css("display","block");
+				}else{
+					//encodeURIComponent对url进行编码
+					$("#pdfContainer").attr("src","/OutSourceManage/wxManagerPc/pdf/web/viewer.html?file="+encodeURIComponent(url));
+					var state = "";
+					if(isShow){
+						state = "block";
+					}else{
+						state = "none";
+					}
+					var pop = document.getElementById("pop");
+					pop.style.display = state;
+					var lightbox = document.getElementById("lightbox");
+					lightbox.style.display = state;
+				}
+			}
+			
+			$("#closeImg").click(function(){
+				$("#imgDiv").css("display","none");
+			})
+				
+			//关闭
+			function close(){
+				showPdf(false);
+			}
+				
+			 function addInfo() {
+				layer.open({
+					type: 2,
+					title: '添加',
+					shadeClose: true,
+					shade: [0.6, '#393D49'],
+					maxmin: true, //开启最大化最小化按钮
+					area: ['800px', '300px'],
+					content: 'tc/addChecker.html',
+					btn: ['确定','取消'],
+					btnAlign: 'c',
+					skin: 'layui-layer-red',
+					  yes : function( index,layero) {
+						    //var iframeWin = window[layero.find('iframe')[0]['name']];
+							var body = layer.getChildFrame('body', index);
+							$.ajax({type : 'POST',
+								url : base.serverContent+ '/manager/loginIn/SysUserInfo/getCaiGou.do',
+								data : $(body).find("#form2").serialize(),
+								async : false,
+								success : function(data) {
+										if (data.code == "000") {
+											 $("input[name='username']").val(data.userNmaes);
+											 $("input[name='userIds']").val(data.userIds);
+											/* layer.alert('修改成功',{icon : 1
+												,yes:function(){
+													location.reload();
+												}	
+											}); */
+											 layer.close(index);
+											 
+										} else {
+											layer.alert('选择失败',{icon : 2});
+											 
+										 }
+									},
+									error : function() {
+									}
+								});
+							
+					} 
+				});
+			}
+			
+			 $("#supply-btn").click(function(){
+				 if(base.isNotBlank($("input[name='username']").val())){
+					 var dataJson={
+							 userNames:$("input[name='username']").val(),
+							 orderId:$("input[name='orderId']").val(),
+							 acceptUserName:$("input[name='userIds']").val(),
+							 assignType:2,
+							 isLook:0
+					 }
+					// alert($("input[name='userIds']").val());
+					 $.ajax({type : 'POST',
+							url : base.serverContent+ '/SdOrderAssign/add.do',
+							data : dataJson,
+							async : false,
+							success : function(data) {
+									if(data.code=="000"){
+										parent.location.reload();
+										 /* layer.alert(data.msg,{icon : 1},
+												function(index2){
+												layer.close(index2);
+												window.location.reload();}
+														);  */
+										//layer.alert('分配成功',{icon : 1});
+									}else{
+										layer.alert('分配失败',{icon : 2});
+									}
+								},
+								error : function() {
+								}
+							});
+				}else{
+					layer.alert("请至少选择一位检验员",{icon:3});
+				}
+			 })
+		</script>
+	</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>新增订单</title>
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/purchase.css" />
+		<link rel="stylesheet" href="css/table.css" />
+		<link rel="stylesheet" href="css/zy.css" />
+		<link rel="stylesheet" href="font/iconfont.css" />
+		 <style type="text/css">
+    .autocomplete {
+        border: 1px solid #9ACCFB;
+        background-color: white;
+        text-align: left;
+    }
+    .autocomplete li {
+        list-style-type: none;
+        font-size: 14px;
+    }
+    .clickable {
+        cursor: default;
+    }
+    .highlight {
+        background-color: #57a3f1;
+    }
+    </style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="header-logo"><img src="images/angelic_logo.png" style="vertical-align: bottom;"/>全国最大的木箱包装领航企业</div>
+			<div class="header-right">
+				<span class="iconfont icon-renyuan1"></span>
+				<span class="name-word">用户A&ensp;<span class="iconfont icon-icon-test"></span></span>
+			    <div class="personal">
+			    	<div class="person-class">
+			    		<ul>
+			    			<li class="active">月度</li>
+			    			<li>年度</li>
+			    		</ul>
+			    		<div class="line-height-16"></div>
+			    	 </div>
+			    	<div class="person-content">
+			    		<div class="person-number">&emsp;成交量：<span>2</span>件</div>
+			    		<div class="person-number">&emsp;销售额：<span>255445.4</span>元</div>
+			    		<div class="person-number">预计收益：<span>2444</span>元</div>
+			    	</div>
+			    	<div class="person-content" style="display: none;">
+			    		<div class="person-number">&emsp;成交量：<span>5</span>件</div>
+			    		<div class="person-number">&emsp;销售额：<span>255</span>元</div>
+			    		<div class="person-number">预计收益：<span>24</span>元</div>
+			    	</div>
+			    	<div class="person-img"><img src="images/money.png" width="260"/></div>
+			   </div>
+			</div>
+		</div>
+		<div class="nav">
+	        <ul class="nav-main container jz">
+	        	<li class="fl">
+					<a href="index.html">首页</a>
+				</li>
+				<li class="fl active">
+					<a href="javascript:void(0);">新增订单</a>
+				</li>			
+				<li class="fl">
+					<a href="assignOrder.html">指派订单</a>
+				</li>			
+				<li class="fl">
+					<a href="listOrder.html">订单列表</a>
+				</li>			
+				<li class="fl">
+					<a href="afterOrder.html">订单跟踪</a>
+				</li>			
+	        </ul>
+        </div>
+        <div class="content mt-10 mb-80">
+        	<div class="container content-box">
+        		<div class="product-release-title">
+					<span class="product-release-title-content1">新增订单</span>
+				</div>
+				<div class="product-main-content">
+				<form id="form1" enctype='multipart/form-data'>
+					<div class="ml-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">订单信息</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0"  cellspacing="0" style="margin-left:40px!important;">
+						<tbody>
+							<tr class="fl">
+								<th valign="middle">客户名称：</th>
+								<td><div><input type="text" style="width:446px; margin-right: 20px;" class="lg-input" name="customerName" value="" autocomplete="off" placeholder="请输入客户的名称"></div></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">客户地址：</th>
+								<td><input type="text" style="width:406px;" class="lg-input" name="customerAddress" value="" placeholder="请输入地址信息"></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">交货日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm rq-input fl" id="retime1" value="" name="deliveryDate">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">建议交货日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm rq-input fl" id="retime2" value="" name="suggestDeliveryDate">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">订单价格：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="orderPrice" value=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">成本价格：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="costPrice" value=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">商务报价：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="commercialPrice" value=""></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="ml-20 mt-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">物料信息</span>
+						<label class="fr product-add" onclick="addFile('222')"><span class="iconfont icon-tianjia"></span>添加物料</label>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<div class="table-content" id="222">
+						<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important; padding-bottom: 30px; border-bottom: 1px solid #ddd;">
+							<tbody>
+								<input type="hidden" name="productStandard" >
+								<input type="hidden" name="productOther" >
+								<input type="hidden" name="productInnerLength">
+								<input type="hidden" name="productInnerWidth">
+								<input type="hidden" name="productInnerHeight">
+								<tr class="fl">
+									<th valign="middle">产品名称：</th>
+									<td><div class="productName"><input type="text" style="width:160px;" class="lg-input"  name="productName"   autocomplete="off" placeholder="请输入产品名称"></div></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;客户料号：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="customerSupplies" value="" placeholder=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;产品代码：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="productCode" value="" placeholder=""></td>
+								</tr>
+								
+								<tr class="fl">
+									<th valign="middle">&emsp;产品成本：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="costPrice" ></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;长：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="productLength" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;宽：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="productWidth" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;高：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="productHeight" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;是否带盖：</th>
+									<td colspan="2" id="selectpaytime">
+									<select name="isLid" class="select" style="width:160px; margin-right: 10px;">
+											<option value="0">需要带盖</option>
+											<option value="1">不需要带盖</option>
+									</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="price" value=""></td>
+								</tr>
+								<tr class="fl ml-30">
+									<th valign="middle">&emsp;&emsp;数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="number" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;类别：</th>
+									<td colspan="2" id="selectpaytime">
+										<select name="productTypeId" class="select" style="width:160px; margin-right: 10px;">
+											<!-- <option value="0">请选择</option>
+											<option value="1">类别一</option>
+											<option value="2">类别二</option>
+											<option value="3">类别三</option>
+											<option value="4">类别四</option>	 -->					
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;材质：</th>
+									<td colspan="2" id="selectpaytime">
+										<select name="productGradeId" class="select" style="width:160px;">
+											<!-- <option value="0">请选择</option>
+											<option value="1">材质一</option>
+											<option value="2">材质二</option>
+											<option value="3">材质三</option>
+											<option value="4">材质四</option>	 -->					
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">即时库存：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="immediatelyInventory" value=""></td>
+								</tr>								
+								<tr class="fl">
+									<th valign="middle">整单折前金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="discountBeforeSum" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="money" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;税率：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="taxRate" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">销项税额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="sellTax" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">实际含税单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="practicalSellPrice" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;价税合计：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="priceSellSum" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;关联数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="relevanceNumber" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">出库数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="takeOutNumber" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&nbsp;&nbsp;BOM类别：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="bomType" value=""></td>
+								</tr>
+								<tr class="fl" style="height: 44px;line-height: 34px;">
+									<th valign="middle" style="padding-top: 0 !important;">&emsp;&emsp;上传图纸：</th>
+									<td>
+										<div class="file"><span class="iconfont icon-tianjia" style="color: #1E88C7;"></span>上传
+										<input type="file"   value="">
+										<input type="hidden" name="fileUrl">
+										<input type="hidden" name="fileName">
+										</div>
+									    <span class="showFileName"></span>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;计算成本：</th>
+									<td><button type="button" onclick="costAccount(this)" class="blue-btn" style="background-color: #D0EEFF;border: 1px solid #99D3F5;color: #1E88C7;">成本核算</button></td> 
+								</tr>
+							</tbody>
+						</table>
+					    <div class="delete-info">
+							<span class="iconfont icon-jianhao" onclick="delFile(this)"></span>
+						</div>
+				    </div>
+				    <div class="ml-20 mt-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">订单分配</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important;">
+						<tbody>
+							<tr class="fl">
+								<th valign="middle">选择采购经理：</th>
+								<td colspan="2" id="selectpaytime">
+									<select name="procurementUserId" class="select" style="width:160px;">
+										<!-- <option value="0">请选择</option>
+										<option value="1">陈某某</option>
+										<option value="2">王某某</option>
+										<option value="3">李某某</option>
+										<option value="4">杨某某</option> -->						
+									</select>
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">&emsp;选择检验经理：</th>
+								<td colspan="2" id="selectpaytime">
+									<select name="checkoutUserId" class="select" style="width:160px;">
+										<!-- <option value="0">请选择</option>
+										<option value="1">陈某某</option>
+										<option value="2">王某某</option>
+										<option value="3">李某某</option>
+										<option value="4">杨某某</option> -->						
+									</select>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="mb-40 mt-100" style="text-align: center;"><button type="button" id="supply-btn" class="orange-md-btn">确定新增</button></p>
+				</form>
+				</div>
+        	</div> 	
+        </div>
+        <div class="footer fixed">安捷包装（苏州）股份有限公司</div>
+        <script type="text/javascript" src="js/jquery.min.js" ></script>
+        <script type="text/javascript" src="../resources/js/base.js"></script>
+        <script type="text/javascript" src="laydate/laydate.js" ></script>
+        <script type="text/javascript" src="plugins/layui/layui.js" ></script>
+        <script type="text/javascript" src="js/addOrder.js"></script>
+        <script type="text/javascript" src="js/title.js"></script>
+		<script>
+		//标记添加物料索引
+		var gradeIndex=0;
+		
+			lay('#version').html('-v'+ laydate.v);
+			
+			//执行一个laydate实例
+			laydate.render({
+			  elem: '#retime' //指定元素
+			});
+			laydate.render({
+			  elem: '#retime1' //指定元素
+			});
+			laydate.render({
+			  elem: '#retime2' //指定元素
+			});
+			
+			
+			
+					//   添加删除 
+		function addFile(id) {
+			var len = $(".table-content").length;
+			var tag = $(".table-content").eq(len-1);
+			
+			var htmlStr =  $(tag).prop("outerHTML");
+				tag.after(htmlStr);
+				 
+		  $(".table-content").eq(len).find("input").each(function(index,obj){
+		  		$(obj).val("");
+		  });
+		  $(".table-content").eq(len).find(".showFileName").each(function(index,obj1){
+			  	gradeIndex++;//每次添加物料添加索引
+			  	//alert(gradeIndex);
+		  		$(obj1).text("");
+		  		fileNameShow(gradeIndex);
+		  		productChange();
+		  		onloadTypeAndGrade(len);
+		  });
+		 }
+
+		function delFile(tag) {
+			if($(".table-content").length > 1) {
+				$(tag).parent().parent().remove();
+			} else {
+				alert("只有一行不能再删除");
+			}
+		}
+		var fileNameShow=function (index){
+			
+			$(".file").on("change","input[type='file']",function(){
+			    	var filePath=$(this).val();
+			        var arr=filePath.split('\\');
+			        var fileName=arr[arr.length-1];
+			        $(this).parent().parent().find(".showFileName").html(fileName);
+			        $(this).parent().find("input[name='fileName']").val(fileName);//文件名字放入表单中
+			        $(this).parent().find("input[name='fileUrl']").val("download.do?fileName="+fileName); //文件下载路径
+			        $(this).attr("name","file"+index);
+			})
+		};
+		layui.use(['laypage', 'layer'], function() {
+			var laypage = layui.laypage,
+				layer = layui.layer;
+		});
+		function costAccount(t) {
+			//获取当前产品的信息
+			var $tbody=$(t).parent().parent().parent().parent();
+			window.localStorage.setItem("productName",$tbody.find("input[name='productName']").val());
+			window.localStorage.setItem("productTypeId",$tbody.find("select[name='productTypeId']").val());
+			window.localStorage.setItem("isLid",$tbody.find("select[name='isLid']").val());
+			window.localStorage.setItem("productOther",$tbody.find("input[name='productOther']").val());
+			window.localStorage.setItem("productStandard",$tbody.find("input[name='productStandard']").val());
+			window.localStorage.setItem("productLength",$tbody.find("input[name='productLength']").val());
+			window.localStorage.setItem("productWidth",$tbody.find("input[name='productWidth']").val());
+			window.localStorage.setItem("productHeight",$tbody.find("input[name='productHeight']").val());
+			
+			window.localStorage.setItem("productInnerLength",$tbody.find("input[name='productInnerLength']").val());
+			window.localStorage.setItem("productInnerWidth",$tbody.find("input[name='productInnerWidth']").val());
+			window.localStorage.setItem("productInnerHeight",$tbody.find("input[name='productInnerHeight']").val());
+			
+			layer.open({
+				type: 2,
+				title: '成本核算',
+				shadeClose: true,
+				shade: [0.6, '#393D49'],
+				maxmin: true, //开启最大化最小化按钮
+				area: ['1200px', '80%'],
+				content: 'tc/checkCostTc.html',
+				btn: ['确定','取消'],
+				btnAlign: 'c',
+				skin: 'layui-layer-red'
+			});
+		}
+		/*提交数据*/
+		$("#supply-btn").click(function(){
+			//表单验证
+			
+			$.ajax({
+				type:"post",
+				url : base.serverContet+'/upload.do', 
+				data:new FormData($("#form1")[0]),
+				processData : false,
+				contentType : false,
+				datetype : "json",
+				async:false,
+				success:function(data){
+				},error:function(){}
+			});
+			$.ajax({
+				url:base.serverContent+"/manager/loginIn/SdOrderInfo/add.do",
+				type:"post",
+				data:$("#form1").serialize(),
+				dataType:"json",
+				success:function(data){
+					if(data.code="000"){
+						layer.alert('添加成功', {icon: 1},
+						function(index){
+							window.location.href='index.html';
+						}		
+						);
+					}
+				},error:function(data){}
+				
+			});
+		})
+		</script>
+	</body>
+</html>

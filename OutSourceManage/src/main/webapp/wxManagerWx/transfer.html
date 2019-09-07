@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>跳转中...</title>
+ <script type="text/javascript" src="js/jquery.min.js"></script>
+ <script type="text/javascript" src="../resources/js/base.js"></script>
+ <script type="text/javascript" src="../resources/login/layui/layui.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	//获取回调中的code,
+	var code=window.location.search.split("?")[1].split("=")[1].split("&")[0];
+	//通过code去获取openid,然后通过openid查询用户信息
+	$.ajax({
+		url:base.serverContent+"/manager/loginIn/SysUserInfo/transfer.do",
+		data:{code:code},
+		type:"post",
+		success:function(data){
+			if(data.code=="000"){//存在直接登录到首页
+				window.location.href=data.nextUri;
+			}else if(data.code=="001"){//不存在回到登录页
+				sessionStorage.setItem("openid",data.openid);
+				window.location.href=data.nextUri;
+			}else{
+				alert(data.msg);
+			}
+		},
+		error:function(data){
+			
+		}
+	});
+	//如果存在那么直接登录跳转首页无需携带code，如果不存在那么跳转到登录页面继续携带code方便存储opendid
+});
+</script>
+</head>
+<body>
+</body>
+</html>

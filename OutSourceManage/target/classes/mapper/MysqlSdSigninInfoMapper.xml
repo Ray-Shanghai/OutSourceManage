@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdSigninInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdSigninInfo" id="SdSigninInfoMap"> 
+
+		<result column="signin_id" property="signinId"/>
+		<result column="signin_name" property="signinName"/>
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_USER_NAME" property="lastUpdateUserName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdSigninInfo"  resultMap="SdSigninInfoMap">
+		SELECT  
+		t.signin_id,
+		t.signin_name,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_signin_info t where 1=1 
+		<if test="createUserName !=null and createUserName !=''">
+			and t.CREATE_USER_NAME  like concat('%',#{createUserName},'%')
+		</if>
+		order by t.CREATE_TIME desc
+		LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdSigninInfo" >
+	insert into sd_signin_info
+	(
+		signin_name,
+		remark,
+		status,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME
+	)
+	values
+	(
+		#{signinName},
+		#{remark},
+		'Y',
+		now(),
+		#{createUserId},
+		#{createUserName},
+		#{createDepartId},
+		#{createDepartName}
+	)
+	</insert>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdSigninInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_signin_info t where 1=1 
+   		<if test="createUserName !=null and createUserName !=''">
+			and t.CREATE_USER_NAME  like concat('%',#{createUserName},'%')
+		</if>
+	</select>
+</mapper> 
+

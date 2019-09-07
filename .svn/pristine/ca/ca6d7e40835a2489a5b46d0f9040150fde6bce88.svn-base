@@ -1,0 +1,53 @@
+/**
+ * 首页相关数据
+ */
+$(function(){
+	$.ajax({
+		url:base.serverContent+"/personCenter/queryloginUser.do",
+		type:"post",
+		dataType:"json",
+		success:function(data){
+			if(data.code="000"){
+				$(".userNameSpan").html(data.sysUserInfo.userName);
+				$(".queRenNum").each(function(index){
+					$(this).html(data.queRenNum);
+				});
+				$(".caigouNum").each(function(index){
+					$(this).html(data.caigouNum);
+				});
+				$(".baojiaNum").each(function(index){
+					$(this).html(data.baojiaNum);
+				});
+				$(".hedingNum").each(function(index){
+					$(this).html(data.hedingNum);
+				});
+				$(".jianyanNum").each(function(index){
+					$(this).html(data.jianyanNum);
+				});
+				$(".peiliaoNum").each(function(index){
+					$(this).html(data.peiliaoNum);
+				});
+				$(".caiqieNum").each(function(index){
+					$(this).html(data.caiqieNum);
+				});
+				$(".shengchanNum").each(function(index){
+					$(this).html(data.shengchanNum);
+				});
+				$(".wanchenNum").each(function(index){
+					$(this).html(data.wanchenNum);
+				});
+				$(".yanshouNum").each(function(index){
+					$(this).html(data.yanshouNum);
+				});
+				$(".wanjieNum").each(function(index){
+					$(this).html(data.wanjieNum);
+				});
+				$(".totalCount").html(data.totalCount);
+				$(".zhipaiCount").html(data.zhipaiCount);
+				$(".baojiaCount").html(data.baojiaCount);
+				$(".shengcanCount").html(data.shengcanCount);
+			}	
+		},error:function(data){}
+		
+	});
+});

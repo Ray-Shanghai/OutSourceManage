@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdSupplierInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdSupplierInfo" id="sdsupplierinfoMap"> 
+
+		<result column="supplier_id" property="supplierId"/>
+		<result column="supplier_name" property="supplierName"/>
+		<result column="supplier_address" property="supplierAddress"/>
+		<result column="balance_type" property="balanceType"/>
+		<result column="bank_account" property="bankAccount"/>
+		<result column="account_holder" property="accountHolder"/>
+		<result column="opening_bank" property="openingBank"/>
+		<result column="sd_id" property="sdId"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo">
+		UPDATE sd_supplier_info set 
+		t.supplier_id=#{supplierId},
+		t.supplier_name=#{supplierName},
+		t.supplier_address=#{supplierAddress},
+		t.balance_type=#{balanceType},
+		t.bank_account=#{bankAccount},
+		t.account_holder=#{accountHolder},
+		t.opening_bank=#{openingBank},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultMap="sdsupplierinfoMap">
+		SELECT 
+		t.supplier_id,
+		t.supplier_name,
+		t.supplier_address,
+		t.balance_type,
+		t.bank_account,
+		t.account_holder,
+		t.opening_bank,
+		t.sd_id
+		FROM  sd_supplier_info t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultMap="sdsupplierinfoMap">
+		SELECT 
+		t.supplier_id,
+		t.supplier_name,
+		t.supplier_address,
+		t.balance_type,
+		t.bank_account,
+		t.account_holder,
+		t.opening_bank,
+		t.sd_id
+		FROM  sd_supplier_info t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultMap="sdsupplierinfoMap">
+		SELECT  
+		t.supplier_id,
+		t.supplier_name,
+		t.supplier_address,
+		t.balance_type,
+		t.bank_account,
+		t.account_holder,
+		t.opening_bank,
+		t.sd_id
+		FROM  sd_supplier_info t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultMap="sdsupplierinfoMap">
+		SELECT 
+		t.supplier_id,
+		t.supplier_name,
+		t.supplier_address,
+		t.balance_type,
+		t.bank_account,
+		t.account_holder,
+		t.opening_bank,
+		t.sd_id
+		FROM  sd_supplier_info t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo">
+	insert into sd_supplier_info
+	(
+		supplier_id,
+		supplier_name,
+		supplier_address,
+		balance_type,
+		bank_account,
+		account_holder,
+		opening_bank,
+		sd_id
+	)
+	values
+	(
+		#{supplierId},
+		#{supplierName},
+		#{supplierAddress},
+		#{balanceType},
+		#{bankAccount},
+		#{accountHolder},
+		#{openingBank},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdSupplierInfo">
+		delete from sd_supplier_info where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdSupplierInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_supplier_info where 1=1
+	</select>
+</mapper> 
+

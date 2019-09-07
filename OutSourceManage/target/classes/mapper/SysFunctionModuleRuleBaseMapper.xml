@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sd.farmework.mapper.SysFunctionModuleRuleBaseMapper">
+
+	<resultMap type="com.sd.farmework.pojo.SysFunctionModuleRuleBase"
+		id="sysFunctionModuleRuleBaseMap">
+		<result column="FUNCTION_MODULE_RULE_BASE_ID" property="functionModuleRuleBaseId" />
+		<result column="USER_IDS" property="userIds" />
+
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark" />
+		<result column="STATUS" property="status" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER_ID" property="createUserId" />
+		<result column="CREATE_USER_NAME" property="createUserName" />
+		<result column="CREATE_TEAM_ID" property="createTeamId" />
+		<result column="CREATE_TEAM_NAME" property="createTeamName" />
+		<result column="CREATE_DEPART_ID" property="createDepartId" />
+		<result column="CREATE_DEPART_NAME" property="createDepartName" />
+		<result column="CREATE_UNIT_ID" property="createUnitId" />
+		<result column="CREATE_UNIT_Name" property="createUnitName" />
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" />
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId" />
+		<result column="LAST_UPDATE_TEAM_ID" property="lastUpdateTeamId" />
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName" />
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId" />
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName" />
+		<result column="LAST_UPDATE_UNIT_ID" property="lastUpdateUnitId" />
+		<result column="LAST_UPDATE_UNIT_Name" property="lastUpdateUnitName" />
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+
+	<insert id="add" parameterType="com.sd.farmework.pojo.SysFunctionModuleRuleBase">
+		<selectKey keyProperty="functionModuleRuleBaseId" resultType="String" order="BEFORE">
+			select fill_str_get_seq('rule_base_seq',10,'L') from dual
+		</selectKey>
+		insert into
+		sys_function_module_rule_base
+		(function_module_rule_base_id, user_ids,
+		create_time, create_user_id,
+		create_user_name, create_team_id,
+		create_team_name, create_depart_id,
+		create_depart_name, create_unit_id,
+		create_unit_name
+		)
+		values
+		(#{functionModuleRuleBaseId}, #{userIds},
+		sysdate,
+		#{createUserId},
+		#{createUserName}, 
+		#{createTeamId}, 
+		#{createTeamName},
+		#{createDepartId}, 
+		#{createDepartName}, 
+		#{createUnitId},
+		#{createUnitName}
+		)
+	</insert>
+</mapper> 
+

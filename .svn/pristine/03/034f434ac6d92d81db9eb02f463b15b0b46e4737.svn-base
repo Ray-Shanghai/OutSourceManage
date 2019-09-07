@@ -1,0 +1,44 @@
+.layui-form-label{border: 1px solid #e6e6e6 !important; border-right: none !important;}
+.layui-input-block{margin-left: 71px !important;} 
+.layui-form-label{padding: 3px 5px !important; background: #f5f5f5 !important;}
+
+
+/*添加信息*/
+.addInfo-title{width: 100%; border-bottom: 1px solid #eaf4f6; margin-top: 15px;}
+.addInfo-title .infoName{display:inline-block;padding: 5px 20px; background: #b9e0ef;}
+.add-btn{display: inline-block; margin-left: 20px; color: #01AAED; cursor: pointer; font-size: 18px; font-weight: 600;}
+.personInfo{position: relative; background: #EAF4F6;}
+.deleteInfo{position: absolute; right:20px; top:50%; margin-top: -11px;}
+.delete-btn{display: inline-block;color: red; cursor: pointer; font-size: 22px; font-weight: 600;}
+.upward-box .layui-form-select dl{bottom: 42px; top:auto;}
+
+
+/*表格头部背景*/
+.layui-table thead tr {background-color: #b9e0ef;}
+.layui-table thead tr:hover{background: #b9e0ef;}
+.layui-table th {border: 1px solid #fff;}
+
+
+.fa-thumbs-o-up{cursor: pointer; font-size: 16px;}
+.fa-thumbs-up{cursor: pointer; color: #4dc0ef !important;font-size: 16px;}
+
+.personInfo .layui-inline{margin-bottom: 10px;}
+.personInfo .layui-input-block{margin-bottom: 10px;}
+
+
+
+/*超出隐藏*/
+.areaHide{display:block;white-space: nowrap; width: 84px; overflow: hidden;text-overflow: ellipsis;}
+
+
+
+.selected-table{color: red;}
+.selected-table input{color: red;}
+
+.bg-blue-selected{background-color: #45afec; color: #fff;}
+.bg-blue-selected:hover{background-color:#38a8e8 !important;}
+
+/*按钮颜色 */
+.layui-btn-blue{background-color: #45afec;}
+.layui-elem-quote {border-left: 5px solid #45afec;}
+.layui-form-radio i:hover, .layui-form-radioed i {color:#45afec}

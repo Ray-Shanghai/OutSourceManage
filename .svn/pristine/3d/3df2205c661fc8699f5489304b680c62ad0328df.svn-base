@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/purchase.css" />
+		<link rel="stylesheet" href="css/table.css" />
+		<link rel="stylesheet" href="css/zy.css" />
+		<link rel="stylesheet" href="font/iconfont.css" />
+	</head>
+	<body>
+		<div class="header">
+			<div class="header-logo"><img src="images/angelic_logo.png" style="vertical-align: bottom;"/>全国最大的木箱包装领航企业</div>
+			<div class="header-right"><span class="iconfont icon-renyuan1"></span><span class="name-word">未登录</span></div>
+		</div>
+		<div class="login-content">
+			<div class="info-login">
+				<div class="info-title">
+					<ul>
+						<li class="active">登录</li>
+						<li onclick="window.location.href='register.html'">注册</li>
+					</ul>
+					<div class="line-height-18"></div>
+				</div>
+				<div class="info-write">
+					<div class="title">用户名<span class="color-red">（用户名不能为空）</span></div>
+					<div class="user-input"><input type="text"><span class="iconfont icon-renyuan"></span></div>
+					<div class="title mt-10">密码</div>
+					<div class="user-input"><input type="password"><span class="iconfont icon-iconset0114"></span></div>
+					<div class="login-btn"><button type="button" onclick="window.location.href='index.html'">登&nbsp;录</button><input type="checkbox">记住密码</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">安捷包装（苏州）股份有限公司</div>
+	</body>
+</html>

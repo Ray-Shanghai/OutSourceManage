@@ -1,0 +1,195 @@
+/**
+ * 成本核算相关js
+ * wangli
+ */
+$(function(){
+	
+	//加载数据
+	var productName=window.localStorage.getItem("productName");
+	var productTypeId=window.localStorage.getItem("productTypeId");
+	var isLid=window.localStorage.getItem("isLid");
+	var productOther=window.localStorage.getItem("productOther");
+	var productStandard=window.localStorage.getItem("productStandard");
+	var productLength=window.localStorage.getItem("productLength"); 
+	var productWidth=window.localStorage.getItem("productWidth");   
+	var productHeight=window.localStorage.getItem("productHeight");
+	var productInnerLength=window.localStorage.getItem("productInnerLength");
+	var productInnerWidth=window.localStorage.getItem("productInnerWidth");
+	var productInnerHeight=window.localStorage.getItem("productInnerHeight");
+	
+	$("input[name='productName']").val(productName);
+	$("select[name='productTypeId']").val(productTypeId);
+	if(isLid==0){
+		$("#isLid1").attr("checked","checked");
+	}else{
+		$("#isLid2").attr("checked","checked");
+	}
+	$("input[name='productOther']").val(productOther);
+	$("input[name='productStandard']").val(productStandard);
+	$("input[name='productLength']").val(productLength);
+	$("input[name='productWidth']").val(productWidth);
+	$("input[name='productHeight']").val(productHeight);
+	$("input[name='productInnerLength']").val(productInnerLength);
+	$("input[name='productInnerWidth']").val(productInnerWidth);
+	$("input[name='productInnerHeight']").val(productInnerHeight);
+	calculate()
+});
+
+function calculate(){
+	/*箱子长宽高*/
+	var productLength=$("input[name='productLength']").val();
+	var productWidth=$("input[name='productWidth']").val();
+	var productHeight=$("input[name='productHeight']").val();
+	/*余量长宽高*/
+	var productInnerLength=$("input[name='productInnerLength']").val();
+	var productInnerWidth=$("input[name='productInnerWidth']").val();
+	var productInnerHeight=$("input[name='productInnerHeight']").val();
+	/*需要输入的值*/
+	var gbhou=$("input[name='gbhou']").val(); //盖板厚
+	var gbcxblkuan=$("input[name='gbcxblkuan']").val(); //盖板长项边料宽
+	var gbcxblhou=$("input[name='gbcxblhou']").val();//盖板长项边料厚
+	var gbkxblnum=$("input[name='gbkxblnum']").val();//盖板宽项边料数量
+	var dqbcxblkuan=$("input[name='dqbcxblkuan']").val();//大墙板长项边料宽
+	var dqbcxblhou=$("input[name='dqbcxblhou']").val();//大墙板长项边料厚
+	var xqbkxblnum=$("input[name='xqbkxblnum']").val();//小墙板宽项边料数量
+	var dbhou=$("input[name='dbhou']").val();//底板厚
+	
+	/*计算所需箱子基础信息*/
+	//箱子内径长=设备尺寸长+内径余量长，箱子内径宽=设备尺寸宽+内径余量宽，箱子内径厚=设备内径高+内径余量高。
+	$("input[name='innerLength']").val(numSub(productLength,productInnerLength));
+	$("input[name='innerWidth']").val(numSub(productWidth,productInnerWidth));
+	$("input[name='innerHeight']").val(numSub(productHeight,productInnerHeight));
+	//小墙板长=箱子内径宽+盖板长项边料厚*2，小墙板宽=箱子内径厚+底板厚，小墙板厚=盖板厚，小墙板数量=2。
+	$("input[name='xqbchang']").val(numSub($("input[name='innerWidth']").val(),gbcxblhou*2));
+	$("input[name='xqbkuan']").val(numSub($("input[name='innerHeight']").val(),dbhou));
+	$("input[name='xqbhou']").val(gbhou);
+	$("input[name='xqbnum']").val("2");
+	/*小墙板长项边料长=小墙板长，小墙板长项边料宽=盖板宽项边料宽，小墙板长项边料厚=盖板宽向边料厚，
+	小墙板长项边料数量=（箱子内径厚+底板厚+盖板长项边料厚）区间｛0-2440，4；2440-4880，6；4880以上，8｝；
+	小墙板宽向边料长=箱子内径厚+盖板长项边料宽*2，小墙板宽向边料宽=盖板宽向边料宽，小墙板宽向边料厚=盖板宽向边料厚，*/
+	
+	$("input[name='xqbcxblchang']").val($("input[name='xqbchang']").val());
+	$("input[name='xqbcxblkuan']").val(gbcxblkuan);
+	$("input[name='xqbcxblhou']").val(gbcxblhou);
+	var xqbcxblnum=numSub($("input[name='innerHeight']").val(),dbhou);
+	xqbcxblnum=numSub(xqbcxblnum,gbcxblhou);
+	if(xqbcxblnum>0&&xqbcxblnum<2440){
+		$("input[name='xqbcxblnum']").val("4");
+	}else if(xqbcxblnum>=2440&&xqbcxblnum<=4880){
+		$("input[name='xqbcxblnum']").val("6");
+	}else if(xqbcxblnum>4880){
+		$("input[name='xqbcxblnum']").val("8");
+	}else{
+		$("input[name='xqbcxblnum']").val("1");
+	}
+	$("input[name='xqbkxblchang']").val(numSub($("input[name='innerHeight']").val(),gbcxblkuan*2));
+	$("input[name='xqbkxblkuan']").val(gbcxblkuan);
+	$("input[name='xqbkxblhou']").val(gbcxblhou);
+	
+	/*箱子外径长=箱子内径长+小墙板厚*2+小墙板长项边料厚*2，箱子外径宽=箱子内径宽+大墙板长项边料厚*2+大墙板厚*2，
+		箱子外径厚=箱子内径厚+盖板厚+底板厚+长方厚+短方厚+盖板长项边料厚（如果有盖板）。 */
+	var outLength=numSub($("input[name='innerLength']").val(),gbhou);
+	outLength=numSub(outLength,gbcxblhou);
+	$("input[name='outLength']").val(outLength);
+	var outWidth=numSub($("input[name='innerWidth']").val(),dqbcxblhou);
+	outWidth=numSub(outWidth,gbhou);
+	$("input[name='outWidth']").val(outWidth);
+	var outHeight=numSub($("input[name='innerHeight']").val(),gbhou);
+	var outHeight1=numSub(dbhou,$("input[name='cfhou']").val());
+	var outHeight2=numSub($("input[name='duanfhou']").val(),gbcxblhou);
+	outHeight=numSub(outHeight,outHeight1);
+	outHeight=numSub(outHeight,outHeight2);
+	$("input[name='outHeight']").val(outHeight);
+	/*小墙板宽向边料数量=向上去整【（箱子外径宽/611+1）*2】。边料数量*2。*/
+	var xqbkxblnum=Math.ceil(((outWidth/611)+1)*2);
+	$("input[name='xqbkxblnum']").val(xqbkxblnum)
+	/* 大墙板长=箱子内径长+小墙板厚*2+小墙板长向边料厚*2，大墙板宽=箱子内径厚+底板厚+盖板长项边料厚+长方厚，
+	 * 大墙板厚=盖板厚，大墙板数量=2；大墙板长项边料长=大墙板长-小墙板厚*2-小墙板长项边料厚*2，
+	 * 大墙板长项边料宽=盖板宽项边料宽，大墙板长项边料厚=盖板宽向边料厚，
+	 * 大墙板长项边料数量=箱子外径厚区间｛0-2440，4；2440-4880，6；4880以上，8｝；
+	 * 大墙板宽向边料长=箱子内径厚+底板厚-大墙板长项边料宽*2，大墙板宽向边料宽=盖板宽向边料宽，
+	 * 大墙板宽向边料厚=盖板宽向边料厚，大墙板宽向边料数量=盖板宽向边料数量*2。*/
+	var dqbchang=numSub($("input[name='innerLength']").val(),gbhou*2);
+	dqbchang=numSub(dqbchang,gbcxblhou);
+	$("input[name='dqbchang']").val(dqbchang)
+	var dqbkuan=numSub($("input[name='innerHeight']").val(),dbhou);
+	var dqbkuan1=numSub(gbcxblhou,$("input[name='cfhou']").val());
+	dqbkuan=numSub(dqbkuan,dqbkuan1);
+	$("input[name='dqbkuan']").val(dqbkuan);
+	$("input[name='dqbhou']").val(gbhou);
+	$("input[name='dqbnum']").val("2");
+	var dqbcxblchang=numDif(dqbchang,gbhou*2);
+	dqbcxblchang=numDif(dqbcxblchang,gbcxblhou*2);
+	$("input[name='dqbcxblchang']").val(dqbcxblchang);
+	$("input[name='dqbcxblkuan']").val(gbcxblkuan);
+	$("input[name='dqbcxblhou']").val(gbcxblhou);
+	if(outHeight>0&&outHeight<2440){
+		$("input[name='dqbcxblnum']").val("4");
+	}else if(outHeight>=2440&&outHeight<=4880){
+		$("input[name='dqbcxblnum']").val("6");
+	}else if(outHeight>4880){
+		$("input[name='dqbcxblnum']").val("8");
+	}else{
+		$("input[name='dqbcxblnum']").val("1");
+	}
+	var dqbkxblchang=numSub($("input[name='innerHeight']").val(),dbhou);
+	dqbkxblchang=numDif(dqbkxblchang,gbcxblkuan*2);
+	$("input[name='dqbkxblchang']").val(dqbkxblchang);
+	$("input[name='dqbkxblkuan']").val(gbcxblkuan);
+	$("input[name='dqbkxblhou']").val(gbcxblhou);
+	$("input[name='dqbkxblnum']").val(gbkxblnum*2)
+	
+	/*盖板长=箱子内径长+小墙板厚*2+小墙板长向边料厚*2，盖板宽=箱子内径宽+大墙板厚*2+大墙板长向边料*2；
+	 盖板长向边料长=盖板长-小墙板厚*2-大墙板长向变量厚*2，盖板长项边料数量=箱子外径厚区间｛0-2440，2；2440-4880，3；4880以上，4｝；
+	 盖板宽向边料长=箱子内径宽-长项边料宽*2，盖板宽向边料宽=盖板长项边料宽，盖板宽向边料厚=盖板长项边料厚，宽向边料数量=四舍五入（箱子外径长/611+1）*/
+	var gbchang=numSub($("input[name='innerLength']").val(),gbhou*2);
+	gbchang=numSub(gbchang,gbcxblhou*2);
+	$("input[name='gbchang']").val(gbchang);
+	var gbkuan=numSub($("input[name='innerWidth']").val(),gbhou*2);
+	gbkuan=numSub(gbkuan,dqbcxblkuan*2);
+	$("input[name='gbkuan']").val(gbkuan);
+	$("input[name='gbnum']").val("1");
+	var gbcxblchang=numDif(gbchang,gbhou*2);
+	gbcxblchang=numDif(gbcxblchang,dqbcxblhou*2);
+	$("input[name='gbcxblchang']").val(gbcxblchang);
+	if(outHeight>0&&outHeight<2440){
+		$("input[name='gbcxblnum']").val("4");
+	}else if(outHeight>=2440&&outHeight<=4880){
+		$("input[name='gbcxblnum']").val("6");
+	}else if(outHeight>4880){
+		$("input[name='gbcxblnum']").val("8");
+	}else{
+		$("input[name='dqbcxblnum']").val("1");
+	}
+	$("input[name='gbkxblchang']").val(numDif($("input[name='innerWidth']").val(),gbcxblkuan*2));
+	$("input[name='gbkxblkuan']").val(gbcxblkuan);
+	$("input[name='gbkxblhou']").val(gbcxblhou);
+	$("input[name='gbkxblnum']").val(((outLength/611)+1).toFixed(2));
+	/*底板长=箱子内径长，底板宽=箱子内径宽，底板数量=1。*/
+	$("input[name='dbchang']").val($("input[name='innerLength']").val());
+	$("input[name='dbkuan']").val($("input[name='innerWidth']").val());
+	$("input[name='dbnum']").val("1");
+	$("input[name='cfchang']").val(gbchang)//长方长=盖板长。
+	$("input[name='duanfchang']").val(gbkuan)//短方长=盖板宽。
+	$("input[name='tfchang']")//挑方长=箱子内径宽。
+	$("input[name='dianfchang']")//垫方长=箱子内径宽。
+	/*$("input[name='']")//支撑料长=箱子内径宽。
+	$("input[name='']")//固定木长=箱子内径宽。*/
+	
+	/*单位用量=长*宽*厚*数量* 0.000000001。
+	未税单价=含税单价/1.17。
+	单位成本（未税）=单位用量*未税单价。*/
+	var gbdanwei=gbchang*gbkuan*gbhou*1*0.000000001; //盖板单位用量
+	var gbcxbldanwei=gbcxblchang*gbcxblkuan*gbcxblhou*$("input[name='gbcxblnum']").val()*0.000000001;//盖板长项边料单位用量
+	var gbkxbldanwei=$("input[name='gbkxblchang']").val()*gbcxblkuan*gbcxblhou*$("input[name='gbkxblnum']").val()*0.000000001;//盖板宽项边料长
+	var dqbdanwei=dqbchang*dqbkuan*gbhou*2*0.000000001;//大墙板单位用量
+	var dqbcxbldanwei=dqbcxblchang*dqbcxblkuan*dqbcxblhou*$("input[name='dqbcxblnum']").val()*0.000000001;//大墙板长项边料单位用量
+	var dqbkxbldanwei=dqbkxblchang*gbcxblkuan*dqbkxblhou*gbcxblhou*$("input[name='dqbkxblnum']").val()*0.000000001;//大墙板宽项边料单位用量
+	var xqbdanwei=$("input[name='xqbchang']").val()*$("input[name='xqbkuan']").val()*gbhou*2*0.000000001;//小墙板单位用量
+	var xqbcxbldanwei=$("input[name='xqbcxblchang']").val()*gbcxblkuan*gbcxblhou*$("input[name='xqbcxblnum']").val()*0.000000001;//小墙板长项边料单位用量
+	var xqbkxbldanwei=$("input[name='xqbkxblchang']").val()*gbcxblkuan*gbcxblhou*xqbkxblnum*0.000000001;//小墙板宽项边料单位用量
+	var dbdanwei=$("input[name='dbchang']").val()*$("input[name='dbkuan']").val()*dbhou*1*0.000000001;//底板长项边料单位用量
+	var cfdanwei=gbchang*$("input[name='cfkuan']").val()*$("input[name='cfhou']").val()*$("input[name='cfnum']").val()*0.000000001;//长方单位用量
+	var duanfdanwei=$("input[name='duanfchang']").val()*$("input[name=''duanfkuan]").val()*$("input[name='duanfhou']").val()*$("input[name='duanfnum']").val()*0.000000001;//短方单位用量
+	
+}

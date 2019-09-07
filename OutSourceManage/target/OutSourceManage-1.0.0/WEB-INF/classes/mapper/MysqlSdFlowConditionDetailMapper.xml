@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdFlowConditionDetailMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdFlowConditionDetail" id="sdFlowConditionDetailMapMysql"> 
+		<result column="FLOW_CONDITION_ID" property="flowConditionId"/>
+ 		<result column="FLOW_DETAIL_ID" property="flowDetailId"/>
+ 		<result column="FLOW_EXPRESSION" property="flowExpression"/>
+		 <result column="EXPRESSION_NAME" property="expressionName"/>
+		 <!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	 <select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdFlowConditionDetail"  resultMap="sdFlowConditionDetailMapMysql">
+		SELECT * FROM(
+		SELECT ROWNUM RW,a.*
+		FROM (
+		select flow_condition_id, flow_detail_id, flow_expression, expression_name from sd_flow_condition_detail
+		where flow_detail_id=#{flowDetailId}
+ 		) a )
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+		 
+	</select>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdFlowConditionDetail"  resultType="java.lang.Integer">
+   		select count(*) from sd_flow_condition_detail where flow_detail_id=#{flowDetailId} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdFlowConditionDetail"  resultMap="sdFlowConditionDetailMapMysql">
+		 select 
+		 	flow_detail_id,
+	       flow_condition_id, flow_detail_id, flow_expression, expression_name
+		  from sd_flow_condition_detail where flow_detail_id =#{flowDetailId}  
+	</select>
+	 <select id="queryByPkIdForMysql" parameterType="java.lang.String"  resultMap="sdFlowConditionDetailMap">
+		select flow_condition_id, flow_detail_id, flow_expression, expression_name from sd_flow_condition_detail
+		where flow_condition_id=#{flowConditionId}
+	</select>
+	
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdFlowConditionDetail"  resultMap="sdFlowConditionDetailMapMysql">
+		select flow_condition_id, flow_detail_id, flow_expression, expression_name from sd_flow_condition_detail
+	</select>
+	
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdFlowConditionDetail">
+		update sd_flow_condition_detail set
+		 flow_expression=#{flowExpression},
+		 expression_name = #{expressionName}
+		 where flow_condition_id=#{flowConditionId}
+	</update>
+	
+	
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdFlowConditionDetail" >
+		<selectKey keyProperty="flowConditionId" resultType="String" order="BEFORE">
+			select fill_str_get_seq('sd_flow_condition_detail_seq',10,'L') from dual
+		</selectKey>
+	     insert into sd_flow_condition_detail
+		   (flow_condition_id,
+		    flow_expression,
+		    expression_name,
+		    flow_detail_id)	
+		 values
+		   (#{flowConditionId},
+		    #{flowExpression}, 
+		   	#{expressionName}, 
+		    #{flowDetailId})
+ 
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdFlowConditionDetail">
+		delete from sd_flow_condition_detail where 1=1
+		<if test="flowConditionId !=null and flowConditionId !=''">
+		  and flow_condition_id=#{flowConditionId}
+		</if>
+		<if test="flowDetailId !=null and flowDetailId !=''">
+		  and flow_detail_id=#{flowDetailId}
+		</if>
+	</delete>
+	
+</mapper> 
+

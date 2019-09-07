@@ -1,0 +1,152 @@
+package com.sd.farmework.filter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.sd.farmework.common.HttpSessionProvider;
+
+public class LoginFilter implements Filter {
+
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain chain) throws IOException, ServletException {
+    
+    	
+        // 获得在下面代码中要用的request,response,session对象
+    	response.reset();
+        HttpServletRequest servletRequest = (HttpServletRequest) request;
+        HttpServletResponse servletResponse = (HttpServletResponse) response;
+        HttpSession session = servletRequest.getSession();
+      
+
+        // 获得用户请求的URI
+        String path = servletRequest.getRequestURI();
+        // 从session里取员工工号信息
+        Object obj=session.getAttribute(HttpSessionProvider.CURRENT_USER_SESSION_KEY);
+        List<String> paths =new  ArrayList<String>();
+        paths.add("login.html");
+        paths.add("wxLogin.do");
+        paths.add("pcLogin.do");
+        paths.add("transfer.html");
+        paths.add("manager/loginIn/SysUserInfo/login.do");
+        boolean isTrue =false;
+        if(path.indexOf("/resources/")>-1||path.indexOf("/css/")>-1||path.indexOf("/plugins/")>-1||path.indexOf(".js")>-1||path.indexOf("/images/")>-1){
+        	isTrue =true;
+        }else{
+        	
+        	
+        	
+	       
+	        //创建类Constants.java，里面写的是无需过滤的页面
+	        for (int i = 0; i < paths.size(); i++) {
+	            if (path.indexOf(paths.get(i)) > -1) {
+	                isTrue=true;
+	                break;
+	            }
+	        } 
+        }
+        if(isTrue){
+        	chain.doFilter(servletRequest, servletResponse);
+        	return;
+        }
+        if(obj==null&&(path.indexOf("/loginIn/")>-1||path.indexOf("/backstage/")>-1)){
+        	//servletResponse.sendRedirect(servletRequest.getContextPath()+"/login.html"); 
+//        	Map map =new HashMap();
+//        	map.put("code", "111");
+//        	map.put("msg", "登录超时，请重新登录");
+//        	
+        	 servletResponse.setContentType("text/html;charset=utf-8");
+        	 servletResponse. setCharacterEncoding("UTF-8");
+	          PrintWriter out = servletResponse.getWriter();
+	          out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+	          out.println("<HTML>");
+	          out.println("  <HEAD><meta charset=\"GBK\">"
+	        		  
+	        		 
+	        		 +" <script type=\"text/javascript\" src=\""+servletRequest.getContextPath()+"/resources/js/base.js\"></script>"
+	        		 +" <script type=\"text/javascript\" src=\""+servletRequest.getContextPath()+"/backstage/plugins/layui/layui.js\"></script>"
+	        		 +"<link rel=\"stylesheet\" href=\""+servletRequest.getContextPath()+"/backstage/plugins/layui/css/layui.css\"media=\"all\">"
+	        		  
+	                 +"<script>"
+	                 + "var data = {\"code\":\"111\",\"msg\":\"登录超时，请重新登录\"};"
+	                 +"base.alertTip(data)</script></HEAD>");
+ 
+        	          out.println("</HTML>");
+	          out.flush();
+	          out.close();
+	 
+        	 
+        	//JSONUtils.objectToJson(servletRequest, servletResponse, map);
+        	return ;
+        }else if(obj==null&&(path.indexOf("/wxManagerPc/")>-1)){
+        	 servletResponse.setContentType("text/html;charset=utf-8");
+        	 servletResponse. setCharacterEncoding("UTF-8");
+	          PrintWriter out = servletResponse.getWriter();
+	          out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+	          out.println("<HTML>");
+	          out.println("  <HEAD><meta charset=\"GBK\">"
+	        		  
+	        		 
+	        		 +" <script type=\"text/javascript\" src=\""+servletRequest.getContextPath()+"/resources/js/base.js\"></script>"
+	        		 +" <script type=\"text/javascript\" src=\""+servletRequest.getContextPath()+"/backstage/plugins/layui/layui.js\"></script>"
+	        		 +"<link rel=\"stylesheet\" href=\""+servletRequest.getContextPath()+"/backstage/plugins/layui/css/layui.css\"media=\"all\">"
+	        		  
+	                 +"<script>"
+	                 + "var data = {\"code\":\"222\",\"msg\":\"登录超时，请重新登录\"};"
+	                 +"base.alertTip(data)</script></HEAD>");
+ 
+        	          out.println("</HTML>");
+	          out.flush();
+	          out.close();
+	 
+        	 
+        	//JSONUtils.objectToJson(servletRequest, servletResponse, map);
+        	return ;
+        }else if(obj==null&&(path.indexOf("/wxManagerWx/")>-1)){
+        	servletResponse.setContentType("text/html;charset=utf-8");
+       	    servletResponse. setCharacterEncoding("UTF-8");
+	          PrintWriter out = servletResponse.getWriter();
+	          out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+	          out.println("<HTML>");
+	          out.println("  <HEAD><meta charset=\"GBK\">"
+	        		  
+	        		 
+	        		 +" <script type=\"text/javascript\" src=\""+servletRequest.getContextPath()+"/resources/js/base.js\"></script>"
+	        		 +" <script type=\"text/javascript\" src=\""+servletRequest.getContextPath()+"/backstage/plugins/layui/layui.js\"></script>"
+	        		 +"<link rel=\"stylesheet\" href=\""+servletRequest.getContextPath()+"/backstage/plugins/layui/css/layui.css\"media=\"all\">"
+	        		  
+	                 +"<script>"
+	                 + "var data = {\"code\":\"333\",\"msg\":\"登录超时，请重新登录\"};"
+	                 +"base.alertTip(data)</script></HEAD>");
+
+       	          out.println("</HTML>");
+	          out.flush();
+	          out.close();
+	 
+       	 
+             //JSONUtils.objectToJson(servletRequest, servletResponse, map);
+        	return ;
+        }else{
+        	  chain.doFilter(request, response);
+        }
+    }
+
+    public void destroy() {
+
+    }
+
+}

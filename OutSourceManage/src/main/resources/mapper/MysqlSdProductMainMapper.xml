@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdProductMainMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdProductMain" id="sdproductmainMap"> 
+
+		<result column="product_main_id" property="productMainId"/>
+		<result column="product_id" property="productId"/>
+		<result column="product_box_weight" property="productBoxWeight"/>
+		<result column="product_square_unit_price" property="productSquareUnitPrice"/>
+		<result column="product_outer_area" property="productOuterArea"/>
+		<result column="product_small_outer_area" property="productSmallOuterArea"/>
+		<result column="product_box_outer_area" property="productBoxOuterArea"/>
+		<result column="product_cubic_unit_price" property="productCubicUnitPrice"/>
+		<result column="product_inner_area" property="productInnerArea"/>
+		<result column="product_small_inner_area" property="productSmallInnerArea"/>
+		<result column="product_box_bottom_area" property="productBoxBottomArea"/>
+		<result column="product_box_internal_surface" property="productBoxInternalSurface"/>
+		<result column="product_big_outer_area" property="productBigOuterArea"/>
+		<result column="product_box_square_unit_price" property="productBoxSquareUnitPrice"/>
+		<result column="product_box_cubic_unit_number" property="productBoxCubicUnitNumber"/>
+		<result column="product_box_volume" property="productBoxVolume"/>
+		<result column="product_big_inner_area" property="productBigInnerArea"/>
+		<result column="product_box_cubic_unit_price" property="productBoxCubicUnitPrice"/>
+		<result column="no_tax_price" property="noTaxPrice"/>
+		<result column="tax_price" property="taxPrice"/>
+		<result column="no_tax_ratio" property="noTaxRatio"/>
+		<result column="actual_price" property="actualPrice"/>
+		<result column="actual_tax_price" property="actualTaxPrice"/>
+		<result column="material_price_ratio" property="materialPriceRatio"/>
+		<result column="uncertainty_evaluation" property="uncertaintyEvaluation"/>
+		<result column="money" property="money"/>
+		<result column="order_expenditure" property="orderExpenditure"/>
+		<result column="actual_profit_margin" property="actualProfitMargin"/>
+		<result column="pre_quotation_no_tax" property="preQuotationNoTax"/>
+		<result column="pre_quotation_tax" property="preQuotationTax"/>
+		<result column="predicted_profit_margin" property="predictedProfitMargin"/>
+		<result column="sd_id" property="sdId"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdProductMain">
+		UPDATE sd_product_main set 
+		t.product_main_id=#{productMainId},
+		t.product_id=#{productId},
+		t.product_box_weight=#{productBoxWeight},
+		t.product_square_unit_price=#{productSquareUnitPrice},
+		t.product_outer_area=#{productOuterArea},
+		t.product_small_outer_area=#{productSmallOuterArea},
+		t.product_box_outer_area=#{productBoxOuterArea},
+		t.product_cubic_unit_price=#{productCubicUnitPrice},
+		t.product_inner_area=#{productInnerArea},
+		t.product_small_inner_area=#{productSmallInnerArea},
+		t.product_box_bottom_area=#{productBoxBottomArea},
+		t.product_box_internal_surface=#{productBoxInternalSurface},
+		t.product_big_outer_area=#{productBigOuterArea},
+		t.product_box_square_unit_price=#{productBoxSquareUnitPrice},
+		t.product_box_cubic_unit_number=#{productBoxCubicUnitNumber},
+		t.product_box_volume=#{productBoxVolume},
+		t.product_big_inner_area=#{productBigInnerArea},
+		t.product_box_cubic_unit_price=#{productBoxCubicUnitPrice},
+		t.no_tax_price=#{noTaxPrice},
+		t.tax_price=#{taxPrice},
+		t.no_tax_ratio=#{noTaxRatio},
+		t.actual_price=#{actualPrice},
+		t.actual_tax_price=#{actualTaxPrice},
+		t.material_price_ratio=#{materialPriceRatio},
+		t.uncertainty_evaluation=#{uncertaintyEvaluation},
+		t.money=#{money},
+		t.order_expenditure=#{orderExpenditure},
+		t.actual_profit_margin=#{actualProfitMargin},
+		t.pre_quotation_no_tax=#{preQuotationNoTax},
+		t.pre_quotation_tax=#{preQuotationTax},
+		t.predicted_profit_margin=#{predictedProfitMargin},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdProductMain"  resultMap="sdproductmainMap">
+		SELECT 
+		t.product_main_id,
+		t.product_id,
+		t.product_box_weight,
+		t.product_square_unit_price,
+		t.product_outer_area,
+		t.product_small_outer_area,
+		t.product_box_outer_area,
+		t.product_cubic_unit_price,
+		t.product_inner_area,
+		t.product_small_inner_area,
+		t.product_box_bottom_area,
+		t.product_box_internal_surface,
+		t.product_big_outer_area,
+		t.product_box_square_unit_price,
+		t.product_box_cubic_unit_number,
+		t.product_box_volume,
+		t.product_big_inner_area,
+		t.product_box_cubic_unit_price,
+		t.no_tax_price,
+		t.tax_price,
+		t.no_tax_ratio,
+		t.actual_price,
+		t.actual_tax_price,
+		t.material_price_ratio,
+		t.uncertainty_evaluation,
+		t.money,
+		t.order_expenditure,
+		t.actual_profit_margin,
+		t.pre_quotation_no_tax,
+		t.pre_quotation_tax,
+		t.predicted_profit_margin,
+		t.sd_id
+		FROM  sd_product_main t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdProductMain"  resultMap="sdproductmainMap">
+		SELECT 
+		t.product_main_id,
+		t.product_id,
+		t.product_box_weight,
+		t.product_square_unit_price,
+		t.product_outer_area,
+		t.product_small_outer_area,
+		t.product_box_outer_area,
+		t.product_cubic_unit_price,
+		t.product_inner_area,
+		t.product_small_inner_area,
+		t.product_box_bottom_area,
+		t.product_box_internal_surface,
+		t.product_big_outer_area,
+		t.product_box_square_unit_price,
+		t.product_box_cubic_unit_number,
+		t.product_box_volume,
+		t.product_big_inner_area,
+		t.product_box_cubic_unit_price,
+		t.no_tax_price,
+		t.tax_price,
+		t.no_tax_ratio,
+		t.actual_price,
+		t.actual_tax_price,
+		t.material_price_ratio,
+		t.uncertainty_evaluation,
+		t.money,
+		t.order_expenditure,
+		t.actual_profit_margin,
+		t.pre_quotation_no_tax,
+		t.pre_quotation_tax,
+		t.predicted_profit_margin,
+		t.sd_id
+		FROM  sd_product_main t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdProductMain"  resultMap="sdproductmainMap">
+		SELECT  
+		t.product_main_id,
+		t.product_id,
+		t.product_box_weight,
+		t.product_square_unit_price,
+		t.product_outer_area,
+		t.product_small_outer_area,
+		t.product_box_outer_area,
+		t.product_cubic_unit_price,
+		t.product_inner_area,
+		t.product_small_inner_area,
+		t.product_box_bottom_area,
+		t.product_box_internal_surface,
+		t.product_big_outer_area,
+		t.product_box_square_unit_price,
+		t.product_box_cubic_unit_number,
+		t.product_box_volume,
+		t.product_big_inner_area,
+		t.product_box_cubic_unit_price,
+		t.no_tax_price,
+		t.tax_price,
+		t.no_tax_ratio,
+		t.actual_price,
+		t.actual_tax_price,
+		t.material_price_ratio,
+		t.uncertainty_evaluation,
+		t.money,
+		t.order_expenditure,
+		t.actual_profit_margin,
+		t.pre_quotation_no_tax,
+		t.pre_quotation_tax,
+		t.predicted_profit_margin,
+		t.sd_id
+		FROM  sd_product_main t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdProductMain"  resultMap="sdproductmainMap">
+		SELECT 
+		t.product_main_id,
+		t.product_id,
+		t.product_box_weight,
+		t.product_square_unit_price,
+		t.product_outer_area,
+		t.product_small_outer_area,
+		t.product_box_outer_area,
+		t.product_cubic_unit_price,
+		t.product_inner_area,
+		t.product_small_inner_area,
+		t.product_box_bottom_area,
+		t.product_box_internal_surface,
+		t.product_big_outer_area,
+		t.product_box_square_unit_price,
+		t.product_box_cubic_unit_number,
+		t.product_box_volume,
+		t.product_big_inner_area,
+		t.product_box_cubic_unit_price,
+		t.no_tax_price,
+		t.tax_price,
+		t.no_tax_ratio,
+		t.actual_price,
+		t.actual_tax_price,
+		t.material_price_ratio,
+		t.uncertainty_evaluation,
+		t.money,
+		t.order_expenditure,
+		t.actual_profit_margin,
+		t.pre_quotation_no_tax,
+		t.pre_quotation_tax,
+		t.predicted_profit_margin,
+		t.sd_id
+		FROM  sd_product_main t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdProductMain">
+	insert into sd_product_main
+	(
+		product_main_id,
+		product_id,
+		product_box_weight,
+		product_square_unit_price,
+		product_outer_area,
+		product_small_outer_area,
+		product_box_outer_area,
+		product_cubic_unit_price,
+		product_inner_area,
+		product_small_inner_area,
+		product_box_bottom_area,
+		product_box_internal_surface,
+		product_big_outer_area,
+		product_box_square_unit_price,
+		product_box_cubic_unit_number,
+		product_box_volume,
+		product_big_inner_area,
+		product_box_cubic_unit_price,
+		no_tax_price,
+		tax_price,
+		no_tax_ratio,
+		actual_price,
+		actual_tax_price,
+		material_price_ratio,
+		uncertainty_evaluation,
+		money,
+		order_expenditure,
+		actual_profit_margin,
+		pre_quotation_no_tax,
+		pre_quotation_tax,
+		predicted_profit_margin,
+		sd_id
+	)
+	values
+	(
+		#{productMainId},
+		#{productId},
+		#{productBoxWeight},
+		#{productSquareUnitPrice},
+		#{productOuterArea},
+		#{productSmallOuterArea},
+		#{productBoxOuterArea},
+		#{productCubicUnitPrice},
+		#{productInnerArea},
+		#{productSmallInnerArea},
+		#{productBoxBottomArea},
+		#{productBoxInternalSurface},
+		#{productBigOuterArea},
+		#{productBoxSquareUnitPrice},
+		#{productBoxCubicUnitNumber},
+		#{productBoxVolume},
+		#{productBigInnerArea},
+		#{productBoxCubicUnitPrice},
+		#{noTaxPrice},
+		#{taxPrice},
+		#{noTaxRatio},
+		#{actualPrice},
+		#{actualTaxPrice},
+		#{materialPriceRatio},
+		#{uncertaintyEvaluation},
+		#{money},
+		#{orderExpenditure},
+		#{actualProfitMargin},
+		#{preQuotationNoTax},
+		#{preQuotationTax},
+		#{predictedProfitMargin},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdProductMain">
+		delete from sd_product_main where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdProductMain"  resultType="java.lang.Integer">
+   		select    count(*) from sd_product_main where 1=1
+	</select>
+</mapper> 
+

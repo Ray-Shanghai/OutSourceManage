@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>功能菜单对应表明细</title>
+
+<link href="../../assets/css/dpl-min.css" rel="stylesheet"
+	type="text/css" />
+<link href="../../assets/css/bui-min.css" rel="stylesheet"
+	type="text/css" />
+<link href="../../assets/css/page-min.css" rel="stylesheet"
+	type="text/css" />
+</head>
+<body>
+	<div class="container">
+    <form id ="J_Form" class="form-horizontal">
+      <h3>基本信息</h3>
+       <div class="row">
+        <div class="control-group span12">
+          <label class="control-label">表名名称：</label>
+          <div class="controls">
+          	<input name='functionDbTableId' id="functionDbTableId" type="hidden" />
+            <span class="detail-text" id="functionDbTableName"></span>
+          </div>
+        </div>
+      </div>
+             <div class="row">
+        <div class="control-group span12">
+          <label class="control-label">表名描述：</label>
+          <div class="controls">
+				<span class="detail-text" id="functionDbTableDesc"></span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="control-group span12">
+          <label class="control-label">表名类型：</label>
+          <div class="controls">
+				<span class="detail-text" id="functionDbTableTypeId"></span>
+          </div>
+        </div>
+      </div>
+      <hr/>
+      <h3>表字段</h3>
+      <div class="row">
+        <div class="span21 offset1 control-row-auto">
+          <div id="grid"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+ <script type="text/javascript" src="../../assets/js/jquery-1.8.1.min.js"></script>
+  <script type="text/javascript" src="../../assets/js/bui-min.js"></script>
+  <script src="../../../resources/js/base.js"></script>
+ <script type="text/javascript">
+
+ </script>
+<script type="text/javascript">
+	$(function() {
+		var tableId=window.location.search.split("=")[1];
+		$("#functionDbTableId").val(tableId);
+		var functionDbTableId=$("#functionDbTableId").val();
+		$.ajax({
+			url :  base.serverContet+'/manager/loginIn/SdFunctionDbTable/queryByPkId.do?pkId='+tableId,
+			type : 'get',
+			success : function(data) {
+				var item = data.functionTable;
+				$("#functionDbTableName").text(item.functionDbTableName);
+				$("#functionDbTableDesc").text(item.functionDbTableDesc);
+				$("#functionDbTableTypeId").text(
+						item.functionDbTableTypeId == '000040001' ? 'TABLE'
+								: 'VIEW');
+				$("#status").text(item.status == 'Y' ? '正常' : '禁用');
+				$("#createUserName").text(item.createUserName);
+				$("#createTime").text(item.createTime);
+			},
+			error:function(){
+				alert("失败！");
+			}
+		});
+	});
+	
+</script>
+<script type="text/javascript">
+var tableId=window.location.search.split("=")[1];
+var Grid = BUI.Grid,
+Store = BUI.Data.Store,
+columns = [
+  { title: '列名',width: 100,  sortable: true, dataIndex: 'functionDbTableColumnsName'},
+  { title: '描述', width: 100, sortable: true, dataIndex: 'functionDbTableColumnsDesc', selectable: true ,showTip: true },
+  { title: '类型', width: 80, sortable: false, dataIndex: 'functionDbTableColumnsType', selectable: true ,
+	   renderer:function(value,obj){
+		   	if(value=='text'){
+		   		return 'text';
+		   	}
+		   	if(value=='doubles'){
+		   		return 'double';
+		   	}
+		   	if(value=='number'){
+		   		return 'number';
+		   	}
+	   }   
+  },
+  { title: '长度', width: 50,  sortable: false, dataIndex: 'dbTableColumnsValueLength', selectable: true },
+  { title: '默认值',width: 100, sortable: true,  dataIndex: 'dbTableColumnsDefault',  showTip: true ,
+  	renderer:function(value,obj){
+  	return value=="0"?"是":"否";
+  }},
+  { title: '是否必填',width: 100, sortable: true,  dataIndex: 'dbTableColumnsIsNull'  ,
+	   	renderer:function(value,obj){
+	   	return value=="0"?"是":"否";
+  }},
+  { title: '是否主键',width: 100, sortable: true,  dataIndex: 'dbTableColumnsIsPk' ,
+		   	renderer:function(value,obj){
+		   	return value=="0"?"是":"否";
+  }
+  },
+  { title: '是否唯一约束',width: 100, sortable: true,  dataIndex: 'dbTableColumnsIsUk'  ,
+	   	renderer:function(value,obj){
+	   	return value=="0"?"是":"否";
+  }}
+  
+];
+
+var store = new Store({
+  url : base.serverContet+'/manager/loginIn/SdFunctionDbTable/queryByPkId.do?pkId='+tableId,
+  autoLoad:true,
+  pageSize:11
+}),
+grid = new Grid.Grid({
+  render:'#grid',
+  loadMask: true,
+  forceFit:true,
+  columns : columns,
+  store: store,
+  emptyDataTpl : '<div class="centered"><img alt="Crying" src="http://img03.taobaocdn.com/tps/i3/T1amCdXhXqXXXXXXXX-60-67.png"><h2>查询的数据不存在</h2></div>',
+  plugins : [Grid.Plugins.AutoFit], //勾选插件、自适应宽度插件
+  bbar : {
+  pagingBar:false
+  }
+});
+
+grid.render();
+</script>
+</html>

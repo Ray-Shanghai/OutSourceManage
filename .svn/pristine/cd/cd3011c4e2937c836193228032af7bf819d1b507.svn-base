@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdOrderTrackMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdOrderTrack" id="sdordertrackMap"> 
+
+		<result column="order_track_id" property="orderTrackId"/>
+		<result column="order_id" property="orderId"/>
+		<result column="data_state" property="dataState"/>
+		<result column="data_state_name" property="dataStateName"/>
+		<result column="sd_id" property="sdId"/>
+
+
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdOrderTrack">
+		UPDATE sd_order_track set 
+		t.order_track_id=#{orderTrackId},
+		t.order_id=#{orderId},
+		t.data_state=#{dataState},
+		t.data_state_name=#{dataStateName},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdOrderTrack"  resultMap="sdordertrackMap">
+		SELECT 
+		t.order_track_id,
+		t.order_id,
+		t.data_state,
+		t.data_state_name,
+		t.sd_id
+		FROM  sd_order_track t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdOrderTrack"  resultMap="sdordertrackMap">
+		SELECT 
+		t.order_track_id,
+		t.order_id,
+		t.data_state,
+		t.data_state_name,
+		t.sd_id
+		FROM  sd_order_track t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdOrderTrack"  resultMap="sdordertrackMap">
+		SELECT  
+		t.order_track_id,
+		t.order_id,
+		t.data_state,
+		t.data_state_name,
+		t.sd_id
+		FROM  sd_order_track t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdOrderTrack"  resultMap="sdordertrackMap">
+		SELECT * FROM sd_order_track t
+		WHERE t.order_id=#{orderId}
+ 		ORDER BY t.CREATE_TIME DESC
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdOrderTrack">
+	insert into sd_order_track
+	(
+		order_id,
+		data_state,
+		data_state_name,
+		remark,
+		status,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME
+	)
+	values
+	(
+		#{orderId},
+		#{dataState},
+		#{dataStateName},
+		#{remark},
+		#{status},
+		now(),
+		#{createUserId},
+		#{createUserName},
+		#{createDepartId},
+		#{createDepartName}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdOrderTrack">
+		delete from sd_order_track where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdOrderTrack"  resultType="java.lang.Integer">
+   		select    count(*) from sd_order_track where 1=1
+	</select>
+</mapper> 
+

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdProductCostMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdProductCost" id="sdproductcostMap"> 
+
+		<result column="product_cost_id" property="productCostId"/>
+		<result column="product_main_id" property="productMainId"/>
+		<result column="product_cost_name" property="productCostName"/>
+		<result column="product_unit" property="productUnit"/>
+		<result column="product_number" property="productNumber"/>
+		<result column="product_price_rate" property="productPriceRate"/>
+		<result column="product_main_unit_cost" property="productMainUnitCost"/>
+		<result column="sd_id" property="sdId"/>
+
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdProductCost">
+		UPDATE sd_product_cost set 
+		t.product_cost_id=#{productCostId},
+		t.product_main_id=#{productMainId},
+		t.product_cost_name=#{productCostName},
+		t.product_unit=#{productUnit},
+		t.product_number=#{productNumber},
+		t.product_price_rate=#{productPriceRate},
+		t.product_main_unit_cost=#{productMainUnitCost},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdProductCost"  resultMap="sdproductcostMap">
+		SELECT 
+		t.product_cost_id,
+		t.product_main_id,
+		t.product_cost_name,
+		t.product_unit,
+		t.product_number,
+		t.product_price_rate,
+		t.product_main_unit_cost,
+		t.sd_id
+		FROM  sd_product_cost t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdProductCost"  resultMap="sdproductcostMap">
+		SELECT 
+		t.product_cost_id,
+		t.product_main_id,
+		t.product_cost_name,
+		t.product_unit,
+		t.product_number,
+		t.product_price_rate,
+		t.product_main_unit_cost,
+		t.sd_id
+		FROM  sd_product_cost t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdProductCost"  resultMap="sdproductcostMap">
+		SELECT  
+		t.product_cost_id,
+		t.product_main_id,
+		t.product_cost_name,
+		t.product_unit,
+		t.product_number,
+		t.product_price_rate,
+		t.product_main_unit_cost,
+		t.sd_id
+		FROM  sd_product_cost t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdProductCost"  resultMap="sdproductcostMap">
+		SELECT 
+		t.product_cost_id,
+		t.product_main_id,
+		t.product_cost_name,
+		t.product_unit,
+		t.product_number,
+		t.product_price_rate,
+		t.product_main_unit_cost,
+		t.sd_id
+		FROM  sd_product_cost t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdProductCost">
+	insert into sd_product_cost
+	(
+		product_cost_id,
+		product_main_id,
+		product_cost_name,
+		product_unit,
+		product_number,
+		product_price_rate,
+		product_main_unit_cost,
+		sd_id
+	)
+	values
+	(
+		#{productCostId},
+		#{productMainId},
+		#{productCostName},
+		#{productUnit},
+		#{productNumber},
+		#{productPriceRate},
+		#{productMainUnitCost},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdProductCost">
+		delete from sd_product_cost where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdProductCost"  resultType="java.lang.Integer">
+   		select    count(*) from sd_product_cost where 1=1
+	</select>
+</mapper> 
+

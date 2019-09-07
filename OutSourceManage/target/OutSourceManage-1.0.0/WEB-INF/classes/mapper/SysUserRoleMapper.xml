@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysUserRoleMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysUserRole" id="SysUserRoleMap"> 
+
+		<result column="USER_ID" property="userId"/>
+		<result column="ROLE_ID" property="roleId"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		 
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		 
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		 
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	  
+	<select id="query" parameterType="com.sd.farmework.pojo.SysUserRole"  resultMap="SysUserRoleMap">
+		SELECT 
+		t.USER_ID,
+		t.ROLE_ID,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  SYS_USER_ROLE t 
+		where USER_ID=#{userId}
+	</select>
+
+	<select id="queryListByPage" parameterType="com.sd.farmework.pojo.SysUserRole"  resultMap="SysUserRoleMap">
+		<![CDATA[ 
+		SELECT RW,a.*
+		FROM (
+		SELECT ROWNUM RW,
+		t.USER_ID,
+		t.ROLE_ID,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  SYS_USER_ROLE t 
+ 		) a 
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+		]]> 
+	</select>
+	<select id="queryList" parameterType="com.sd.farmework.pojo.SysUserRole"  resultMap="SysUserRoleMap">
+		SELECT 
+		t.USER_ID,
+		t.ROLE_ID,
+		t.STATUS,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  SYS_USER_ROLE t 
+	</select>
+	<insert id="add" parameterType="com.sd.farmework.pojo.SysUserRole">
+	insert into SYS_USER_ROLE
+	(
+		USER_ID,
+		ROLE_ID,
+    create_user_id,
+   create_user_name ,
+   create_depart_id,
+   create_depart_name 
+	)
+	values
+	(
+		#{userId},
+		#{roleId},
+    #{createUserId},
+    #{createUserName},
+ 
+    #{createDepartId},
+    #{createDepartName} 
+	)
+	</insert>
+	<delete id="delete" parameterType="com.sd.farmework.pojo.SysUserRole">
+		delete from SYS_USER_ROLE where USER_ID=#{userId} 
+	</delete>
+</mapper> 
+

@@ -1,0 +1,16 @@
+package com.sd.farmework.mapper; 
+
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+public interface SdOrderInfoMapper  extends BaseMapper{ 
+	/**
+	 * 查询每天最大的订单编号
+	 * @param now
+	 * @return
+	 * @throws Exception
+	 */
+	public String queryMaxOrderNuber(String now) throws Exception;
+}

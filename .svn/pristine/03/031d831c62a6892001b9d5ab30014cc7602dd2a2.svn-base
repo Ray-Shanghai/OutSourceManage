@@ -1,0 +1,9 @@
+package com.sd.farmework.mapper; 
+
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+public interface SdBasicInfoMapper  extends BaseMapper{ 
+}

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>客户信息</title>
+
+<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script src="../../../resources/js/base.js"></script>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/my.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+<style type="text/css">
+   .layui-form-radio{
+   		margin:0;
+   }
+   .layui-form-select dl{max-height:100px;}
+ </style>
+</head>
+<body>
+	<form class="layui-form  ml-30" id="frm1" name="frm1">
+		<input type="hidden" id="productId" name="productId"/>
+		<div class="layui-form-item mt-10">
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">客户料号：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="customerSupplies" id="customerSupplies" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">产品代码：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productCode" id="productCode" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">产品名称：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productName" id="productName" onblur="queryName()" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+					<input type="hidden" name="hidProductName" id="hidProductName">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">长：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productLength" id="productLength" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">宽：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productWidth" id="productWidth" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">高：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productHeight" id="productHeight" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">内径余量长：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productInnerLength" id="productInnerLength" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">内径余量宽：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productInnerWidth" id="productInnerWidth" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">内径余量高：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productInnerHeight" id="productInnerHeight" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">是否带盖：</label>
+				<div class="layui-input-inline dx-input-required">
+					&nbsp;<input type="radio" name="isLid" id="isLidY" value="1" title="是"> 
+					<input type="radio" name="isLid" id="isLidN" value="0" title="否">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">产品规格：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productStandard" id="productStandard" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">其他：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="productOther" id="productOther" id="isLid" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style="width:85px;">产品类别：</label>
+				<div class="layui-input-inline" style="width:190px;">
+					<select name="productTypeId" id="productTypeId" lay-verify="required" lay-search="" lay-filter="productTypeId">
+						<option value="">选择或搜索</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style="width:85px;">产品材质：</label>
+				<div class="layui-input-inline" style="width:190px;">
+					<select name="productGradeId" id="productGradeId" lay-verify="required" lay-search="" lay-filter="productGradeId">
+						<option value="">选择或搜索</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:85px">状态：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="radio" name="status" id="statusY" value="Y" title="启用"> 
+					<input type="radio" name="status" id="statusN" value="N" title="禁用">
+				</div>
+			</div>
+		</div>
+	</form>
+	<script type="text/javascript">
+		var productId = window.location.search.split("?")[1];
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use([ 'paging', 'form', 'element' ], function() {
+			var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+			paging = layui.paging(),
+			layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
+			layer = layui.layer, //获取当前窗口的layer对象
+			form = layui.form();
+			
+			//监听下拉框数据
+			form.on('select(productTypeId)',function(data){
+				$("#productTypeId").val(data.value);
+			});
+			form.on('select(productGradeId)',function(data){
+				$("#productGradeId").val(data.value);
+			});
+			
+			//查询类别数据
+			//var productTypeId = $("#productTypeId").val();
+			$.ajax({
+				type : "GET",
+				url : base.serverContet +"/SdProductType/queryList.do",
+				data : {"":""},
+				async : false,
+				success : function(data) {
+					if(data.code=="000"){
+						$("#productTypeId").html("");
+						for(var i=0;i<data.rows.length;i++){
+							$("#productTypeId").append("<option value='"+data.rows[i].productTypeId+"'>"+data.rows[i].productTypeName+"</option>");
+						}
+						if(data.rows.length==0){
+							$("#productTypeId").append("<option value=''>暂无数据</option>");
+						}
+						layui.form().render('select');
+					}else{	
+						base.failAlert(data);
+					}	
+				},error : function(rec) {
+					console.info("网络异常,请稍后再试");
+				}
+			});
+			//查询材质数据
+			//var productGradeId = $("#productGradeId").val();
+			$.ajax({
+				type : "GET",
+				url : base.serverContet +"/SdProductGrade/queryList.do",
+				data : {"":""},
+				async : false,
+				success : function(data) {
+					if(data.code=="000"){
+						$("#productGradeId").html("");
+						for(var i=0;i<data.rows.length;i++){
+							$("#productGradeId").append("<option value='"+data.rows[i].productGradeId+"'>"+data.rows[i].productGradeName+"</option>");
+						}
+						if(data.rows.length==0){
+							$("#productGradeId").append("<option value=''>暂无数据</option>");
+						}
+						layui.form().render('select');
+					}else{	
+						base.failAlert(data);
+					}	
+				},error : function(rec) {
+					console.info("网络异常,请稍后再试");
+				}
+			});
+			
+			//查询修改数据
+			$.ajax({
+				type : 'POST',
+				url: base.serverContet+'/manager/loginIn/SdProductInfo/queryByPkId.do', //地址
+				data:{'pkId':productId},
+				async : false,//同步  
+				success : function(data) {
+					if(data.code=="000"){
+						$("#productId").val(data.rows.productId);
+						$("#customerSupplies").val(data.rows.customerSupplies);
+						$("#productCode").val(data.rows.productCode);
+						$("#productName").val(data.rows.productName);
+						$("#productLength").val(data.rows.productLength);
+						$("#productWidth").val(data.rows.productWidth);
+						$("#productHeight").val(data.rows.productHeight);
+						$("#productInnerLength").val(data.rows.productInnerLength);
+						$("#productInnerWidth").val(data.rows.productInnerWidth);
+						$("#productInnerHeight").val(data.rows.productInnerHeight);
+						if(data.rows.isLid=="1"){
+							$("#isLidY").attr("checked",true);
+						}else{
+							$("#isLidN").attr("checked",true);
+						}
+						$("#productStandard").val(data.rows.productStandard);
+						$("#productOther").val(data.rows.productOther);
+						$("#productTypeId").val(data.rows.productTypeId);
+						$("#productGradeId").val(data.rows.productGradeId);
+						if(data.rows.status=="Y"){
+							$("#statusY").attr("checked",true);
+						}else{
+							$("#statusN").attr("checked",true);
+						}
+					}
+					layui.form().render();	
+				},
+				error : function() {
+				}
+			}); 
+		});
+	</script>
+</body>
+</html>

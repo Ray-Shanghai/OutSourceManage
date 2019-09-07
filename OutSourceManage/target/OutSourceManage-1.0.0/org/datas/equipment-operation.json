@@ -1,0 +1,73 @@
+{
+    "code": 0,
+    "msg": "获取成功",
+    "list": [
+        {
+        	"id":1,
+            "number": "1",
+            "nature":"火警",
+            "name": "烟感",
+            "runsit":"正常",
+            "control": "消音",
+            "ad": "1号楼507室办公室右上角",
+            "people": "王二"
+        },
+        {
+        	"id":2,
+            "number": "2",
+            "nature":"误报",
+            "name": "温感",
+            "runsit":"故障",
+            "control": "信号显示",
+            "ad": "1号楼507室办公室右上角",
+            "people": "王二"
+            
+        },{
+        	"id":3,
+            "number": "3",
+            "nature":"误报",
+            "name": "水流指示",
+            "runsit":"消防染",
+            "control": "复位",
+            "ad": "1号楼507室办公室右上角",
+            "people": "王二"
+        },{
+        	"id":4,
+            "number": "4",
+            "nature":"火警",
+            "name": "碎波",
+            "runsit":"喷淋泵",
+            "control": "信号显示",
+            "ad": "1号楼507室办公室右上角",
+            "people": "王二"
+        },{
+        	"id":5,
+            "number": "5",
+            "nature":"误报",
+            "name": "闸阀",
+            "runsit":"电梯迫降",
+            "control": "信号显示",
+            "ad": "1号楼507室办公室右上角",
+            "people": "王二"
+        },{
+        	"id":6,
+            "number": "6",
+            "nature":"火警",
+            "name": "回路",
+            "runsit":"防排烟",
+            "control": "复位",
+            "ad": "1号楼507室办公室右上角",
+            "people": "王二"
+        },{
+        	"id":7,
+            "number": "7",
+            "nature":"火警",
+            "name": "地址码",
+            "runsit":"风机",
+            "control": "消音",
+            "ad": "1号楼507室办公室右上角",
+            "people": "王二"
+        }
+    ],
+    "count": 57
+}

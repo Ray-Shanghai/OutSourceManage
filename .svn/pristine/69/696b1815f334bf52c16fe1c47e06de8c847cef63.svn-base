@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>功能模块</title>
+
+<link rel="stylesheet" type="text/css"
+	href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script src="../../../resources/js/base.js"></script>
+ 
+<script type="text/javascript"
+	src="../../js/myframe.js"></script>
+ 
+ <script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css"
+	media="all">
+	<link rel="stylesheet" type="text/css" href="../../css/my.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+</head>
+<body>
+	 
+	 <form class="layui-form mt-20 ml-30  " id="frm1" action="">
+   <input type="hidden" value="1" name="typeId" id="typeId">
+    <input type="hidden" value="1" name="isOpen" id="isOpen">
+    
+  <input type="hidden" name="functionId"  id="functionId"  autocomplete="off" class="layui-input">
+  <div class="layui-form-item">
+     <div class="layui-inline">
+      <label class="layui-form-label">功能名称</label>
+      <div class="layui-input-inline">
+        <input type="text" name="functionName" lay-verify="functionName" id="functionName" placeholder="功能名称" autocomplete="off" class="layui-input">
+      </div>
+      </div>
+  </div>
+    <div class="layui-form-item">
+     <div class="layui-inline">
+      <label class="layui-form-label">功能地址</label>
+      <div class="layui-input-inline">
+        <input type="text"  name="functionUrl" lay-verify="functionUrl" id="functionUrl" placeholder="功能地址" autocomplete="off" class="layui-input">
+      </div>
+      </div>
+  </div>
+    <div class="layui-form-item">
+     <div class="layui-inline">
+      <label class="layui-form-label">功能图标</label>
+      <div class="layui-input-inline">
+        <input type="text"  name="functionIcon" lay-verify="functionIcon" id="functionIcon" placeholder="功能地址" autocomplete="off" class="layui-input">
+      </div>
+      </div>
+  </div>
+  <div class="layui-form-item">
+     <div class="layui-inline">
+      <label class="layui-form-label">功能描述</label>
+      <div class="layui-input-inline">
+        <input type="text"  name="functionDesc" lay-verify="functionDesc" id="functionDesc" placeholder="功能描述" autocomplete="off" class="layui-input">
+      </div>
+      </div>
+  </div>
+   <div class="layui-form-item">
+     <div class="layui-inline">
+      <label class="layui-form-label">状态</label>
+      <div class="layui-input-inline">
+			<input type="radio" name="status" value="Y" title="启用" checked>
+			<input type="radio" name="status" value="N" title="禁用">
+      </div>
+      </div>
+  </div>
+</form>
+	<script type="text/javascript">
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use([  'form', 'element' ],
+						function() {
+							var $ = layui.jquery;
+							var functionId = window.location.search.split("?")[1];
+							$("#functionId").val(functionId);
+		
+							$.ajax({type : 'POST',
+								url : base.serverContent+ '/manager/loginIn/SysFunctionInfo/queryByPkId.do?functionId='+functionId,
+								async : false,
+								success : function(data) {
+									for(var key in data.sysFunctionInfo){
+										var val=data.sysFunctionInfo[key];
+										 
+										  if(key=="status"){
+											 
+											 $("input[name='"+key+"'][value="+val+"]").attr("checked",true)
+										}else{
+											$("input[name="+key+"]").val(val);
+										}
+											
+											
+										 
+									}
+								},
+									error : function() {
+									}
+								});
+							
+							
+							
+							
+							} 
+						 );
+	</script>
+</body>
+</html>

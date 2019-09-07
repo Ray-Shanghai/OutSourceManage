@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>提成分析</title>
+		<link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../css/font/iconfont1.css">
+		<link rel="stylesheet" type="text/css" href="../css/table.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../css/my.css" />
+		<style>
+			html,body{width: 100%; height: 100%;}
+			.select-content{position: absolute; top:20px; left: 20px; width: 320px;border: 1px solid #ddd; z-index: 99999; padding-bottom: 30px;}
+			.echarts-dataview{z-index: 199999 !important;}
+			.select-content .title{width: 320px; height: 30px; color: #fff; background: #000; line-height: 30px; padding-left: 20px; box-sizing: border-box;}
+		</style>
+	</head>
+	<body>
+		<div class="content" style="height: 100%; position: relative;">
+			<div class="select-content">
+				<div class="title">查询条件</div>
+				<form class="layui-form" id="frm1" action="">
+					<div class="layui-form-item mt-10 pl-10">
+					    <div class="layui-inline">
+							<label class="layui-form-label" style="width: 60px;">订单时间</label>
+						    <div class="layui-input-inline" style="width: 100px;">
+						      <input class="layui-input" placeholder="开始日" id="createTime" name="createTime">
+						    </div>
+						    <div class="layui-input-inline" style="width: 100px;">
+						      <input class="layui-input" placeholder="截止日" id="lastUpdateTime" name="lastUpdateTime">
+						    </div> 
+						</div>
+						<div class="layui-inline">
+							<div class="layui-form-item" pane="">
+							    <label class="layui-form-label" style="width: 60px;">人员</label>
+							    <div class="layui-input-inline" style="width: 250px;border: 1px solid #eee;box-sizing: border-box;padding-left: 20px;">
+							    	<div id="userNames"></div>
+							    </div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="layui-form-item align-center mt-25">
+					<button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="demo2" id="search">开始统计</button>
+				</div>
+			</div>
+		    <div id="main1" style="width:100%;height:100%;padding-left: 300px; box-sizing: border-box;"></div>
+		</div>
+			<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+		<script type="text/javascript" src="../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../../resources/js/base.js"></script>
+    	<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+		<script src="../js/echarts-all.js"></script>
+		<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+		<script type="text/javascript">
+		    var userNames2=""; 
+			layui.use(['form', 'layedit', 'laydate'], function(){
+				var form = layui.form()
+				,layer = layui.layer
+				,layedit = layui.layedit
+				,laydate = layui.laydate; 
+				
+				var start = {
+					//min: laydate.now(),
+					max: '2099-06-16 23:59:59',
+					istoday: false,
+					choose: function(datas){
+						//end.min = datas; //开始日选好后，重置结束日的最小日期
+						end.start = datas //将结束日的初始值设定为开始日
+					}
+				};
+				
+				var end = {
+					//min: laydate.now(),
+					max: '2099-06-16 23:59:59',
+					istoday: false,
+					choose: function(datas){
+						start.max = datas; //结束日选好后，重置开始日的最大日期
+					}
+				};
+			  
+				document.getElementById('createTime').onclick = function(){
+					start.elem = this;
+					laydate(start);
+				}
+				document.getElementById('lastUpdateTime').onclick = function(){
+					end.elem = this
+					laydate(end);
+				}
+				
+				//监听复选框点击数据
+				form.on('checkbox(productStatus)',function(data){
+					//$("#hidIsVirtual").val($("#hidIsVirtual").val() + "," + data.value);
+				});
+					
+				//查询状态数据
+				$.ajax({
+					type : "POST",
+					url : base.serverContet +"/manager/loginIn/SysUserInfo/queryList.do",
+					async : false,
+					success : function(data) {
+						if(data.code=="000"){
+							$("#userNames").html("");
+							for(var i=0;i<data.rows.length;i++){
+								$("#userNames").append('<div style="width: 100px; display: inline-block;margin-right: 10px;"><input type="checkbox" name="userId" value="'+data.rows[i].userId+'" class="'+data.rows[i].userName+'"  lay-skin="primary" lay-filter="productStatus"><span>'+data.rows[i].userName+'</span> </div>');
+								if(i==0){
+									userNames2=data.rows[i].userName;
+								}else{
+									userNames2=userNames2+","+data.rows[i].userName;
+								}
+							}
+							if(data.rows.length==0){
+								//$("#productTypeId").append("<option value=''>暂无数据</option>");
+							}
+							layui.form().render('checkbox');
+						}else{	
+							base.failAlert(data);
+						}	
+					},error : function(rec) {
+						console.info("网络异常,请稍后再试");
+					}
+				});
+				//加载页面时加载
+				LoadTotal();
+				
+				$("#search").click(function() {
+					//$("#frm1").serializeObject();
+					LoadTotal();
+				});
+			});
+			
+			function LoadTotal()
+			{
+				var startTime = $("#createTime").val();
+				var endTime = $("#lastUpdateTime").val();
+				var userIds = "";
+				var userNames="";
+				$('input[name="userId"]:checked').each(function(index){
+					if(index==0){
+						userIds =$(this).val(); 
+						userNames=$(this).attr("class");
+					}else{
+						userIds = userIds + "," + $(this).val(); 
+						userNames= userNames+","+ $(this).attr("class");
+					}
+				});
+				$.ajax({
+					type : "POST",
+					url : base.serverContet +"/SdPushSetInfo/queryPushSetByUser.do",
+					data : {"lastUpdateTime":startTime, "lastUpdateTime2":endTime,"userIds":userIds},
+					async : false,
+					success : function(data) {
+						if(data.code=="000"){
+							if(userNames==""){
+								bind(data,userNames2);
+							}else{
+								bind(data,userNames);
+							}
+						}else{	
+							layer.alert("该条件下无数据,请重试",{icon:3});
+						}	
+					},error : function(rec) {
+						console.info("网络异常,请稍后再试");
+					}
+				});
+			}
+			
+			function bind(data,userNames)
+			{
+				var chart1 = echarts.init(document.getElementById("main1"),'');
+				
+				var option = {
+					    title : {
+					        x:'center',
+					        y:'top',
+					          text: '每个人的提成金额',
+					          subtext: '提成分析'
+					      },
+					      tooltip : {
+					          trigger: 'axis'
+					      },
+					     
+					      toolbox: {
+					    	  x:700,
+					          y:'top',
+					          show : true,
+					          feature : {
+					           
+					             /*  dataView : {show: true, readOnly: false}, */
+					             
+					              restore : {show: true}
+					            
+					          }
+					      },
+					      calculable : true,
+					      xAxis : [
+					          {
+					              type : 'category',
+					              name:'人员',
+					              axisLabel:{'interval':0},
+					              data :(function(){
+					                    var res = [];
+				                        for(var i=0;i<userNames.split(",").length;i++) {
+				                        	if(i%2!=0){
+			                        		  	res.push("\n"+userNames.split(",")[i]);
+				                        	}else{
+						                         res.push(userNames.split(",")[i]);
+				                        	}
+				                        }
+				                        return res;
+					                })()
+					            	  
+					            	 /*  ['张三','\n李四','王五','\n赵六','齐齐','\n巴巴','思思','\n呵呵','岁岁','哑谜','呵ni','李四2','王五2','赵六2','齐齐2','巴巴2','思思2','呵呵3','恩和3','哑谜3','呵呵4'] */
+					          }
+					      ],
+					      yAxis : [
+					          {
+					              type : 'value',
+					            name:'提成（￥）'
+					            
+					          }
+					      ],
+					      series : [
+					        
+					          {
+					              name:'提成金额',
+					              type:'bar',
+					              data:data.pushMoneylist,
+					              markLine : {
+					                  data : [
+					                      {type : 'average', name : '平均值'}
+					                  ]
+					              }
+					          }
+					      ]
+					  };
+		        
+				chart1.setOption(option);
+			}
+		</script>
+	</body>
+</html>

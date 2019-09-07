@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>个人中心</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+	</head>
+	<body>
+		<div class="content pb-150">
+			<div class="my-top">
+				<div class="sign-in"><a href="signMap.html">每日签到</a></div>
+				<div class="my-photo">
+					<div class="photo-img"><img src="image/touxiang.png"/></div>
+					<div class="class-name"></div>
+				</div>
+			</div>
+			<div class="title-purchase"><span class="shu-width-3"></span>月度</div>
+			<div class="order-state">
+				<ul class="row">
+				   <li class="col-3"><p class="word-number totalNum"></p><p >成交</p></li>
+				   <li class="col-4"><p class="word-number totalPrice">&yen;</p><p>销售额</p></li>
+				   <li class="col-5"><p class="word-number yujiMoney">&yen;</p><p>预计提成收益</p></li>
+				</ul>
+			</div>
+			<div class="title-purchase"><span class="shu-width-3"></span>年度</div>
+			<div class="order-state">
+				<ul class="row">
+				   <li class="col-3"><p class="word-number totalCount2"></p><p>成交</p></li>
+				   <li class="col-4"><p class="word-number totalPrice2">&yen;</p><p>销售额</p></li>
+				   <li class="col-5"><p class="word-number yujiMoney2">&yen;</p><p>预计提成收益</p></li>
+				</ul>
+			</div>
+		</div>
+		<div class="btn-login" style="padding: 0 0.4rem">
+		<button type="button" class="md-blue-btn" style="color: #b12222 !important;border: 1px solid #b12222;background: #fff;" lay-submit lay-filter="login">退出当前账号</button>
+		</div>
+		<div class="footer">
+			<div class="row">
+				<div class="col-4">
+					<a href="index.html">
+						<div class="iconfont icon-shouye1"></div>
+						<div class="nav-word">首页</div>
+					</a>
+				</div>
+				<div class="col-4">
+					<a href="afterOrder.html">
+						<div class="iconfont icon-dingdan"></div>
+						<div class="nav-word">订单中心</div>
+					</a>
+				</div>
+				<div class="col-4 select-page">
+					<a href="javascript:void(0);">
+						<div class="iconfont icon-wo"></div>
+						<div class="nav-word">个人中心</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/js/base.js"></script>
+    <script type="text/javascript" src="../resources/login/layui/layui.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	$.ajax({
+    		url:base.serverContent+"/personCenter/queryByPushSet.do",
+    		type:'POST',
+    		async:false,
+    		dataType:'json',
+    		success:function(data){
+    			$(".class-name").html(data.userName);
+    			$(".totalNum").append(data.totalNum);
+    			$(".totalPrice").append(data.totalPrice);
+    			$(".yujiMoney").append(data.yujiMoney);
+    			$(".totalCount2").append(data.totalCount2);
+    			$(".totalPrice2").append(data.totalPrice2);
+    			$(".yujiMoney2").append(data.yujiMoney2);
+    		},
+    		error:function(data){}
+    	})
+    });
+    $(".md-blue-btn").click(function(){
+    	window.location.href='login.html';
+    });
+    </script>
+</html>

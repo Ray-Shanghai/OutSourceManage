@@ -1,0 +1,22 @@
+html{width: 100%;  height: 100%;}
+body{width: 100%;  height: 100%; position: fixed; background: url(../images/login-bk.jpg); background-size: 100% 100%;}
+.contain{width: 500px; height: 500px; position: relative; top:50%; left: 50%; margin-top:-250px; margin-left:-250px;}
+.contain .title{text-align: center;}
+.login-content-box{width: 440px; height: 400px; background: #01AAED; margin: 50px auto 0; box-shadow: 1px 1px 5px 2px #808080;}
+.login-content-box .box-title{width: 100%; height: 50px; background: #000;}
+.login-content-box .box-title span{color: #fff; font-size: 20px; padding: 10px 0 0 20px; display: block;}
+.login-content-box .box-title .line-1{width: 70px; height: 3px; background:#166bb5; margin-left: 10px; margin-top: 3px;}
+.login-content-box .box-content{width: 100%; height: 350px; background: #fff; border: 1px solid #ddd; box-sizing: border-box;}
+.box-content .userinfo{padding: 20px; margin-top: 20px; position: relative;}
+.box-content .userinfo input{width: 100%; height: 50px; border: 2px solid #a4b6c0; border-radius: 4px; padding-left: 70px; box-sizing: border-box; font-size: 20px; outline: none;}
+.box-content .userinfo .usericon{width: 46px; height: 46px; background: #166ab3; text-align: center; line-height: 46px; color: #fff; position: absolute; top:22px; left: 22px;}
+.box-content .userinfo .usericon .iconfont{font-size: 20px;}
+.box-content .userremember{padding:0 20px; overflow: hidden;}
+.box-content .userremember label{font-size: 20px;}
+.box-content .userremember label input{width: 20px; height: 20px; border: none; vertical-align: middle; margin-top: -1px; margin-right: 15px;}
+.box-content .userbtn{padding: 20px; margin-top: 50px;}
+.box-content .userbtn button{width: 100%; height: 50px; font-size: 20px; border: 1px solid #176bb4; background: #176bb4; color: #fff; border-radius: 3px; cursor: pointer;}
+
+
+
+

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysApprovenTaskedMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysApprovenTasked" id="SysApprovenTaskedForMysqlMap"> 
+
+		<result column="TASK_ID" property="taskId"/>
+		<result column="TASK_NAME" property="taskName"/>
+		<result column="APPROVEN_PERSON_ID" property="approvenPersonId"/>
+		<result column="APPROVEN_RULE_ID" property="approvenRuleId"/>
+		<result column="APPROVEN_RULE_NAME" property="approvenRuleName"/>
+		<result column="APPROVEN_FUNCTION_ID" property="approvenFunctionId"/>
+		<result column="APPROVEN_FUNCTION_NAME" property="approvenFunctionName"/>
+		<result column="APPROVEN_USER_ID" property="approvenUserId"/>
+		<result column="APPROVEN_USER_NAME" property="approvenUserName"/>
+		<result column="RULE_ORDER" property="ruleOrder"/>
+		<result column="APPROVEN_SEND_TIME" property="approvenSendTime"/>
+		<result column="APPROVEN_END_TIME" property="approvenEndTime"/>
+		<result column="APPROVEN_RESULT" property="approvenResult"/>
+		<result column="APPROVEN_STATUS" property="approvenStatus"/>
+		<result column="SOURCE_TABLE" property="sourceTable"/>
+		<result column="SOURCE_TABLE_PK_COLUMN_NAME" property="sourceTablePkColumnName"/>
+		<result column="SOURCE_TABLE_PK_COLUMN_VALUE" property="sourceTablePkColumnValue"/>
+		<result column="APPROVEN_REMARK" property="approvenRemark"/>
+		<result column="RULE_ORDER_OLD" property="ruleOrderOld"/>
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_TEAM_ID" property="createTeamId"/>
+		<result column="CREATE_TEAM_NAME" property="createTeamName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="CREATE_UNIT_ID" property="createUnitId"/>
+		<result column="CREATE_UNIT_Name" property="createUnitName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_TEAM_ID" property="lastUpdateTeamId"/>
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<result column="LAST_UPDATE_UNIT_ID" property="lastUpdateUnitId"/>
+		<result column="LAST_UPDATE_UNIT_Name" property="lastUpdateUnitName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	   
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SysApprovenTasked"  resultMap="SysApprovenTaskedForMysqlMap">
+		select * from (
+		SELECT ROWNUM RW,a.*
+		FROM (
+		SELECT 
+		t.TASK_ID,
+		t.TASK_NAME,
+		t.APPROVEN_PERSON_ID,
+		t.APPROVEN_RULE_ID,
+		t.APPROVEN_RULE_NAME,
+		t.APPROVEN_FUNCTION_ID,
+		t.APPROVEN_FUNCTION_NAME,
+		t.APPROVEN_USER_ID,
+		t.APPROVEN_USER_NAME,
+		t.RULE_ORDER,
+		t.APPROVEN_SEND_TIME,
+		t.APPROVEN_END_TIME,
+		t.APPROVEN_RESULT,
+		t.APPROVEN_STATUS,
+		t.SOURCE_TABLE,
+		t.SOURCE_TABLE_PK_COLUMN_NAME,
+		t.SOURCE_TABLE_PK_COLUMN_VALUE,
+		t.APPROVEN_REMARK,
+		t.RULE_ORDER_OLD,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  sys_approven_tasked t   where APPROVEN_FUNCTION_ID=#{approvenFunctionId} and APPROVEN_USER_ID = #{approvenUserId}
+		<if test="taskId!= null and taskId != ''">
+				AND TASK_ID like concat('%',#{taskId},'%')
+			</if>
+			<if test="taskName!= null and taskName != ''">
+				AND TASK_NAME like concat('%',#{taskName},'%')
+			</if>
+			<if test="approvenUserName!= null and approvenUserName != ''"> 
+			   AND APPROVEN_USER_NAME like concat('%',#{approvenUserName},'%')
+			</if> 
+			order by approven_end_time desc
+ 		) a )
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SysApprovenTasked"  resultMap="SysApprovenTaskedForMysqlMap">
+		SELECT 
+		t.TASK_ID,
+		t.TASK_NAME,
+		t.APPROVEN_PERSON_ID,
+		t.APPROVEN_RULE_ID,
+		t.APPROVEN_RULE_NAME,
+		t.APPROVEN_FUNCTION_ID,
+		t.APPROVEN_FUNCTION_NAME,
+		t.APPROVEN_USER_ID,
+		t.APPROVEN_USER_NAME,
+		t.RULE_ORDER,
+		t.APPROVEN_SEND_TIME,
+		t.APPROVEN_END_TIME,
+		t.APPROVEN_RESULT,
+		t.APPROVEN_STATUS,
+		t.SOURCE_TABLE,
+		t.SOURCE_TABLE_PK_COLUMN_NAME,
+		t.SOURCE_TABLE_PK_COLUMN_VALUE,
+		t.APPROVEN_REMARK,
+		t.RULE_ORDER_OLD,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  sys_approven_tasked t  where APPROVEN_FUNCTION_ID=#{approvenFunctionId} and APPROVEN_USER_ID = #{approvenUserId}
+	</select>
+	<insert id="addForMysql">
+	insert into sys_approven_tasked
+  (task_id,
+   task_name,
+   approven_person_id,
+   approven_rule_id,
+   approven_rule_name,
+   approven_function_id,
+   approven_function_name,
+   approven_user_id,
+   approven_user_name,
+   rule_order,
+   approven_send_time,
+   approven_end_time,
+   approven_result,
+   source_table,
+   source_table_pk_column_name,
+   source_table_pk_column_value,
+   approven_remark,
+   rule_order_old,
+   create_time,
+   create_user_id,
+   create_user_name,
+   create_depart_id,
+   create_depart_name)
+
+   select 
+   task_id,
+   task_name,
+   approven_person_id,
+   approven_rule_id,
+   approven_rule_name,
+   approven_function_id,
+   approven_function_name,
+   #{approvenUserId},
+   #{approvenUserName},
+   rule_order,
+   approven_send_time,
+   now(),
+  #{approvenResult},
+   source_table,
+   source_table_pk_column_name,
+   source_table_pk_column_value,
+   #{approvenRemark},
+   rule_order_old,
+   create_time,
+   create_user_id,
+   create_user_name,
+   create_depart_id,
+   create_depart_name
+   
+   from sys_approven_task where TASK_ID=#{taskId}
+	
+	</insert>
+	<delete id="deleteForMysql">
+		delete from sys_approven_tasked where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SysApprovenTasked"  resultType="java.lang.Integer">
+   		select    count(*) from sys_approven_tasked   where APPROVEN_FUNCTION_ID=#{approvenFunctionId} and APPROVEN_USER_ID = #{approvenUserId}
+   		<if test="taskId!= null and taskId != ''">
+				AND TASK_ID like concat('%',#{taskId},'%')
+			</if>
+			<if test="taskName!= null and taskName != ''">
+				AND TASK_NAME like concat('%',#{taskName},'%')
+			</if>
+			<if test="approvenUserName!= null and approvenUserName != ''"> 
+			   AND APPROVEN_USER_NAME like concat('%',#{approvenUserName},'%')
+			</if> 
+	</select>
+	<select id="queryFirstPersonForMysql" parameterType="com.sd.farmework.pojo.SysApprovenTasked" resultMap="SysApprovenTaskedForMysqlMap">
+		SELECT
+		TASK_ID,
+		TASK_NAME,
+		APPROVEN_PERSON_ID,
+		APPROVEN_RULE_ID,
+		APPROVEN_RULE_NAME,
+		APPROVEN_FUNCTION_ID,
+		APPROVEN_FUNCTION_NAME,
+		approven_user_id,
+		approven_user_name,
+		RULE_ORDER,
+		APPROVEN_SEND_TIME,
+		APPROVEN_END_TIME,
+		APPROVEN_STATUS,
+		SOURCE_TABLE,
+		SOURCE_TABLE_PK_COLUMN_NAME,
+		SOURCE_TABLE_PK_COLUMN_VALUE,
+		APPROVEN_REMARK,
+		RULE_ORDER_OLD,
+		REMARK,
+		STATUS,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME,
+		LAST_UPDATE_TIME,
+		LAST_UPDATE_USER_ID,
+		LAST_UPDATE_USER_NAME,
+		LAST_UPDATE_DEPART_ID,
+		LAST_UPDATE_DEPART_NAME,
+		approven_result
+		FROM
+		sys_approven_tasked
+	    where  1 =1 and SOURCE_TABLE_PK_COLUMN_VALUE =#{sourceTablePkColumnValue} and RULE_ORDER_OLD='1'
+	 </select>
+</mapper> 
+

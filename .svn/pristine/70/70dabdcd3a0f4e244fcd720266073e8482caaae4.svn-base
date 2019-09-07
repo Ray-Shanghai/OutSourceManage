@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>状态修改</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+		<link rel="stylesheet" href="css/dist/css/swiper.min.css" />
+		<style>
+			.swiper-container {
+		        width: 100%;
+		        height: 100%;
+		        overflow-y: auto;
+		    }
+		    .swiper-pagination{position: fixed;}
+		    .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+			    top: 10%;
+			    left: 0;
+			    width: 100%;
+			    bottom: auto;
+			}
+           .swiper-pagination-bullet {
+			  display: inline-block;
+			  width: 10px;
+			  height: 10px;
+			  border-radius: 10px;
+			  background: #fff;
+			  margin: 0 5px;
+			  opacity: 0.8;
+			  cursor: pointer;
+			}
+			.swiper-pagination-bullet-active {
+			  background: #007aff;
+			}
+		</style>
+	</head>
+	<body class="bgcolor-grayf8">
+		<div class="header">
+			<div class="header-left"><a class="iconfont icon-llmainpageback" onclick="window.history.go(-1)"></a></div>
+			<div class="title">状态修改</div>
+			<div class="header-right"><a class="title-search" href="javascript:void(0);"><span class="iconfont icon-baocun"></span></a></div>
+		</div>
+		<form id="form1">
+		<input type="hidden" name="orderId">
+		<div class="content pt-106">
+			<div class="list-content">
+				<div class="title-purchase"><span class="shu-width-3"></span>订单信息<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul>
+					<li class="row">
+						<div class="col-4">客户名称：</div>
+						<div class="col-8" id="customerName"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">客户地址：</div>
+						<div class="col-8" id="customerAddress"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">交货日期：</div>
+						<div class="col-8" id="deliveryDate"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">建议交货日期：</div>
+						<div class="col-8" id="suggestDeliveryDate"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">订单价格：</div>
+						<div class="col-8" id="orderPrice"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">成本价格：</div>
+						<div class="col-8" id="costPrice" name="costPrice"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">商务报价：</div>
+						<div class="col-8" id="commercialPrice"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">客户订单号：</div>
+						<div class="col-8" id="customerNo"></div>
+					</li>
+				</ul>
+			</div>
+			<div class="list-content mb-30">
+				<div class="title-purchase"><span class="shu-width-3"></span>物料信息<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul class="check-material">
+					
+				</ul>
+			</div>
+			
+			<div class="list-content mb-30">
+			
+				<div class="title-purchase"><span class="shu-width-3"></span>状态修改<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul>
+				    <li class="row">
+						<div class="col-4">状态修改：</div>
+						<div class="col-8">
+							<select id="state" name="dataState" class="select valid">
+								<option value="5">报价核定中</option>
+								<option value="6">待检验</option>						
+								<option value="7">配料</option>
+								<option value="8">裁切</option>
+								<option value="9">生产</option>
+								<option value="10">完成</option>
+								<option value="11">验收</option>
+								<option value="12">完结</option>
+								<option value="13">订单异常</option>
+								<option value="14">验收不通过</option>
+							</select>
+						</div>
+					</li>
+					<li class="row">
+				  	  	<div class="col-4">备注：</div>
+				  	  	<div class="col-8">
+				  	  	 	<textarea name="remark"></textarea>
+				  	  	</div>
+				    </li>
+				</ul>
+		    </div>
+		    <div class="list-content mb-30">
+				<div class="title-purchase"><span class="shu-width-3"></span>意见投诉<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul>
+					<li class="row">
+				  	  	<div class="col-4">投诉：</div>
+				  	  	<div class="col-8">
+				  	  	 	<textarea name="complainContent"></textarea>
+				  	  	</div>
+				    </li>
+				</ul>
+		    </div>
+		</div>
+	</form>
+	    <div class="bg-tc">
+	    	<div class="close-btn"><span class="iconfont icon-chahao fr"></span></div>
+	    	<div class="bg-content">
+	    		<div class="swiper-container">
+			        <div class="swiper-wrapper">
+			            			           
+			        </div>
+			        <!-- Add Pagination -->
+			        <div class="swiper-pagination"></div>
+			    </div>
+	    	</div>
+	    </div>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/js/base.js"></script>
+    <script type="text/javascript" src="../resources/login/layui/layui.js"></script>
+    <script type="text/javascript" src="js/layer.js" ></script>
+    <script type="text/javascript" src="css/dist/js/swiper.min.js" ></script>
+    <script type="text/javascript" src="js/orderDetail.js"></script>
+     <script type="text/html" id="indexTpl">
+	{{#  layui.each(d.sdorderinfo.detailList, function(index, item){ }}
+		<li class="row">
+			<div class="col-4">产品名称：</div>
+			<div class="col-7">{{item.productName}}</div>
+			<div class="col-1"><a onclick="detailOrder()"><span class="iconfont icon-qianjin"></span><a/></div>
+		</li>
+	{{# }); }}
+	</script>
+	 <script type="text/html" id="detailTpl">
+	{{#  layui.each(d.sdorderinfo.detailList, function(index, item){ }}
+		<div class="swiper-slide">
+			            	<div class="list-content mb-30">
+								<ul>
+									<li class="row">
+										<div class="col-4">产品名称：</div>
+										<div class="col-8">{{item.productName}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">客户料号：</div>
+										<div class="col-8" >{{item.customerSupplies}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">产品代码：</div>
+										<div class="col-8" >{{item.productCode}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">成本核算：</div>
+										<div class="col-8" name="costPrice">{{item.costPrice}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">长：</div>
+										<div class="col-8" >{{item.detailLength}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">宽：</div>
+										<div class="col-8" >{{item.detailWidth}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">高：</div>
+										<div class="col-8" >{{item.detailHeight}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">是否带盖：</div>
+										<div class="col-8" >
+										{{item.isLid==0?'是':'否'}}
+										</div>
+									</li>
+									<li class="row">
+										<div class="col-4">类别：</div>
+										<div class="col-8" name="productTypeId">
+											<select name="productTypeId{{index}}" class="select" >
+											</select>
+										</div>
+									</li>
+									<li class="row">
+										<div class="col-4">材质：</div>
+										<div class="col-8" name="productGradeId">
+											<select name="productGradeId{{index}}" class="select" >
+											</select>
+										</div>
+									</li>
+									<li class="row">
+										<div class="col-4">数量：</div>
+										<div class="col-8" >{{item.number}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">即时库存：</div>
+										<div class="col-8" >{{item.immediatelyInventory}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">单价：</div>
+										<div class="col-8" >{{item.price}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">整单折前金额：</div>
+										<div class="col-8" >{{item.discountBeforeSum}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">金额：</div>
+										<div class="col-8" >{{item.money}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">税率：</div>
+										<div class="col-8" >{{item.taxRate}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">销项税额：</div>
+										<div class="col-8" >{{item.sellTax}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">实际含税单价：</div>
+										<div class="col-8" >{{item.practicalSellPrice}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">价税合计：</div>
+										<div class="col-8" >{{item.priceSellSum}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">关联数量：</div>
+										<div class="col-8" >{{item.relevanceNumber}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">出库数量：</div>
+										<div class="col-8" >{{item.takeOutNumber}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">BOM类别：</div>
+										<div class="col-8" >{{item.bomType}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">图纸信息：</div>
+										<div class="col-8"><a href="/OutSourceManage/{{item.fileUrl}}"><span class="color-blue">{{item.fileName}}</span></a></div>
+									</li>
+								</ul>
+							</div>
+			            </div>
+	{{# }); }}
+	</script>
+    <script type="text/javascript">
+    /*提交 数据*/
+    $(".title-search").click(function(){
+    	$("input[name='orderId']").val(orderId);
+    	$.ajax({
+    		url:base.serverContent+"/manager/loginIn/SdOrderInfo/updateOrder.do",
+    		type:"post",
+    		data:$("#form1").serialize(),
+    		dataType:"json",
+    		success:function(data){
+    				if(data.code=="000"){
+						layer.alert('修改成功', {icon: 1},
+								function(index){
+									layer.close(index);
+									window.location.href='listOrder.html?'+$("#state").val();
+								}		
+							);
+					}else{
+						layer.alert('修改失败',{icon:2});
+					}
+    		},error:function(data){}
+    		
+    	});
+    });
+    </script>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单列表</title>
+		<link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../../css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../../css/font/iconfont1.css">
+		<link rel="stylesheet" type="text/css" href="../../css/table.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/my.css" />
+		<style>
+			.layui-tab-title .layui-this {
+				background: #eeeeee;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="layui-tab">
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show table-edit">
+					<form class="layui-form" action="">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width:70px;">公司名称</label>
+								<div class="layui-input-inline" style="width:110px;">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width:70px;">创建人</label>
+								<div class="layui-input-inline" style="width:110px;">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<button class="layui-btn layui-btn-normal" style="width: 150px;">查询</button>
+							</div>
+						</div>
+					</form>
+					<div class="layui-form">
+						<table class="layui-table">
+							<thead>
+								<tr>
+									<th>公司名称</th>
+									<th>到货时间</th>
+									<th>采购</th>
+									<th>订单价格</th>
+									<th>商务报价</th>
+									<th>创建人</th>
+									<th>创建时间</th>
+									<th>状态</th>
+									<th style="width: 100px;">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>报价核定中</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>报价核定中</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>报价核定中</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>成交</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>未成交</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>配料</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>裁切</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>生产</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>完成</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+								<tr>
+									<td>外协采购</td>
+									<td>2017/10/07</td>
+									<td>名称1</td>
+									<td>3000</td>
+									<td>6000</td>
+									<td>王某某</td>
+									<td>2017/8/25</td>
+									<td>验收</td>
+									<td>
+										<a class="layui-btn layui-btn-normal layui-btn-mini detail-order" data-opt="showPlay">详情</a>
+										<a class="layui-btn layui-btn-mini layui-btn-danger edit">修改</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div id="demo2" class="fr"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/tab.js"></script>
+	<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+	<script type="text/javascript" src="../../js/jquery.min.js"></script>
+	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	<script>
+		layui.use('element', function() {
+			var $ = layui.jquery,
+				element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+			//触发事件
+			var active = {
+				tabAdd: function() {
+					//新增一个Tab项
+					element.tabAdd('demo', {
+						title: '新选项' + (Math.random() * 1000 | 0) //用于演示
+							,
+						content: '内容' + (Math.random() * 1000 | 0),
+						id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+					})
+				},
+				tabDelete: function(othis) {
+					//删除指定Tab项
+					element.tabDelete('demo', '44'); //删除：“商品管理”
+
+					othis.addClass('layui-btn-disabled');
+				},
+				tabChange: function() {
+					//切换到指定Tab项
+					element.tabChange('demo', '22'); //切换到：用户管理
+				}
+			};
+
+			$('.site-demo-active').on('click', function() {
+				var othis = $(this),
+					type = othis.data('type');
+				active[type] ? active[type].call(this, othis) : '';
+			});
+
+			//Hash地址的定位
+			var layid = location.hash.replace(/^#test=/, '');
+			element.tabChange('test', layid);
+
+			element.on('tab(test)', function(elem) {
+				location.hash = 'test=' + $(this).attr('lay-id');
+			});
+
+		});
+	</script>
+	<script>
+		layui.use(['form', 'layedit', 'laydate'], function() {
+			var $ = layui.jquery,
+				form = layui.form();
+			layer = layui.layer,
+				layedit = layui.layedit,
+				laydate = layui.laydate;
+			form.on('checkbox(allChoose)', function(data) {
+				var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+				child.each(function(index, item) {
+					item.checked = data.elem.checked;
+				});
+				form.render('checkbox');
+			});
+
+		});
+	</script>
+	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	<script>
+		layui.use(['laypage', 'layer'], function() {
+			var laypage = layui.laypage,
+				layer = layui.layer;
+			laypage({
+				cont: 'demo2',
+				pages: 100,
+				skin: '#1E9FFF'
+			});
+			var nums = 5;
+			var render = function(data, curr) {
+				var arr = [],
+					thisData = data.concat().splice(curr * nums - nums, nums);
+				layui.each(thisData, function(index, item) {
+					arr.push('<li>' + item + '</li>');
+				});
+				return arr.join('');
+			};
+			laypage({
+				cont: 'demo8',
+				pages: Math.ceil(data.length / nums) //得到总页数
+					,
+				jump: function(obj) {
+					document.getElementById('biuuu_city_list').innerHTML = render(data, obj.curr);
+				}
+			});
+		});
+
+		//   添加删除 
+		function addFile(id) {
+			var tag = $("#" + id);
+			tag.after($(tag).prop("outerHTML"));
+		}
+
+		function delFile(tag) {
+			if($(".personInfo").length > 1) {
+				$(tag).parent().parent().remove();
+			} else {
+				alert("只有一行不能再删除");
+			}
+		}
+
+		layui.use(['layer'], function() {
+			var $ = layui.jquery,
+				layer = layui.layer;
+
+			//这个是点击之后才添加的。
+			$('.detail-order').on('click', function() {
+				//这是核心的代码。
+				parent.tab.tabAdd({
+					href: 'page/orderInfo/orderDetail.html', //地址
+					icon: 'fa-user',
+					title: '订单详情'
+				});
+			});
+			
+			$('.edit').on('click', function() {
+				//这是核心的代码。
+				parent.tab.tabAdd({
+					href: 'page/orderInfo/orderedit.html', //地址
+					icon: 'fa-user',
+					title: '订单修改'
+				});
+			});
+		});
+	</script>
+
+</html>

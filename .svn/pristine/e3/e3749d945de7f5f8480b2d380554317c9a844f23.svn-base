@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>登录</title>
+		<link rel="stylesheet" href="backstage/css/common.css" media="all" />
+		<link rel="stylesheet" href="backstage/css/login.css" />
+		<link rel="stylesheet" href="backstage/css/font-new/iconfont.css" />
+	</head>
+
+	<body>
+		<div class="contain">
+			<div class="title"><img src="backstage/images/login-title.png" width="80%"/></div>
+			<div class="login-content-box">
+				 <div class="box-title"><span>登&ensp;录</span><div class="line-1"></div></div>
+				 <div class="box-content">
+				 	<form    method="post" id="loginFrm">
+						<!-- <input type="hidden" name="loginPwd"   value="000000"> -->
+						<div class="userinfo"><input type="text" name="loginName" placeholder="用户名"/><div class="usericon"><span class="iconfont icon-yonghu"></span></div></div>
+			 	 		<div class="userinfo"><input type="password" name="loginPwd" placeholder="密码"/><div class="usericon"><span class="iconfont icon-suo"></span></div></div>
+						<div class="userremember"><label class="fr"><input type="checkbox">记住账号</label></div> 	 
+				 	</form>
+				 	<div class="userbtn" style="margin-top:0px;"><button class="layui-btn layui-btn-primary" lay-submit lay-filter="login">登录
+                        </button></div>
+				 </div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="backstage/plugins/layui/layui.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-1.8.1.min.js"></script>
+		 <script src="resources/js/base.js"></script>
+		
+		 <script src="resources/js/login.js"></script>
+</html>

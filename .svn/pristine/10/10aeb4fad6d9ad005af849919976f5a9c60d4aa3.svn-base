@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>订单列表</title>
+		<link rel="stylesheet" href="plugins/layui/css/layui.css" />
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/purchase.css" />
+		<link rel="stylesheet" href="css/zy.css" />
+		<link rel="stylesheet" href="css/my.css" />
+		<link rel="stylesheet" href="font/iconfont.css" />
+	</head>
+	<body>
+		<div class="header">
+			<div class="header-logo"><img src="images/angelic_logo.png" style="vertical-align: bottom;"/>全国最大的木箱包装领航企业</div>
+			<div class="header-right">
+				<span class="iconfont icon-renyuan1"></span>
+				<span class="name-word">用户A&ensp;<span class="iconfont icon-icon-test"></span></span>
+			    <div class="personal">
+			    	<div class="person-class">
+			    		<ul>
+			    			<li class="active">月度</li>
+			    			<li>年度</li>
+			    		</ul>
+			    		<div class="line-height-16"></div>
+			    	 </div>
+			    	<div class="person-content">
+			    		<div class="person-number">&emsp;成交量：<span>2</span>件</div>
+			    		<div class="person-number">&emsp;销售额：<span>255445.4</span>元</div>
+			    		<div class="person-number">预计收益：<span>2444</span>元</div>
+			    	</div>
+			    	<div class="person-content" style="display: none;">
+			    		<div class="person-number">&emsp;成交量：<span>5</span>件</div>
+			    		<div class="person-number">&emsp;销售额：<span>255</span>元</div>
+			    		<div class="person-number">预计收益：<span>24</span>元</div>
+			    	</div>
+			    	<div class="person-img"><img src="images/money.png" width="260"/></div>
+			   </div>
+			</div>
+		</div>
+		<div class="nav">
+	        <ul class="nav-main container jz">
+	        	<li class="fl">
+					<a href="index.html">首页</a>
+				</li>
+				<li class="fl">
+					<a href="addOrder.html">新增订单</a>
+				</li>			
+				<li class="fl">
+					<a href="assignOrder.html">指派订单</a>
+				</li>			
+				<li class="fl active">
+					<a href="javascript:void(0);">订单列表</a>
+				</li>			
+				<li class="fl">
+					<a href="afterOrder.html">订单跟踪</a>
+				</li>			
+	        </ul>
+        </div>
+        <div class="content mt-10 mb-80" style="margin-bottom: 140px !important;" >
+        	<div class="container content-box">
+        		<div class="layui-tab">
+					<div class="layui-tab-content">
+						<div class="layui-tab-item layui-show table-edit">
+							<form class="layui-form" id="form1">
+								<div class="layui-form-item">
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">公司名称</label>
+										<div class="layui-input-inline" style="width:110px;">
+											<input type="text" name="customerName" lay-verify="title" autocomplete="off" class="layui-input">
+											<input type="hidden" name="mark" value="listOrder"><!-- 标记订单列表页 -->
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">创建人</label>
+										<div class="layui-input-inline" style="width:110px;">
+											<input type="text" name="createUserName" lay-verify="title" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">状态</label>
+										<div class="layui-input-inline" style="width:120px;">
+											<select name="dataState" lay-verify="required" >
+												<option value="">全部</option>
+												<option value="2">订单确认</option>
+												<option value="4">待报价</option>
+												<option value="5">报价核定中</option>
+												<option value="7">配料</option>
+												<option value="8">裁切</option>
+												<option value="9">生产</option>
+												<option value="10">完成</option>
+												<option value="11">验收</option>
+												<option value="12">完结</option>
+											</select>
+										</div>
+									</div>
+									<div class="layui-inline">
+										<button class="layui-btn layui-btn-normal" type="button" id="search" style="width: 150px;">查询</button>
+									</div>
+								</div>
+							</form>
+							<div class="layui-form">
+								<table class="layui-table">
+									<thead>
+										<tr>
+											<th>订单编号</th>
+											<th>客户名称</th>
+											<th>客户地址</th>
+											<th>订单价格</th>
+											<th>交货日期</th>
+											<th>创建人</th>
+											<th>创建时间</th>
+											<th style="width: 100px;">操作</th>
+										</tr>
+									</thead>
+									<tbody id="content">
+									 <!-- 	<tr>
+											<td>201708293302</td>
+											<td>产品名称一</td>
+											<td>455656</td>
+											<td>432706</td>
+											<td>2017/10/29</td>
+											<td>王某某</td>
+											<td>2017/8/29</td>
+											<td>待报价</td>
+											<td>
+												<a class="layui-btn layui-btn-mini layui-btn-danger" onclick="offerInfo()">报价</a>
+											</td>
+										</tr> -->
+										
+									</tbody>
+								</table>
+								<div id="paged" class="fr page" style="text-align: center;"></div>
+							</div>
+			
+						</div>
+					</div>
+		        </div>
+        	</div> 	
+       </div>
+       <div class="footer fixed">安捷包装（苏州）股份有限公司</div>
+	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	 	<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script type="text/javascript" src="js/myframe.js"></script>
+        <script type="text/javascript" src="plugins/layui/layui.js" ></script>
+		<script type="text/javascript" src="../resources/js/base.js"></script>
+		<script type="text/javascript" src="js/listOrder.js"></script>
+		<script type="text/html" id="tpl">
+	  {{# 
+		layui.each(d.rows, function(index, item){ }}
+			
+				{{# if (item.dataState==2) { }}
+					<tr>
+					<td>{{ item.orderNuber }}</td>
+					<td>{{ item.customerName }}</td>			
+					<td>{{ item.customerAddress }}</td>			
+					<td>{{ item.orderPrice }}</td>
+					<td>{{ item.deliveryDate }}</td>			
+					<td>{{ item.createUserName }}</td>
+					<td>{{ item.createTime}}</td>
+					<td>
+					<a class="layui-btn layui-btn-mini layui-btn-danger" onclick="confirmAssignInfo({{item.orderId}})">待确认</a>
+					</td>
+					</tr>
+				{{# } else if(item.dataState==4||item.dataState==5){ }}
+					<tr>
+					<td>{{ item.orderNuber }}</td>
+					<td>{{ item.customerName }}</td>			
+					<td>{{ item.customerAddress }}</td>			
+					<td>{{ item.orderPrice }}</td>
+					<td>{{ item.deliveryDate }}</td>			
+					<td>{{ item.createUserName }}</td>
+					<td>{{ item.createTime}}</td>
+					<td>
+					<a class="layui-btn layui-btn-mini layui-btn-danger" onclick="offerInfo({{item.orderId}})">待报价</a>
+					</td>
+					</tr>
+					{{# if(item.quoteStatus=='Y'){ }}
+						<tr>
+							<td>{{ item.orderNuber }}</td>
+							<td>{{ item.customerName }}</td>			
+							<td>{{ item.customerAddress }}</td>			
+							<td>{{ item.orderPrice }}</td>
+							<td>{{ item.deliveryDate }}</td>			
+							<td>{{ item.createUserName }}</td>
+							<td>{{ item.createTime}}</td>
+							<td>
+								<a class="layui-btn layui-btn-mini layui-btn-danger" onclick="offerAll({{item.orderId}})">筛选报价</a>
+							</td>
+						</tr>
+					{{# } }}
+				{{# } else { }}
+				<tr>
+					<td>{{ item.orderNuber }}</td>
+					<td>{{ item.customerName }}</td>			
+					<td>{{ item.customerAddress }}</td>			
+					<td>{{ item.orderPrice }}</td>
+					<td>{{ item.deliveryDate }}</td>			
+					<td>{{ item.createUserName }}</td>
+					<td>{{ item.createTime}}</td>
+					<td>
+					<a class="layui-btn layui-btn-mini layui-btn-danger" onclick="changeStatus({{item.orderId}})">状态修改</a>
+					</td>
+				</tr>
+				{{# } }}
+					
+			
+			{{# }); }}
+		</script>
+	<script>
+	var dataState=window.location.search.split("?")[1];
+	var mark=$("input[name='mark']").val();
+	 layui.config({
+			base : 'js/'
+		});    
+		layui.use([ 'jquery','paging', 'form', 'element'],
+				function() {
+					var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+							paging = layui.paging(),
+							layerTips = parent.layer === undefined ? layui.layer
+									: parent.layer, //获取父窗口的layer对象
+							layer = layui.layer, //获取当前窗口的layer对象
+							form = layui.form();
+							getData({"dataState":dataState,mark:mark});
+							
+					function getData(data){
+						paging.init({
+							url : base.serverContet
+									+ '/manager/loginIn/SdOrderInfo/queryListByPage.do', //地址
+							elem : '#content', //内容容器
+							params :data,
+							type : 'POST',
+							tempElem : '#tpl', //模块容器
+							pageConfig : { //分页参数配置
+								elem : '#paged', //分页容器
+								pageSize : base.pageSize,
+								pageIndex:1
+							//分页大小
+							}, 
+							success : function(data) { //渲染成功的回调
+								//alert("回调成功")
+								
+							},
+							fail : function(msg) { //获取数据失败的回调
+								layer.alert('获取数据失败', {icon: 2});
+							},
+							complate : function() { //完成的回调
+								
+							},
+							serverError: function(xhr, status, error) { //ajax的服务错误
+								layer.alert('服务错误', {icon: 2});
+							}
+						});
+				
+					}
+					$("#search").click(function(){
+						  getData($("#form1").serializeObject());
+					});
+				
+		});
+		
+		
+		
+	</script>
+	<script>
+		layui.use(['form', 'layedit', 'laydate'], function() {
+			var $ = layui.jquery,
+				form = layui.form();
+			layer = layui.layer,
+				layedit = layui.layedit,
+				laydate = layui.laydate;
+			form.on('checkbox(allChoose)', function(data) {
+				var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+				child.each(function(index, item) {
+					item.checked = data.elem.checked;
+				});
+				form.render('checkbox');
+			});
+
+		});
+	</script>
+	</body>
+</html>

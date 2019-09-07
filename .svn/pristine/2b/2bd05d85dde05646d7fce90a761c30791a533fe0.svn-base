@@ -1,0 +1,183 @@
+/**
+ * 订单列表
+ */
+var dataState="";
+$(function(){
+	var position="";
+	$.ajax({type : 'POST',
+		url : base.serverContent+ '/BaseInfo/queryUser.do',
+		success : function(data) {
+			if (data.code == "000") {
+				position=data.sysUserInfo.position;
+			}
+		},
+		error:function(){}
+	});
+	if(position==null||position==""){//系统管理员
+		dataState="";
+	}else if(position=="0"){//外协经理
+		dataState="2";
+	}else if(position=="1"){//核价经理
+		dataState="5";
+	}else if(position=="2"){//采购经理
+		dataState="allLink";
+	}else if(position=="3"){//检验经理
+		dataState="allLink";
+	}else if(position=="4"){//采购员
+		dataState="allLink";
+	}else if(position=="5"){//检验员
+		dataState="allLink";
+	}else{
+		dataState="";
+	}
+});
+//订单确认
+function confirmAssignInfo(orderId){
+	//判断用户是否有确认权限
+	$.ajax({type : 'POST',
+		url : base.serverContent+ '/BaseInfo/queryUser.do',
+		success : function(data) {
+				if (data.code == "000") {
+					if(data.sysUserInfo.position==0){//只有外协经理能确认订单
+						layer.open({
+							type: 2,
+							title: '订单确认',
+							shadeClose: true,
+							shade: [0.6, '#393D49'],
+							maxmin: true, //开启最大化最小化按钮
+							area: ['100%', '100%'],
+							content: 'confirmAssignInfo.html?'+orderId,
+							btn: ['确认','取消'],
+							btnAlign: 'c',
+							skin: 'layui-layer-red',
+							yes : function( index,layero) {
+								$.ajax({type : 'POST',
+									url : base.serverContent+ '/manager/loginIn/SdOrderInfo/confirmOrder.do',
+									data :{orderId:orderId,dataState:'3'},//下个订单流程的值
+									async : false,
+									success : function(data) {
+											if (data.code == "000") {
+												
+												layer.alert('订单确认成功',{icon : 6},
+														function(index2){
+														layer.close(index2);
+														layer.close(index);
+														window.location.reload();}
+																);
+												 
+											} else {
+												layer.alert('确认失败',{icon : 2});
+												 
+											 }
+										},
+										error : function() {
+										}
+									});
+							}
+						});
+					}else{
+						layer.alert('您无权限操作此订单,请联系外协经理',{icon : 3});
+					}
+				}else{
+					layer.alert('登陆超时',{icon:2});
+				} 
+			},
+			error : function() {
+			}
+		});
+}
+
+function offerInfo(orderId) {
+	//判断该用户是否有报价权限
+	$.ajax({type : 'POST',
+		url : base.serverContent+ '/BaseInfo/queryUser.do',
+		success : function(data) {
+				if (data.code == "000") {
+					if(data.sysUserInfo.position==4){//只有采购员才能报价
+						layer.open({
+							type: 2,
+							title: '报价',
+							shadeClose: true,
+							shade: [0.6, '#393D49'],
+							maxmin: true, //开启最大化最小化按钮
+							area: ['100%', '100%'],
+							content: 'listOrderOffer.html?'+orderId,
+							/*btn: ['确定','取消'],
+							btnAlign: 'c',*/
+							skin: 'layui-layer-red'
+						});
+					}else{
+						layer.alert('抱歉！只有该订单指定采购员才能参与报价',{icon : 3});
+					}
+				}else{
+					layer.alert('登陆超时',{icon:2});
+				} 
+			},
+			error : function() {
+			}
+		});
+}
+
+function offerAll(orderId) {
+	//判断用户是否有筛选权限
+	$.ajax({type : 'POST',
+		url : base.serverContent+ '/BaseInfo/queryUser.do',
+		success : function(data) {
+				if (data.code == "000") {
+					if(data.sysUserInfo.position==1){//只有核价经理才能核价
+						layer.open({
+							type: 2,
+							title: '筛选报价',
+							shadeClose: true,
+							shade: [0.6, '#393D49'],
+							maxmin: true, //开启最大化最小化按钮
+							area: ['100%', '100%'],
+							content: 'listOrderOfferAll.html?'+orderId,
+							/*btn: ['确定','取消'],
+							btnAlign: 'c',*/
+							skin: 'layui-layer-red'
+						});
+					}else{
+						layer.alert('您无权限操作此订单,请联系核价经理',{icon : 3});
+					}
+				}else{
+					layer.alert('登陆超时',{icon:2});
+				} 
+			},
+			error : function() {
+			}
+		});
+}
+
+
+function changeStatus(orderId) {
+	//判断用户是否有修改权限
+	$.ajax({type : 'POST',
+		url : base.serverContent+ '/BaseInfo/queryUser.do',
+		success : function(data) {
+				if (data.code == "000") {
+					//只有采购员，采购经理，检验员，检验经理进行状态更改
+					if(data.sysUserInfo.position==2||data.sysUserInfo.position==3||data.sysUserInfo.position==4||data.sysUserInfo.position==5){
+						layer.open({
+							type: 2,
+							title: '修改状态',
+							shadeClose: true,
+							shade: [0.6, '#393D49'],
+							maxmin: true, //开启最大化最小化按钮
+							area: ['100%', '100%'],
+							content: 'listOrderEdit.html?'+orderId,
+							/*btn: ['确定','取消'],
+							btnAlign: 'c',*/
+							skin: 'layui-layer-red'
+						});
+					}else{
+						layer.alert('您无权限操作此订单,请联系相关人员',{icon : 3});
+					}
+				}else{
+					layer.alert('登陆超时',{icon:2});
+				} 
+			},
+			error : function() {
+			}
+		});
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加系统</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/global.css" media="all">
+<link rel="stylesheet" href="../../css/common.css" media="all">
+<link rel="stylesheet" href="../../css/my.css" media="all">
+</head>
+<body style="width: 320px;">
+
+	<form class="layui-form ml-20" id="frm" >
+		<div class="layui-form-item mt-15" style="width: 100%;">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">系统名称</label>
+			<div class="layui-input-inline" style="width: 150px;">
+				<input type="text" name="systemName" id="systemName" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item mt-15" style="width: 100%;">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">系统网址</label>
+			<div class="layui-input-inline" style="width: 150px;">
+				<input type="text" name="systemWebcontext" id="systemWebcontext" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item mt-15" style="width: 100%;">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">数据库类型</label>
+			<div class="layui-input-inline" style="width: 150px;">
+				 <select name="dbType" id="dbType" lay-verify="required" lay-search="" lay-filter="dbType">
+			          <option value=''>请选择</option>
+			     </select>
+			</div>
+		</div>
+		<div class="layui-form-item mt-15" style="width: 100%;">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">数据库连接驱动 </label>
+			<div class="layui-input-inline" style="width: 150px;">
+				<input type="text" name="dbDriver" id="dbDriver" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item mt-15" style="width: 100%;">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">数据库连接串 </label>
+			<div class="layui-input-inline" style="width: 150px;">
+				<input type="text" name="jdbcStr" id="jdbcStr" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item mt-15" style="width: 100%;">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">数据库用户名</label>
+			<div class="layui-input-inline" style="width: 150px;">
+				<input type="text" name="dbUsername" id="dbUsername" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item mt-15">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">数据库密码</label>
+			<div class="layui-input-inline" style="width: 150px;">
+				<input type="text" name="dbUserpwd" id="dbUserpwd" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="align-center mt-20">
+			<a class="layui-btn layui-btn-small layui-btn-normal" style="width: 100px;" id="doSubmit">提交</a> 
+			<a class="layui-btn layui-btn-primary layui-btn-small" style="width: 100px;" id="cancel">取消</a>
+		</div>
+	</form>
+	
+	<script type="text/javascript" src="../../js/jquery.min.js"></script>
+	<script src="../../../resources/js/base.js"></script>
+	<script type="text/javascript" src="../../js/myframe.js"></script>
+	<script src="../../plugins/layui/layui.js" charset="utf-8"></script>
+
+	<script>
+	layui.use(['form', 'layedit', 'laydate'], function(){
+		var form = layui.form() ,layer = layui.layer ,layedit = layui.layedit ,laydate = layui.laydate;
+		//查询数据库类型
+		var typeId = "00003";
+		$.ajax({
+			type : "GET",
+			url : base.serverContet +"/manager/loginIn/SysDictionaryInfo/queryList.do?dictionaryTypeId="+typeId,
+			data : {"":""},
+			async : false,
+			success : function(data) {
+				if(data.code=="000"){
+					$("#dbType").html("");
+					for(var i=0;i<data.rows.length;i++){
+						$("#dbType").append("<option value='"+data.rows[i].dictionaryId+"'>"+data.rows[i].dictionaryName+"</option>");
+					}
+					if(data.rows.length==0){
+						$("#dbType").html("<option value=''>暂无数据</option>");
+					}
+					 layui.form().render('select');
+				} 
+			},error : function(rec) {
+				console.info("网络异常,请稍后再试");
+			}
+		});
+		//检测下拉框改变事件
+		form.on('select(dbType)',function(data){
+			 $("#dbType").val(data.value);
+		 });
+		
+		$("#doSubmit").click(function(){
+			$.ajax({
+				type : "POST",
+				url : base.serverContet +"/manager/loginIn/SdSystemInfo/add.do",
+				data : $("#frm").serialize(),
+				success : function(data) {
+					if(data.code=="000"){
+						layer.alert('添加成功！',{icon : 6,yes:function(){
+							var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+							parent.location.reload();
+							parent.layer.close(index); //再执行关闭   
+						}}); 
+					}else{
+						layer.alert(data.msg,{icon : 6,yes:function(){
+							location.reload();
+						}}); 
+					} 	
+				},error : function(rec) {
+					console.info("网络异常,请稍后再试");
+				}
+			});
+			
+		});
+		
+		//取消事件
+		$("#cancel").click(function(){
+			var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+			parent.layer.close(index); //再执行关闭   
+		}); 
+	});
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>成本核算页面</title>
+		<link rel="stylesheet" href="../css/public.css" />
+		<link rel="stylesheet" href="../css/purchase.css" />
+		<link rel="stylesheet" href="../css/table.css" />
+		<link rel="stylesheet" href="../css/zy.css" />
+		<link rel="stylesheet" href="../css/my.css" />
+		<link rel="stylesheet" href="../font/iconfont.css" />		
+	</head>
+
+	<body>
+		<div class="content mt-10 mb-80">
+        	<div class="container content-box">
+        		<div class="product-release-title">
+					<span class="product-release-title-content1">安捷包装(苏州)有限公司</span>
+					<p class="product-title pb-20">产品成本核算及报价计算明细表</p>
+				</div>
+				<div class="product-main-content-1">
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important;">
+						<tbody>
+							<tr class="fl">
+								<th valign="middle">产品名称：</th>
+								<td><input type="text" style="width:150px;" class="lg-input" name="location" value=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm fl" id="retime1" value="" name="retime" width="150px">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">类别：</th>
+								<td colspan="2" id="selectpaytime">
+									<select name="paytime" class="select" style="width:150px; margin-right: 10px;">
+										<option>请选择</option>
+										<option value="1">类别一</option>
+										<option value="2">类别二</option>
+										<option value="3">类别三</option>
+										<option value="4">类别四</option>						
+									</select>
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">其他：</th>
+								<td><input type="text" style="width:150px;" class="lg-input" name="location" value=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">产品规格：</th>
+								<td><input type="text" style="width:150px;" class="lg-input" name="location" value=""></td>
+							</tr>
+							<tr class="fl" style="height: 44px;line-height: 34px;">
+								<th valign="middle">是否带盖：</th>
+								<td><label><input value="1" name="sample" type="radio" checked="">需要带盖</label><label><input value="2" name="sample" class="ml-10" type="radio">不需要带盖</label></td>
+							</tr>
+							<tr class="fl" style="height: 44px;line-height: 34px; width: 50%;">
+								<th valign="middle">&emsp;&emsp;&emsp;&emsp;设备尺寸：</th>
+								<td style="font-size: 15px;padding-top:9px;">长&ensp;<input type="text" style="width:80px;" class="md-input" name="location" value="">宽&ensp;<input type="text" style="width:80px;" class="md-input" name="location" value="">高&ensp;<input type="text" style="width:78px;" class="md-input" name="location" value=""></td>
+							</tr>
+							<tr class="fl" style="height: 44px;line-height: 34px; width: 50%;">
+								<th valign="middle">内径余量：</th>
+								<td style="font-size: 15px;padding-top:9px;">长&ensp;<input type="text" style="width:65px;" class="md-input" name="location" value="">宽&ensp;<input type="text" style="width:65px;" class="md-input" name="location" value="">高&ensp;<input type="text" style="width:63px;" class="md-input" name="location" value=""></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+        	</div> 	
+        	<p class="product-title-1 pt-20 pb-20">木箱重置、面积、立方数、容积及用料面积等</p>
+        	<div class="area-detail">
+        		<table  border="1" cellpadding="0" cellspacing="0">
+        			<tr>
+        				<td class="weight-600">木箱重量</td>
+        				<td><input type="text" value="91.7" class="input-area"></td>
+        				<td>kg</td>
+        				<td class="weight-600">平方单价</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>元/㎡</td>
+        				<td class="weight-600">盖板外面积</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">小墙板外面积一双</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>㎡</td>
+        			</tr>
+        			<tr>
+        				<td class="weight-600">木箱外面积</td>
+        				<td><input type="text" value="91.7" class="input-area"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">立方单价</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>元/㎡</td>
+        				<td class="weight-600">盖板内面积</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">小墙板内面积一双</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>㎡</td>
+        			</tr>
+        			<tr>
+        				<td class="weight-600">木箱底面积</td>
+        				<td><input type="text" value="91.7" class="input-area"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">木箱内表面</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">大墙板外面积一双</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">木箱平方单价</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>元/㎡</td>
+        			</tr>
+        			<tr>
+        				<td class="weight-600">木箱立方数</td>
+        				<td><input type="text" value="91.7" class="input-area"></td>
+        				<td>m³</td>
+        				<td class="weight-600">木箱容积</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>m³</td>
+        				<td class="weight-600">大墙板外面积一双</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">木箱立方单价</td>
+        				<td><input type="text" value="0.7" class="input-area"></td>
+        				<td>元/m³</td>
+        			</tr>
+        		</table>
+        	</div>
+        	<div class="size-detail" style="margin-top: 30px;">
+        		<table border="1" cellpadding="0" cellspacing="0">
+        			<tr>
+        				<th colspan="7">项目</th>
+        				<th colspan="7">成本计算</th>
+        			</tr>
+        			<tr>
+        				<td rowspan="36" class="weight-600">材料</td>
+        				<td class="weight-600">材料类别</td>
+        				<td rowspan="2" class="weight-600">部位名称</td>
+        				<td colspan="3" class="weight-600">材料规格、型号</td>
+        				<td rowspan="2" class="weight-600">数量</td>
+        				<td colspan="2" rowspan="2" class="weight-600">单位用量</td>
+        				<td rowspan="2" class="weight-600">含税单价<br/>(17%)</td>
+        				<td colspan="2" rowspan="2" class="weight-600">未税单价</td>
+        				<td rowspan="2" class="weight-600">单位成本<br/>(未税)<br/>元/每件</td>
+        				<td rowspan="2" class="weight-600">备注</td>
+        			</tr>
+        			<tr>
+        				<td rowspan="20" class="weight-600">主材料</td>
+        				<td class="weight-600">长(mm)</td>
+        				<td class="weight-600">宽(mm)</td>
+        				<td class="weight-600">厚(mm)</td>       				
+        			</tr>
+        			<tr>
+        				<td class="weight-600">箱子外径</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td rowspan="18" class="weight-600">m³/件</td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td rowspan="18" class="weight-600">元/m³</td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">箱子内径</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">盖板</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">长向边料</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">宽向边料</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">大墙板</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">长向边料</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">宽向边料</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">小墙板</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">长向边料</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">宽向边料</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">底方</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">长方</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">短方</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">挑方</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">垫方</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">主材料合计</td>
+        				<td><input type="text" value="1050" class="input-area"></td>
+        				<td><input type="text" value="880" class="input-area"></td>
+        				<td><input type="text" value="1052" class="input-area"></td>
+        				<td><input type="text" value="1" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="1850" class="input-area"></td>
+        				<td><input type="text" value="1768.25" class="input-area"></td>
+        				<td><input type="text" value="5.58" class="input-area"></td>
+        				<td><input type="text" value="备注信息很长" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">主材损耗率可损</td>
+        				<td colspan="4"><input type="text" value="木箱" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td>%</td>
+        				<td><input type="text" value="16.64" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td> 
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">主材合计：</td>
+        				<td colspan="6">225.56</td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td rowspan="15" class="weight-600">辅材</td>
+        				<td colspan="5" class="weight-600">材料名称</td>
+        				<td class="weight-600">数量</td>
+        				<td rowspan="14" class="weight-600">pcs/件</td>
+        				<td class="weight-600">含税单价</td>
+        				<td class="weight-600">未税单价</td>
+        				<td rowspan="14" class="weight-600">元/pcs</td>
+        				<td class="weight-600">未税</td>
+        				<td class="weight-600">备注</td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">雨布</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">真空袋</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">干燥剂</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">PE袋</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">PE膜/气泡垫/珍珠棉</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">钉子</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">螺杆、自攻打</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">上起吊护角</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">下起吊护角</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">卡扣</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">焊材</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">钢带</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">钢扣</td>
+        				<td><input type="text" value="10" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" value="0.0001" class="input-area"></td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">辅材合计：</td>
+        				<td colspan="6">81.56</td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="7" class="weight-600">材料合计：</td>
+        				<td colspan="7">381.56</td>
+        			</tr>
+        			<tr>
+        				<td rowspan="9" class="weight-600">费用</td>
+        				<td colspan="2" class="weight-600">费用类别</td>
+        				<td colspan="2" class="weight-600">计量单位</td>
+        				<td colspan="2" class="weight-600">数量</td>
+        				<td colspan="4" class="weight-600">单价价格、比率</td>
+        				<td colspan="2" class="weight-600">单位成本</td>
+        				<td class="weight-600">备注</td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">人工费用</td>
+        				<td colspan="2" class="weight-600">工时</td>
+        				<td colspan="2"><input type="text" value="1" class="input-area"></td>
+        				<td colspan="2"><input type="text" value="120" class="input-area"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="240.00" class="input-area-1"></td>
+        				<td class="weight-600">元/件</td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">外组装费</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td colspan="2"><input type="text" value="1" class="input-area"></td>
+        				<td colspan="2"><input type="text" value="120" class="input-area"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="240.00" class="input-area-1"></td>
+        				<td class="weight-600">元/件</td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">熏蒸费用</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td colspan="2"><input type="text" value="1" class="input-area"></td>
+        				<td colspan="2"><input type="text" value="120" class="input-area"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="240.00" class="input-area-1"></td>
+        				<td class="weight-600">元/件</td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">吊装费用</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td colspan="2"><input type="text" value="1" class="input-area"></td>
+        				<td colspan="2"><input type="text" value="120" class="input-area"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="240.00" class="input-area-1"></td>
+        				<td class="weight-600">元/件</td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">运输费用</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td colspan="2"><input type="text" value="1" class="input-area"></td>
+        				<td colspan="2"><input type="text" value="120" class="input-area"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="240.00" class="input-area-1"></td>
+        				<td class="weight-600">元/件</td>
+        				<td><input type="text" class="input-area-1"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">辅材合计：</td>
+        				<td colspan="6">81.56</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">综合费用：</td>
+        				<td colspan="6">81.56</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">费用合计：</td>
+        				<td colspan="6">81.56</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        			</tr>
+        			<tr>
+        				<td colspan="7" class="weight-600">材料、费用合计：</td>
+        				<td colspan="7">981.56</td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">计划毛利润率：</td>
+        				<td colspan="5"><input type="text" value="13.33%" class="input-area"></td>
+        				<td colspan="4" class="weight-600">企业所得税税率25%，计划净利润率10%</td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">最低报价</td>
+        				<td colspan="2" class="weight-600">未税价格</td>
+        				<td colspan="1"><input type="text" value="1152.9" class="input-area"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">含税价格</td>
+        				<td colspan="1"><input type="text" value="1312.9" class="input-area"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">最低报价比(未税)</td>
+        				<td colspan="1"><input type="text" value="27.33%" class="input-area"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="4" class="weight-600">实际报价净利润分析：</td>
+        				<td colspan="10"><input type="text" class="input-area"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">实际报价</td>
+        				<td colspan="2" class="weight-600">未税价格</td>
+        				<td colspan="1"><input type="text" value="1152.9" class="input-area"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">含税价格</td>
+        				<td colspan="1"><input type="text" value="1312.9" class="input-area"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">材料售价比(未税)</td>
+        				<td colspan="1"><input type="text" value="27.33%" class="input-area"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">不确定因素评估</td>
+        				<td colspan="2" class="weight-600">比例</td>
+        				<td colspan="1"><input type="text" value="30" class="input-area"></td>
+        				<td colspan="1" class="weight-600">%</td>
+        				<td colspan="2" class="weight-600">金额</td>
+        				<td colspan="1"><input type="text" value="1312.9" class="input-area"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">订单支出</td>
+        				<td colspan="1"><input type="text" value="0" class="input-area"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">实际净利润率</td>
+        				<td colspan="2" class="weight-600">比例</td>
+        				<td colspan="8"><input type="text" value="30" class="input-area"></td>
+        				<td colspan="1" class="weight-600">%</td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">预报价</td>
+        				<td colspan="2" class="weight-600">未税价格</td>
+        				<td colspan="1"><input type="text" value="952.9" class="input-area"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">含税价格</td>
+        				<td colspan="4"><input type="text" value="1312.9" class="input-area"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">预测净利润率</td>
+        				<td colspan="2" class="weight-600">比例</td>
+        				<td colspan="8"><input type="text" value="30" class="input-area"></td>
+        				<td colspan="1" class="weight-600">%</td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">特殊批准理由</td>
+        				<td colspan="3"><input type="text" class="input-area"></td>
+        				<td colspan="2" class="weight-600">复.。。</td>
+        				<td colspan="2"><input type="text" class="input-area"></td>
+        				<td colspan="2" class="weight-600">制表</td>
+        				<td colspan="2"><input type="text" class="input-area"></td>
+        			</tr>
+        		</table>
+        	</div>
+       </div>
+       <script type="text/javascript" src="../laydate/laydate.js" ></script>
+       <script type="text/javascript" src="../js/jquery.min.js" ></script>
+		<script>
+			lay('#version').html('-v'+ laydate.v);
+			
+			//执行一个laydate实例
+			laydate.render({
+			  elem: '#retime1' //指定元素
+			});
+		</script>
+	</body>
+</html>

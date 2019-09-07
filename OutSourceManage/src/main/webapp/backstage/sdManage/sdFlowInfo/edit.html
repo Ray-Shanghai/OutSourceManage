@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>系统信息</title>
+ 	<link href="../../assets/css/dpl-min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/bui-min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/page-min.css" rel="stylesheet" type="text/css" /> 
+</head>
+<body>
+	<div class="container">
+    <form id ="J_Form" class="form-horizontal">
+    <input type="hidden" id="flowDetailInfo" name="sdFlowDetailInfo">
+      <h3>基本信息</h3>
+       <div class="row">
+        <div class="control-group span18">
+          <label class="control-label"><s>*</s>流程名称：</label>
+          <div class="controls">
+            <input  type="text" id="flowName" name="flowName" data-rules="{required:true}">
+          </div>
+        </div>
+      </div>
+       <div class="row">
+        <div class="control-group span15">
+          <label class="control-label"><s>*</s>流程描述：</label>
+          <div class="controls control-row4">
+            <textarea name="flowDesc" id="flowDesc"   data-rules="{required:true}"></textarea>
+          </div>
+        </div>
+      </div>
+      <hr/>
+      <h3>流程详情</h3>
+      <div class="row">
+        <div class="span21 offset1 control-row-auto">
+          <div id="grid"></div>
+        </div>
+      </div>
+      
+      
+      <div class="row">
+        <div class="form-actions offset3">
+          <button type="submit" class="button button-primary">保存</button>
+          <button type="reset" class="button">重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+   <script type="text/javascript" src="../../assets/js/jquery-1.8.1.min.js"></script>
+  <script type="text/javascript" src="../../assets/js/bui-min.js"></script>
+  <script type="text/javascript" src="../../assets/js/config-min.js"></script>
+  <script src="../../../resources/js/base.js"></script>
+  <script type="text/javascript">
+    BUI.use('common/page');
+  </script>
+  
+<script type="text/javascript">
+
+
+$.ajax({  
+		type : 'POST',  
+		url : base.serverContet+'/manager/loginIn/SdFlowBaseInfo/queryByPkId.do'+window.location.search,  
+		async : false,  
+		success : function(data) {  
+		  	if(data.code=="000"){
+		  		if(base.isNotBlank(data.sdFlowBaseInfo)){
+			     $("#flowName").val(data.sdFlowBaseInfo.flowName);
+			     $("#flowDesc").text(data.sdFlowBaseInfo.flowDesc);
+		  		}
+		  	}else{
+	       		window.parent.alertTip(data);
+	       	}
+		  },error : function() {}  
+	}); 
+
+
+
+
+  BUI.use(['bui/grid','bui/data','bui/form'],function (Grid,Data,Form) {
+    var columns = [
+            {title : '流程名称',dataIndex :'flowDetailName',width:100,editor : {xtype : 'text',rules:{required:true}}},
+            {title : '流程描述',dataIndex :'flowDetailDesc',width:100,editor : {xtype : 'text',rules:{required:true}}},
+            {title : '对应功能编号',dataIndex :'functionId',editor : {xtype : 'text'}},
+            {title : '对应表数据表',dataIndex :'functionTable',editor : {xtype : 'text'}},
+            {title : '对应表字段',dataIndex :'tablePkColumn',width:100,editor : {xtype : 'text'}},
+            {title : '对应表阶段字段',dataIndex :'tableStepColumn',width:100,editor : {xtype : 'text'}},
+            {title : '对应表阶段字段值',dataIndex :'tableStepColumnValue',width:120,editor : {xtype : 'text'}},
+            {title : '流程顺序',dataIndex :'flowSeq',width:100,editor : {xtype : 'text',rules:{required:true}}}
+          ],
+          
+          
+      store = new Data.Store({
+    	  url : base.serverContet+'/manager/loginIn/SdFlowDetailInfo/queryListByflowInfoId.do'+window.location.search,  
+    	  autoLoad:true,
+    	  pageSize:11
+    	   
+          }),
+      editing = new Grid.Plugins.CellEditing(),
+      grid = new Grid.Grid({
+        render : '#grid',
+        columns : columns,
+        width : 700,
+        forceFit : true,
+        store : store,
+        plugins : [editing],
+        tbar:{
+            items : [{
+              btnCls : 'button button-small',
+              text : '<i class="icon-plus"></i>添加',
+              listeners : {
+                'click' : addFunction
+              }
+            },
+            {
+              btnCls : 'button button-small',
+              text : '<i class="icon-remove"></i>删除',
+              listeners : {
+                'click' : delFunction
+              }
+            }]
+        }
+
+      });
+    grid.render();
+    function addFunction(){
+    	var data={flowDetailName :'',
+    			flowDetailDesc :'',
+    			funtionId :'',
+    			funtionTable :'',
+    			tablePkColumn :'',
+    			tableStepColumn:'',
+    			tableStepColumnValue:'',
+    			flowSeq :'0'};
+      store.add(data);
+      editing.edit(data,'flowDetailName'); //添加记录后，直接编辑
+    }
+
+    function delFunction(){
+      var selections = grid.getSelection();
+      store.remove(selections);
+    }
+    BUI.use('bui/form',function (Form) {
+        var f1 = new Form.Form({
+        srcNode : '#J_Form'
+      	}).render();
+       
+   		$("#J_Form").submit(function() {  
+     		if(f1.isValid()&&editing.isValid()){
+     			//获取动态添加行数据
+     			var columnsResultStr=store.getResult();
+     			var columnsResultJsonStr=JSON.stringify(columnsResultStr);
+     			$("#flowDetailInfo").val(columnsResultJsonStr);
+         		$.ajax({  
+             		type : 'POST',  
+              		url : base.serverContet+'/manager/loginIn/SdFlowDetailInfo/update.do'+window.location.search,  
+            		data: $('#J_Form').serialize(),  
+             		async : false,  
+             		success : function(data) {  
+	               	  	if(data.code=="000"){
+	               			  BUI.Message.Alert('信息保存成功',function(){ top.topManager.closePage();},'info');
+	                    }else{
+	                      		window.parent.alertTip(data);
+	                    }
+             		   },error : function() {}  
+         		});  
+         		return false;
+    		}else{
+    			BUI.Message.Alert('请确保必填项全部填写完成。',function(){
+   	        },'info');
+    			return false;
+    		}
+   	});
+    return false;
+   });
+
+
+  });
+</script>
+</body>

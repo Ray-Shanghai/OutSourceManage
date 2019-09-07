@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdPushSetInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdPushSetInfo" id="SdPushSetInfoMap"> 
+
+		<result column="push_set_id" property="pushSetId"/>
+		<result column="push_set_name" property="pushSetName"/>
+		<result column="push_start_price" property="pushStartPrice"/>
+		<result column="push_end_price" property="pushEndPrice"/>
+		<result column="push_num" property="pushNum"/>
+		<result column="push_formula" property="pushFormula"/>
+		<result column="sd_id" property="sdId"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_USER_NAME" property="lastUpdateUserName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo">
+		update sd_push_set t set 
+		t.push_set_name = #{pushSetName},
+		t.push_start_price = #{pushStartPrice},
+		t.push_end_price = #{pushEndPrice},
+		t.push_num = #{pushNum},
+		t.push_formula = #{pushFormula},
+		t.REMARK = #{remark},
+		t.LAST_UPDATE_TIME=now(),
+		t.LAST_UPDATE_USER_ID=#{lastUpdateUserId},
+		t.LAST_UPDATE_USER_NAME=#{lastUpdateUserName},
+		t.LAST_UPDATE_DEPART_ID=#{lastUpdateDepartId},
+		t.LAST_UPDATE_DEPART_NAME=#{lastUpdateDepartName}
+		where push_set_id = #{pushSetId};
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultMap="SdPushSetInfoMap">
+		SELECT 
+		t.push_set_id,
+	    t.push_set_name,
+	    t.push_start_price,
+	    t.push_end_price,
+	    t.push_num,
+	    t.push_formula,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_push_set t 
+		where push_set_id = #{pushSetId}  
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultMap="SdPushSetInfoMap">
+		SELECT 
+		t.push_set_id,
+	    t.push_set_name,
+	    t.push_start_price,
+	    t.push_end_price,
+	    t.push_num,
+	    t.push_formula,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_push_set t 
+		where  1 = 1  
+		<if test="pushSetName !=null and pushSetName !=''">
+			and t.push_set_name  like concat('%',#{pushSetName},'%')
+		</if>
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultMap="SdPushSetInfoMap">
+		SELECT 
+		t.push_set_id,
+	    t.push_set_name,
+	    t.push_start_price,
+	    t.push_end_price,
+	    t.push_num,
+	    t.push_formula,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_push_set t where 1=1 
+		<if test="pushSetName !=null and pushSetName !=''">
+			and t.push_set_name  like concat('%',#{pushSetName},'%')
+		</if>
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultMap="SdPushSetInfoMap">
+		SELECT 
+		t.push_set_id,
+	    t.push_set_name,
+	    t.push_start_price,
+	    t.push_end_price,
+	    t.push_num,
+	    t.push_formula,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_push_set t where 1=1 
+		<if test="pushSetName !=null and pushSetName !=''">
+			and t.push_set_name  like concat('%',#{pushSetName},'%')
+		</if>
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo">
+	insert into sd_push_set
+	(
+		push_set_name,
+        push_start_price,
+        push_end_price,
+        push_num,
+        push_formula,
+		remark,
+		status,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME
+	)
+	values
+	(
+		#{pushSetName},
+		#{pushStartPrice},
+		#{pushEndPrice},
+		#{pushNum},
+		#{pushFormula},
+		#{remark},
+		'Y',
+		now(),
+		#{createUserId},
+		#{createUserName},
+		#{createDepartId},
+		#{createDepartName}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo">
+		delete from sd_push_set where push_set_id = #{pushSetId}
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultType="java.lang.Integer">
+   		select count(*) from sd_push_set t where 1=1 
+   		<if test="pushSetName !=null and pushSetName !=''">
+			and t.push_set_name like concat('%',#{pushSetName},'%')	
+		</if>
+	</select>
+</mapper> 

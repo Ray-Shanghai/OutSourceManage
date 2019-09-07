@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="OutSourceManage:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>OutSourceManage</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="OutSourceManage-1.0.0.war">
+      <element id="artifact" artifact-name="OutSourceManage:war exploded" />
+    </root>
+  </artifact>
+</component>

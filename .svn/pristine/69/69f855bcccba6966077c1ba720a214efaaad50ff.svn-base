@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysUserInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysUserInfo" id="SysUserInfoMapForSqlserver"> 
+		 
+		<result column="DEPART_ID" property="departId"/>
+		<result column="DEPART_NAME" property="departName"/>
+		<result column="DEPART_POWER" property="departPower"/>
+		 
+		<result column="LOGIN_NAME" property="loginName"/>
+		<result column="LOGIN_PWD" property="loginPwd"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="EMPLOYE_NO" property="employeNo"/>
+		<result column="USER_NAME" property="userName"/>
+		
+		<result column="account_type" property="accountType"/>
+		
+		<result column="sex"  property="sex"/>
+		<result column="phone"  property="phone"/>
+		<result column="email"  property="email"/> 
+		<result column="qq"  property="qq"/>
+		<result column="brithday"  property="brithday"/>
+		<result column="wx_Open_Id"  property="wxOpenId"/>
+		<result column="wx_Nick_Name"  property="wxNickName"/>
+		<result column="wx_Head_Img_Url"  property="wxHeadImgUrl"/>
+		
+		
+		
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		 
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		 
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		 
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	
+	<update id="updateDepartPowerForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo">
+	update sys_user_info set 
+        DEPART_POWER = #{departPower},
+        last_update_TIME=sysdate,
+        last_update_user_id = #{lastUpdateUserId},
+        last_update_user_name = #{lastUpdateUserName},
+        
+        last_update_depart_id = #{lastUpdateDepartId},
+        last_update_depart_name = #{lastUpdateDepartName},
+        
+       where  user_id = #{userId}
+	</update>
+	
+	
+	 
+	<update id="updatePwdForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo">
+		update sys_user_info set 
+		login_pwd=#{loginPwd}
+			 where user_id = #{userId}
+		</update>
+	<update id="updateForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo">
+		update sys_user_info set 
+		   user_name=#{userName},
+		   depart_id=#{departId},
+		   depart_name=#{departName},
+		   sex=#{sex},
+		   phone=#{phone},
+		   email=#{email},
+		   qq=#{qq},
+		   employe_No=#{employeNo},
+		   brithday=#{brithday},
+		   status =#{status}
+		 where user_id = #{userId}
+		
+	</update>
+	
+	<select id="queryByPkIdForSqlserver" parameterType="String"  resultMap="SysUserInfoMapForSqlserver">
+		SELECT 
+		 user_id,
+         user_name,
+         login_name,
+         login_pwd,
+         depart_id,
+         (case when len(t.depart_id)=9 then (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t1.depart_id,1,3))
+    	 when len(t.depart_id)=15 then 
+    		(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,3)  )+'-'+(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,9)  )
+	     when len(t.depart_id)=21 then 
+	     	(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,3)  )+'-'+(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,9))+'-'+
+	         (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,15)   )
+
+	     else ''
+	       end)+'-'+ depart_name   depart_name,
+       depart_power,
+       sex,
+       phone,
+       email,
+       qq,
+       brithday,
+       wx_open_id,
+       wx_nick_name,
+       wx_head_img_url,
+       is_online,
+       lastlogintime,
+       state,
+       account_type,
+       reg_ip,
+       reg_mac,
+       employe_no,
+       is_marray,
+       remark,
+       status,
+       create_time,
+       create_user_id,
+       create_user_name,
+       create_depart_id,
+       create_depart_name,
+       last_update_time,
+       last_update_user_id,
+       last_update_user_name,
+       last_update_depart_id,
+       last_update_depart_name
+		FROM  SYS_USER_INFO t 
+		where  USER_ID =#{userId}
+	</select>
+	<select id="queryForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo"  resultMap="SysUserInfoMapForSqlserver">
+		select  
+      *
+  		from sys_user_info t
+		where  LOGIN_NAME =#{loginName} and LOGIN_PWD= #{loginPwd}  and STATUS = 'Y'
+	</select>
+	<select id="queryListByPageForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo"  resultMap="SysUserInfoMapForSqlserver">
+	select top ${pageSize} * from(
+		select row_number()OVER(order by create_time desc) rw,
+		   user_id,
+	       user_name,
+	       login_name,
+	       login_pwd,
+	       depart_id,
+	       (case when len(t.depart_id)=9 then (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t1.depart_id,1,3))
+	    	 when len(t.depart_id)=15 then 
+	    		(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,3)  )+'-'+(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,9)  )
+		     when len(t.depart_id)=21 then 
+		     	(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,3)  )+'-'+(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,9))+'-'+
+		         (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substring(t.depart_id,1,15)   )
+	
+		     else ''
+		       end)+'-'+ depart_name   depart_name,
+	       depart_power,
+	       sex,
+	       phone,
+	       email,
+	       qq,
+	       brithday,
+	       wx_open_id,
+	       wx_nick_name,
+	       wx_head_img_url,
+	       is_online,
+	       lastlogintime,
+	       state,
+	       account_type,
+	       reg_ip,
+	       reg_mac,
+	       employe_no,
+	       is_marray,
+	       remark,
+	       status,
+	       create_time,
+	       create_user_id,
+	       create_user_name,
+	       create_depart_id,
+	       create_depart_name,
+	       last_update_time,
+	       last_update_user_id,
+	       last_update_user_name,
+	       last_update_depart_id,
+	       last_update_depart_name
+		from sys_user_info t where 1=1
+		<if test="userName!=null and userName!=''">
+			and user_name like '%'+#{userName}+'%'
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			and login_name like '%'+#{loginName}+'%'
+		</if>
+		 
+		<if test="departName!=null and departName!=''">
+			and DEPART_NAME like '%'+#{departName}+'%'
+		</if>
+		 
+		<if test="status!=null and status!=''">
+			and STATUS like '%'+#{status}+'%'
+		</if>
+		) t where t.rw &gt; ${startRecod}
+	</select>
+	<select id="queryListForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo"  resultMap="SysUserInfoMapForSqlserver">
+		select * from sys_user_info t 
+	</select>
+	<insert id="addForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo" useGeneratedKeys="true" keyProperty="userId">
+	
+			insert into sys_user_info
+			  (
+			   user_name,
+			   login_name,
+			   login_pwd,
+			   depart_id,
+			   depart_name,
+			    sex,
+			   phone,
+			   email,
+			   qq,
+			   brithday,
+			   employe_no,
+			   is_marray,
+			    status,
+			   create_user_id,
+			   create_user_name,
+			   create_depart_id,
+			   create_depart_name,
+			   account_type )
+			values
+			  (
+			   #{userName},
+			   #{loginName},
+			    #{loginPwd},
+			  #{departId},
+			   #{departName},
+			   #{sex},
+			  #{phone},
+			   #{email},
+			   #{qq},
+			   #{brithday},
+			    #{employeNo},
+			   'N',
+			   #{status},
+			   #{createUserId},
+			   #{createUserName},
+			  #{createDepartId},
+			   #{createDepartName},
+			   #{accountType} )
+
+	 
+		 
+	</insert>
+	<select id="queryCountForSqlserver"  parameterType="com.sd.farmework.pojo.SysUserInfo"  resultType="java.lang.Integer">
+   		select    count(*) from SYS_USER_INFO where 1=1
+		<if test="userName!=null and userName!=''">
+			and user_name like '%'+#{userName}+'%'
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			and login_name like '%'+#{loginName}+'%'
+		</if>
+		 
+		<if test="departName!=null and departName!=''">
+			and DEPART_NAME like '%'+#{departName}+'%'
+		</if>
+		 
+		<if test="status!=null and status!=''">
+			and STATUS like '%'+#{status}+'%'
+		</if>
+	</select>
+	<update id="updateUserByParmForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo">
+		update sys_user_info set 
+			login_name=#{phone},
+		    phone=#{phone},
+		    user_name=#{userName}
+		 where phone = #{oldPhone}
+		
+	</update>
+	<update id="deleteUserByParmForSqlserver" parameterType="com.sd.farmework.pojo.SysUserInfo">
+		delete from  sys_user_info 
+		 where phone = #{oldPhone}
+		
+	</update>
+</mapper> 
+

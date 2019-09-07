@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sd.farmework.mapper.SysFunctionModuleMapper">
+
+	<resultMap type="com.sd.farmework.pojo.SysFunctionModule" id="sysFunctionModuleMap">
+		<result column="FUNCTION_MODULE_ID" property="functionModuleId" />
+		<result column="FUNCTION_MODULE_NAME" property="functionModuleName" />
+		<result column="FUNCTION_MODULE_DESC" property="functionModuleDesc" />
+		<result column="FUNCTION_ID" property="functionId" />
+		<result column="FUNCTION_NAME" property="functionName" />
+		<result column="FUNCTION_MODULE_TYPE_ID" property="functionModuleTypeId" />
+		<result column="FUNCTION_MODULE_TYPE_NAME" property="functionModuleTypeName" />
+		<result column="MODULE_FORM_DATA_TYPE" property="moduleFromDataType" />
+		<result column="MODULE_FORM_DATA_NAME" property="moduleFromDataName" />
+		
+		
+
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark" />
+		<result column="STATUS" property="status" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER_ID" property="createUserId" />
+		<result column="CREATE_USER_NAME" property="createUserName" />
+		<result column="CREATE_TEAM_ID" property="createTeamId" />
+		<result column="CREATE_TEAM_NAME" property="createTeamName" />
+		<result column="CREATE_DEPART_ID" property="createDepartId" />
+		<result column="CREATE_DEPART_NAME" property="createDepartName" />
+		<result column="CREATE_UNIT_ID" property="createUnitId" />
+		<result column="CREATE_UNIT_Name" property="createUnitName" />
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" />
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId" />
+		<result column="LAST_UPDATE_TEAM_ID" property="lastUpdateTeamId" />
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName" />
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId" />
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName" />
+		<result column="LAST_UPDATE_UNIT_ID" property="lastUpdateUnitId" />
+		<result column="LAST_UPDATE_UNIT_Name" property="lastUpdateUnitName" />
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	<select id="queryList" parameterType="com.sd.farmework.pojo.SysFunctionModule"
+		resultMap="sysFunctionModuleMap">
+		select function_module_id, function_module_name,
+		function_module_desc, function_id, function_name,
+		function_module_type_id, function_module_type_name,
+		module_form_data_type, module_form_data_name, remark, status,
+		create_time, create_user_id, create_user_name, create_team_id,
+		create_team_name, create_depart_id, create_depart_name,
+		create_unit_id, create_unit_name, last_update_time,
+		last_update_user_id, last_update_user_name, last_update_team_id,
+		last_update_team_name, last_update_depart_id, last_update_depart_name,
+		last_update_unit_id, last_update_unit_name from sys_function_module
+		where FUNCTION_ID=#{functionId}
+	</select>
+</mapper> 
+

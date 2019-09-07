@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>用户信息</title>
+
+	<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/icon.css">
+ 	
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+   <script src="../../../resources/js/base.js"></script>
+	<script type="text/javascript" src="../../js/myframe.js"></script>
+	<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+	<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+	<link rel="stylesheet" type="text/css" href="../../css/my.css"/>
+
+</head>
+<body>
+ 	<div class="easyui-layout"  fit="true">
+  		<div data-options="region:'west',split:true" style="width:40%">
+  			<ul id="sysdepartInfoId" class="easyui-tree" data-options="url:'../../../manager/loginIn/SysDepartInfo/queryList.do?notNodeType=5&isShowLastNoChild=N',method:'get',animate:true,checkbox:false"></ul>
+  		</div>
+		<div data-options="region:'center',iconCls:'icon-ok'"  >
+		
+			 <form class="layui-form  ml-30" id="J_Form"  name="frm1">
+		
+		 
+      		<input type="hidden"    name="approvenFunctionId"  id="approvenFunctionId">
+			<input type="hidden"    name="approvenFunctionName" id="approvenFunctionName">
+			<input type="hidden"    name="approvenUnitId"   id="approvenUnitId">
+			<input type="hidden"    name="approvenUnitName" id="approvenUnitName">
+			
+			<input type="hidden"    name="approvenDepartId"  id="approvenDepartId">
+			<input type="hidden"    name="approvenDepartName" id="approvenDepartName">
+			
+			<input type="hidden"    name="approvenTeamId" id="approvenTeamId">
+			<input type="hidden"    name="approvenTeamName" id="approvenTeamName">
+
+
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label" style ="width:100px">业务类型代码</label>
+					<div class="layui-input-inline dx-input-required"  id="approvenFunctionIdDiv">
+						</div>
+				 </div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label"  style ="width:100px">业务类型名称</label>
+					<div class="layui-input-inline dx-input-required"  id="approvenFunctionNameDiv">
+						</div>
+				 </div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label"  style ="width:100px">业务类型名称</label>
+					<div class="layui-input-inline dx-input-required"  id="approvenDepart">
+					<font color="blue">点击选择左侧节点</font>
+						</div>
+				 </div>
+			</div>
+      		<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label"  style ="width:100px">规则名称</label>
+					<div class="layui-input-inline dx-input-required"  id="approvenDepart">
+					 <input  type="text" name="approvenRuleName"  data-rules="{required:true}" class="input-normal control-text">
+						</div>
+				 </div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label"  style ="width:100px">是否有序审批</label>
+					<div class="layui-input-inline dx-input-required"  id="approvenDepart">
+			            <input id="statusY" type="radio" value="1"  title="有序" name="ruleIsOrderly" checked="checked" data-rules="{required:true}" >
+			            <input id="statusN"  type="radio" title="无序" value="2" name="ruleIsOrderly"  data-rules="{required:true}" >
+					</div>
+				 </div>
+			 </div>
+				 
+		    <div class="layui-form-item">
+     <div class="layui-inline">
+      <label class="layui-form-label" style ="width:100px">状态</label>
+      <div class="layui-input-inline">
+			<input type="radio" name="status" value="Y" title="启用" checked>
+			<input type="radio" name="status" value="N" title="禁用">
+      </div>
+      </div>
+  </div>
+ 
+         
+      </form>
+			</div>
+ </div>
+</body>
+<script type="text/javascript">
+
+layui.config({
+	base : '../../js/'
+});
+layui.use([  'form', 'element' ],function() {
+					var $ = layui.jquery;
+					 
+					});
+</script>
+  
+<script type="text/javascript" >
+	$(document).ready(function() { 
+		var approvenFunctionId ="";
+		var approvenFunctionName ="";
+
+	  	if(window.location.search.split("?").length>1){
+		    approvenFunctionId =window.location.search.split("?")[1].split("=")[1].split("&")[0];
+		    approvenFunctionName =unescape(window.location.search.split("?")[1].split("=")[2].split("&")[0]);
+		    $("#approvenFunctionId").val(approvenFunctionId);
+			$("#approvenFunctionName").val(approvenFunctionName);
+		    $("#approvenFunctionIdDiv").text(approvenFunctionId);
+			$("#approvenFunctionNameDiv").text(approvenFunctionName);
+	  	}
+	
+		$('#sysdepartInfoId').tree({
+	    	onClick: function(node){
+		    	var text=node.text;
+		    	var id =node.id;
+	    		if(id.length==9){
+		    		$("#approvenUnitId").val(id);
+		    		$("#approvenUnitName").val(text);
+		    		$("#approvenDepart").text(text);
+	    		}else if(id.length==15){
+		    		//部门
+		    		 var pnode = $('#sysdepartInfoId').tree('getParent', node.target);
+		    		 var ppnode = $('#sysdepartInfoId').tree('getParent', pnode.target);
+		    		$("#approvenUnitId").val(ppnode.id);
+		    		$("#approvenUnitName").val(ppnode.text);
+		    		$("#approvenDepartId").val(id);
+		    		$("#approvenDepartName").val(text);
+		    		$("#approvenDepart").text(ppnode.text+"-"+text);
+	    		}else if(id.length==21){
+			   		 var pnode = $('#sysdepartInfoId').tree('getParent', node.target);
+			   		 var ppnode = $('#sysdepartInfoId').tree('getParent', pnode.target);
+			 		$("#approvenDepartId").val(ppnode.id);
+			 		$("#approvenDepartName").val(ppnode.text);
+			 		pnode = $('#sysdepartInfoId').tree('getParent', ppnode.target);
+			   		ppnode = $('#sysdepartInfoId').tree('getParent', pnode.target);
+			 		$("#approvenUnitId").val(ppnode.id);
+					$("#approvenUnitName").val(ppnode.text);
+			 		$("#approvenTeamName").val(text);
+			 		$("#approvenDepart").text(ppnode.text+"-"+$("#approvenDepartName").val()+"-"+text);
+	 			}
+	    	}
+	    
+	 	});
+	});
+	    
+
+  
+	 
+ 
+
+</script>
+</html>

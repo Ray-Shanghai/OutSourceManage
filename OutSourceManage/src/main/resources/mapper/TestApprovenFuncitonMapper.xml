@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.TestApprovenFuncitonMapper">
+	<resultMap type="com.sd.farmework.pojo.TestApprovenFunciton" id="testApprovenMap"> 
+
+		<result column="TEST_ID" property="testId"/>
+		<result column="TEST_NAME" property="testName"/>
+		<result column="TEST_REMARK" property="testRemark"/>
+		<result column="STEP" property="step"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_TEAM_ID" property="createTeamId"/>
+		<result column="CREATE_TEAM_NAME" property="createTeamName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="CREATE_UNIT_ID" property="createUnitId"/>
+		<result column="CREATE_UNIT_Name" property="createUnitName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_USER_NAME" property="lastUpdateUserName"/>
+		<result column="LAST_UPDATE_TEAM_ID" property="lastUpdateTeamId"/>
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<result column="LAST_UPDATE_UNIT_ID" property="lastUpdateUnitId"/>
+		<result column="LAST_UPDATE_UNIT_Name" property="lastUpdateUnitName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	
+	<!-- 查询当月考勤情况,及分页 -->
+	<select id="queryList"   resultMap="testApprovenMap" >
+		 select test_id,
+       test_name,
+       test_remark,
+       step,
+       remark,
+       status,
+       create_time,
+       create_user_id,
+       create_user_name,
+       create_team_id,
+       create_team_name,
+       create_depart_id,
+       create_depart_name,
+       create_unit_id,
+       create_unit_name
+  from test_approven_funciton
+
+	</select>
+	 
+	 
+	  
+	 <insert id="add" parameterType="com.sd.farmework.pojo.TestApprovenFunciton">
+	 
+       <selectKey keyProperty="testId" resultType="INTEGER" order="BEFORE" >
+    		select fill_str_get_seq('test_approven_funciton_seq',10,'L') from dual
+  		</selectKey>
+     
+ 	insert into test_approven_funciton
+  (test_id,
+   test_name,
+   test_remark,
+   step,
+   create_user_id,
+   create_user_name,
+   create_team_id,
+   create_team_name,
+   create_depart_id,
+   create_depart_name,
+   create_unit_id,
+   create_unit_name)
+values
+  (#{testId},
+   #{testName},
+   #{testRemark},
+   1,
+   #{createUserId},
+    #{createUserName},
+    #{createTeamId},
+    #{createTeamName},
+    #{createDepartId},
+    #{createDepartName},
+    #{createUnitId},
+    #{createUnitName})
+	
+	</insert>
+	
+	<update id="update" parameterType="com.sd.farmework.pojo.TestApprovenFunciton">
+	    update test_approven_funciton set step =#{step} where  test_id = #{testId}
+	</update>
+	 
+	
+</mapper>

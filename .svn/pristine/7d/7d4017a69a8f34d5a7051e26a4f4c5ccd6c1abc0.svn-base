@@ -1,0 +1,83 @@
+var base ={};
+base.serverContent = "/OutSourceManage";
+base.serverContet = "/OutSourceManage";
+base.pageSize =10;
+function isShow(functionId,columns,loadGrid){
+	
+	$.ajax({
+		url:base.serverContent+'/manager/loginIn/functionModuleRule/queryModuleRuleList.do?functionId='+functionId,
+		type:'get',
+		async:true,
+		success:function(data){
+			$.each(data.searchList,function(index,tag){
+				$("#"+this.moduleFromDataName).show();
+			});
+			
+			$.each(data.colList,function(index,tag){
+				$.each(columns,function(index,tag2){
+					if(tag.moduleFromDataName==tag2.dataIndex){
+						tag2.visible=true;
+						if(tag.isOrder=="0"){
+							tag2.sortable=true;
+							tag2.handler=function(){
+							};
+						}
+					}
+				});
+			});
+			
+			
+			$("#search").show();
+			loadGrid();
+			$.each(data.buttonList,function(index,tag){
+				$("#"+this.moduleFromDataName).show();
+			});
+		},error:function(data){
+			
+		}
+	});
+	return true;
+}
+//登录超时，打�?登录页面
+var loginOut = function(obj){
+  window.location.href=base.serverContent+"/login.html";
+};
+
+  base.alertTip = function(data){
+	 
+	
+	
+	layui.config({base : base.serverContent+'/backstage/js/'});
+	layui.use([ 'paging', 'form', 'element' ],function() {
+	 var $ = layui.jquery;
+	layer.alert(data.msg,{icon : 6,yes:function(){
+		if(data.code=="111"){
+			
+			window.location.href=base.serverContent+'/login.html';
+		}
+		
+	}});});
+	
+	
+ 
+};
+
+  
+
+
+
+
+
+
+base.isNotBlank = function(data){
+	if(data!=undefined && data!=null && data!=""&&data!="null"){
+		return true;
+	}
+ return false;
+};
+	//layui渲染
+function renderForm(tag){
+	layui.use(['form'],function(){
+		if(tag==null){layui.form().render();}else{layui.form().render(tag);}
+	});
+}

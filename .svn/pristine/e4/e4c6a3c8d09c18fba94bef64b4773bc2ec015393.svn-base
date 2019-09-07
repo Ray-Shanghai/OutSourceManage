@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdPushSetInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdPushSetInfo" id="SdPushSetInfoMap"> 
+
+		<result column="push_set_id" property="pushSetId"/>
+		<result column="push_set_name" property="pushSetName"/>
+		<result column="push_start_price" property="pushStartPrice"/>
+		<result column="push_end_price" property="pushEndPrice"/>
+		<result column="push_num" property="pushNum"/>
+		<result column="push_formula" property="pushFormula"/>
+		<result column="sd_id" property="sdId"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_USER_NAME" property="lastUpdateUserName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<!-- 查询每个人的参与的订单数量和订单总价格 -->
+	<select id="queryUserByOrderOnPush" parameterType="Map" resultType="Map">
+		SELECT f1.user_id userId,f1.order_id orderId,SUM(f1.order_price) totalPrice,COUNT(f1.uid) totalCount, SUM(f1.push_num) totalPushNum FROM 
+			(SELECT t.*,up.USER_ID,up.push_num  FROM
+			(SELECT p.push_num push_num,u.USER_ID USER_ID FROM sys_user_info u LEFT JOIN sd_push_set p 
+			ON u.ACCOUNT_TYPE =p.push_set_id) up LEFT JOIN 
+			(SELECT o1.create_user_id uid,o1.order_id,o1.order_price FROM 
+			sd_order_info o1 WHERE o1.data_state='12'
+			<if test="lastUpdateTime!=null and lastUpdateTime!=''">
+				AND UNIX_TIMESTAMP(o1.last_update_time) BETWEEN UNIX_TIMESTAMP(#{lastUpdateTime}) and UNIX_TIMESTAMP(#{lastUpdateTime2})
+			</if>
+			UNION 
+			SELECT o2.procurement_user_id uid,o2.order_id,o2.order_price 
+			FROM sd_order_info o2 WHERE o2.data_state='12'
+			<if test="lastUpdateTime!=null and lastUpdateTime!=''">
+				AND UNIX_TIMESTAMP(o2.last_update_time) BETWEEN UNIX_TIMESTAMP(#{lastUpdateTime}) and UNIX_TIMESTAMP(#{lastUpdateTime2})
+			</if>
+			UNION 
+			SELECT o3.checkout_user_id uid,o3.order_id,o3.order_price 
+			FROM sd_order_info o3 WHERE o3.data_state='12'
+			<if test="lastUpdateTime!=null and lastUpdateTime!=''">
+				AND UNIX_TIMESTAMP(o3.last_update_time) BETWEEN UNIX_TIMESTAMP(#{lastUpdateTime}) and UNIX_TIMESTAMP(#{lastUpdateTime2})
+			</if>
+			UNION 
+			SELECT a.accept_user_name uid,o4.order_id,o4.order_price 
+			FROM sd_order_info o4,sd_order_assign a WHERE o4.data_state='12'
+			AND o4.order_id=a.order_id AND a.assign_type='2'
+			<if test="lastUpdateTime!=null and lastUpdateTime!=''">
+				AND UNIX_TIMESTAMP(o4.last_update_time) BETWEEN UNIX_TIMESTAMP(#{lastUpdateTime}) and UNIX_TIMESTAMP(#{lastUpdateTime2})
+			</if>
+			UNION 
+			SELECT q.create_user_id uid,o5.order_id,o5.order_price 
+			FROM sd_order_info o5,sd_order_quote q WHERE o5.data_state='12'
+			AND o5.order_id=q.order_id AND q.is_make='1'
+			<if test="lastUpdateTime!=null and lastUpdateTime!=''">
+				AND UNIX_TIMESTAMP(o5.last_update_time) BETWEEN UNIX_TIMESTAMP(#{lastUpdateTime}) and UNIX_TIMESTAMP(#{lastUpdateTime2})
+			</if>
+			UNION 
+			SELECT q.order_assign_id uid,o6.order_id,o6.order_price 
+			FROM sd_order_info o6,sd_order_quote q WHERE o6.data_state='12'
+			AND o6.order_id=q.order_id AND q.is_make='1'
+			<if test="lastUpdateTime!=null and lastUpdateTime!=''">
+				AND UNIX_TIMESTAMP(o6.last_update_time) BETWEEN UNIX_TIMESTAMP(#{lastUpdateTime}) and UNIX_TIMESTAMP(#{lastUpdateTime2})
+			</if>
+			) t 
+			ON t.uid=up.USER_ID) f1 
+			<!-- 传入用户编号 数组-->
+			<if test="userIdList!=null and userIdList!=''">
+				WHERE f1.user_id IN 
+				 <foreach collection="userIdList" item="userId"  
+                    index="index" open="(" close=")" separator=",">  
+                    #{userId}  
+                </foreach>  
+			</if>
+		GROUP BY f1.user_id
+	</select>	
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo">
+		update sd_push_set t set 
+		t.push_set_name = #{pushSetName},
+		t.push_start_price = #{pushStartPrice},
+		t.push_end_price = #{pushEndPrice},
+		t.push_num = #{pushNum},
+		t.push_formula = #{pushFormula},
+		t.REMARK = #{remark},
+		t.LAST_UPDATE_TIME=now(),
+		t.LAST_UPDATE_USER_ID=#{lastUpdateUserId},
+		t.LAST_UPDATE_USER_NAME=#{lastUpdateUserName},
+		t.LAST_UPDATE_DEPART_ID=#{lastUpdateDepartId},
+		t.LAST_UPDATE_DEPART_NAME=#{lastUpdateDepartName}
+		where push_set_id = #{pushSetId};
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultMap="SdPushSetInfoMap">
+		SELECT 
+		t.push_set_id,
+	    t.push_set_name,
+	    t.push_start_price,
+	    t.push_end_price,
+	    t.push_num,
+	    t.push_formula,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_push_set t 
+		where push_set_id = #{pushSetId}  
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultMap="SdPushSetInfoMap">
+		SELECT 
+		t.push_set_id,
+	    t.push_set_name,
+	    t.push_start_price,
+	    t.push_end_price,
+	    t.push_num,
+	    t.push_formula,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_push_set t 
+		where  1 = 1  
+		<if test="pushSetName !=null and pushSetName !=''">
+			and t.push_set_name  like concat('%',#{pushSetName},'%')
+		</if>
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultMap="SdPushSetInfoMap">
+		SELECT 
+		t.push_set_id,
+	    t.push_set_name,
+	    t.push_start_price,
+	    t.push_end_price,
+	    t.push_num,
+	    t.push_formula,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_push_set t where 1=1 
+		<if test="pushSetName !=null and pushSetName !=''">
+			and t.push_set_name  like concat('%',#{pushSetName},'%')
+		</if>
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultMap="SdPushSetInfoMap">
+		SELECT 
+		t.push_set_id,
+	    t.push_set_name,
+	    t.push_start_price,
+	    t.push_end_price,
+	    t.push_num,
+	    t.push_formula,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_push_set t where 1=1 
+		<if test="pushSetName !=null and pushSetName !=''">
+			and t.push_set_name  like concat('%',#{pushSetName},'%')
+		</if>
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo">
+	insert into sd_push_set
+	(
+		push_set_name,
+        push_start_price,
+        push_end_price,
+        push_num,
+        push_formula,
+		remark,
+		status,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME
+	)
+	values
+	(
+		#{pushSetName},
+		#{pushStartPrice},
+		#{pushEndPrice},
+		#{pushNum},
+		#{pushFormula},
+		#{remark},
+		'Y',
+		now(),
+		#{createUserId},
+		#{createUserName},
+		#{createDepartId},
+		#{createDepartName}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdPushSetInfo">
+		delete from sd_push_set where push_set_id = #{pushSetId}
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdPushSetInfo"  resultType="java.lang.Integer">
+   		select count(*) from sd_push_set t where 1=1 
+   		<if test="pushSetName !=null and pushSetName !=''">
+			and t.push_set_name like concat('%',#{pushSetName},'%')	
+		</if>
+	</select>
+</mapper> 

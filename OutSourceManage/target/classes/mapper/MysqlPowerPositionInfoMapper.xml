@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.PowerPositionInfoMapper"> 
+
+		<resultMap type="com.sd.farmework.pojo.PowerPositionInfo" id="PowerPositionInfoMapMysql"> 
+
+		<result column="power_id" property="powerId"/>
+		<result column="position_id" property="positionId"/>
+		<result column="position_name" property="positionName"/>
+		<result column="function_ids" property="functionIds"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_USER_NAME" property="lastUpdateUserName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.PowerPositionInfo"  resultMap="PowerPositionInfoMapMysql">
+		SELECT 
+			  power_id,
+			  position_id,
+			  position_name,
+			  function_ids,
+			  STATUS,
+			  CREATE_TIME,
+			  CREATE_USER_ID,
+			  CREATE_USER_NAME,
+			  CREATE_DEPART_ID,
+			  CREATE_DEPART_NAME,
+			  LAST_UPDATE_TIME,
+			  LAST_UPDATE_USER_ID,
+			  LAST_UPDATE_USER_NAME,
+			  LAST_UPDATE_DEPART_ID,
+			  LAST_UPDATE_DEPART_NAME
+			FROM
+			 power_position_info 
+			 	order by position_id 
+
+			 LIMIT #{startRecod},#{pageSize}
+ 	</select>
+ 	
+	<select id="queryCountForMysql" parameterType="com.sd.farmework.pojo.PowerPositionInfo"
+		resultType="java.lang.Integer">
+		select count(*) from power_position_info where 1=1
+	</select>
+	
+	<select id="queryByPkIdForMysql" parameterType="String"  resultMap="PowerPositionInfoMapMysql">
+		SELECT 
+			  power_id,
+			  position_id,
+			  position_name,
+			  function_ids,
+			  STATUS,
+			  CREATE_TIME,
+			  CREATE_USER_ID,
+			  CREATE_USER_NAME,
+			  CREATE_DEPART_ID,
+			  CREATE_DEPART_NAME,
+			  LAST_UPDATE_TIME,
+			  LAST_UPDATE_USER_ID,
+			  LAST_UPDATE_USER_NAME,
+			  LAST_UPDATE_DEPART_ID,
+			  LAST_UPDATE_DEPART_NAME
+			FROM
+			 power_position_info   
+		where  power_id = #{powerId}
+	</select>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.PowerPositionInfo">
+		UPDATE power_position_info t set 
+ 		FUNCTION_IDS=#{functionIds}
+ 		where   power_id=#{powerId}
+	</update>
+	<select id="queryByIdForMysql" parameterType="com.sd.farmework.pojo.PowerPositionInfo" resultMap="PowerPositionInfoMapMysql">
+		SELECT 
+			  power_id,
+			  position_id,
+			  position_name,
+			  function_ids,
+			  STATUS,
+			  CREATE_TIME,
+			  CREATE_USER_ID,
+			  CREATE_USER_NAME,
+			  CREATE_DEPART_ID,
+			  CREATE_DEPART_NAME,
+			  LAST_UPDATE_TIME,
+			  LAST_UPDATE_USER_ID,
+			  LAST_UPDATE_USER_NAME,
+			  LAST_UPDATE_DEPART_ID,
+			  LAST_UPDATE_DEPART_NAME
+			FROM
+			 power_position_info   
+		<where>
+			<if test="positionId!=null and positionId!=''">
+				position_id=#{positionId}
+			</if>
+		</where>
+	</select>
+</mapper> 
+

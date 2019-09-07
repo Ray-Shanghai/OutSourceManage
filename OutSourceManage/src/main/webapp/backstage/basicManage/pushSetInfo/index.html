@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>提成设置</title>
+
+<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/icon.css">
+<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript" src="../../js/myframe.js"></script>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<script src="../../../resources/js/base.js"></script>
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/my.css" />
+</head>
+<body>
+	<div>
+		<div class="admin-main">
+			<blockquote class="layui-elem-quote">
+				<a href="javascript:;" class="layui-btn layui-btn-small  layui-btn-blue" id="add"> 
+					<i class="layui-icon">&#xe608;</i> 添加
+				</a> 
+				<a href="javascript:;" class="layui-btn layui-btn-small  layui-btn-blue" id="edit"> 
+					<i class="layui-icon">&#xe608;</i> 修改
+				</a>
+				<a href="javascript:;" class="layui-btn layui-btn-small  layui-btn-blue" id="delete"> 
+					<i class="layui-icon">&#xe608;</i> 删除
+				</a>
+			</blockquote>
+			<form id="frm1" class="layui-form">
+			<ul class="layui-tab-title">
+				<li class="layui-this">信息查询</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show table-edit">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 60px">提成名称</label>
+							<div class="layui-input-inline dx-input-required">
+								<input type="text" name="pushSetName" lay-verify="required"  placeholder="提成名称" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<button type="button" class="layui-btn layui-btn-normal" style="width: 120px;" id="search" >查询</button>
+						</div>
+					</div>
+					<div >
+						<table class="layui-table admin-table selected">
+							<thead>
+								<tr>
+									<th style="width:60px;">序号</th>
+									<th style="width:100px;">主键编号</th>
+									<th style="width:120px;">提成名称</th>
+									<th style="width:120px;">提成比例</th>
+									<th style="width:120px;">备注</th>
+									<th style="width:120px;">创建时间</th>
+								</tr>
+							</thead>
+							<tbody id="content" class="selected">
+							</tbody>
+						</table>
+					</div>
+					<div id="paged" class="page" style="text-align: center;"></div>
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/html" id="tpl">
+		{{#  
+      	layui.each(d.rows, function(index, item){ }}
+			<tr>	
+				<td>{{ (index+1) }}</td>
+				<td>{{ item.pushSetId }}</td>			
+				<td>{{ item.pushSetName }}</td>
+				<td>{{ item.pushNum }}%</td>
+				<td>{{ item.remark }}</td>
+                <td>{{ item.createTime }}</td>		
+			</tr>
+		{{# }); }}
+	</script>
+	<script type="text/javascript">
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use([ 'paging', 'form', 'element' ],function() {
+			var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+					paging = layui.paging(),
+					layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
+					layer = layui.layer, //获取当前窗口的layer对象
+					form = layui.form();
+			getData({});
+			function getData(data) {
+				paging.init({
+		
+					url : base.serverContet + '/SdPushSetInfo/queryListByPage.do', //地址
+					elem : '#content', //内容容器
+					params : data,
+					type : 'POST',
+					tempElem : '#tpl', //模块容器
+					pageConfig : { //分页参数配置
+						elem : '#paged', //分页容器
+						pageSize : base.pageSize,
+						pageIndex : 1
+					//分页大小
+					},
+					success : function() { //渲染成功的回调
+						//alert('渲染成功');
+					},
+					fail : function(msg) { //获取数据失败的回调
+						//alert('获取数据失败')
+					},
+					complate : function() { //完成的回调
+	
+					},
+				});
+			}
+			$("#search").click(function() {
+				getData($("#frm1").serializeObject());
+			});
+			//添加方法
+			$("#add").click(function(){
+				layer.open({
+					  type: 2,
+					  area: ['450px', '350px'],
+					  fixed: false, //不固定
+					  maxmin: false,
+					  content: 'add.html',
+					  btn:["提交"],
+					  btnAlign: 'c',
+					  shadeClose: true,
+					  shade: [0.6, '#393D49'],
+					  yes : function( index,layero) {
+						  var body = layer.getChildFrame('body', index);
+						  if($(body).find("#pushSetName").val()==""){
+							  layer.alert('请输入提成名称');
+							  return false;
+						  }
+						  if($(body).find("#pushNum").val()==""){
+							  layer.alert('请输入提成比例');
+							  return false;
+						  }
+						  if($(body).find("#hidPushSetName").val()=="1"){
+							  layer.alert('提成名称已存在');
+							  return false;
+						  }
+						  $.ajax({
+							  type : 'POST',
+							  url : base.serverContent+ '/SdPushSetInfo/add.do',
+							  data : $(body).find("#frm1").serialize(),
+							  async : false,
+							  success : function(data) {
+									if (data.code == "000") {
+										layer.alert('添加成功！',{icon : 6,yes:function(){
+											layer.closeAll();
+											location.reload();
+										}}); 
+									} else {
+										layer.alert('添加失败！');
+									}
+								},
+								error : function() {
+								}
+					  		});
+					  } 
+				});
+
+			});
+			//修改方法
+			$("#edit").click(function(){
+				if(sdfarme.getSelected().length==0){
+					layer.alert('请选一条数据进行操作');
+					return false;
+				}
+				var id = sdfarme.getSelected()[0][1];
+				layer.open({
+					  type: 2,
+					  area: ['450px', '350px'],
+					  fixed: false, //不固定
+					  maxmin: false,
+					  content: 'edit.html?'+id,
+					  btn:["提交"],
+					  btnAlign: 'c',
+					  shadeClose: true,
+					  shade: [0.6, '#393D49'],
+					  yes : function( index,layero) {
+						  var body = layer.getChildFrame('body', index);
+						  if($(body).find("#pushSetName").val()==""){
+							  layer.alert('请输入提成名称');
+							  return false;
+						  }
+						  if($(body).find("#pushNum").val()==""){
+							  layer.alert('请输入提成比例');
+							  return false;
+						  }
+						  $.ajax({
+							  type : 'POST',
+							  url : base.serverContent+ '/SdPushSetInfo/update.do',
+							  data : $(body).find("#frm1").serialize(),
+							  async : false,
+							  success : function(data) {
+									if (data.code == "000") {
+										layer.alert('修改成功！',{icon : 6,yes:function(){
+											layer.closeAll();
+											location.reload();
+										}}); 
+									} else {
+										layer.alert('修改失败！');
+									}
+								},
+								error : function() {
+								}
+					  		});
+					  } 
+				});
+
+			});
+			//删除方法
+			$("#delete").click(function(){
+				if(sdfarme.getSelected().length==0){
+					layer.alert('请选一条数据进行操作');
+					return false;
+				}
+				var id = sdfarme.getSelected()[0][1];
+				layer.confirm('确定删除吗？', { btn: ['确定','关闭']
+				}, function(){
+					$.ajax({
+						  type : 'POST',
+						  url : base.serverContent+ '/SdPushSetInfo/delete.do',
+						  data : {'pkId':id},
+						  async : false,
+						  success : function(data) {
+								if (data.code == "000") {
+									layer.alert('删除成功！',{icon : 6,yes:function(){
+										location.reload();
+									}}); 
+								} else {
+									layer.alert('删除失败！');
+								}
+							},
+							error : function() {
+							}
+				  	});
+				}, function(){});
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysApprovenRulePersonMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysApprovenRulePerson" id="SysApprovenRulePersonMap"> 
+
+		<result column="RULE_ORDER" property="ruleOrder"/>
+		<result column="APPROVEN_DEPART_ID" property="approvenDepartId"/>
+		<result column="APPROVEN_DEPART_NAME" property="approvenDepartName"/>
+		<result column="APPROVEN_PERSON_ID" property="approvenPersonId"/>
+		<result column="APPROVEN_RULE_ID" property="approvenRuleId"/>
+		<result column="APPROVEN_RULE_NAME" property="approvenRuleName"/>
+		<result column="APPROVEN_FUNCTION_ID" property="approvenFunctionId"/>
+		<result column="APPROVEN_FUNCTION_NAME" property="approvenFunctionName"/>
+		<result column="APPROVEN_USER_ID" property="approvenUserId"/>
+		<result column="APPROVEN_USER_NAME" property="approvenUserName"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		 
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName"/>
+		
+ 
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	
+	<update id="updateBatch" parameterType="java.util.List" >
+		begin
+		<foreach collection="list" item="item" separator=";">
+		update SYS_APPROVEN_RULE_PERSON set rule_order=
+		(select rw from (select rownum rw,a.* from (select * from sys_approven_rule_person a where
+		approven_rule_id=#{item.approvenRuleId} order by rule_order) a) where APPROVEN_PERSON_ID=#{item.approvenPersonId}) 
+		where APPROVEN_PERSON_ID=#{item.approvenPersonId}
+		</foreach>
+		;end;
+	</update>
+	<update id="update" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson" >
+		update SYS_APPROVEN_RULE_PERSON set rule_order=#{ruleOrder}
+ 		where APPROVEN_PERSON_ID=#{approvenPersonId}
+	</update>
+		<select id="queryPersonCount" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson"   resultType="java.lang.Integer">
+		SELECT 
+		count(*)
+		FROM  SYS_APPROVEN_RULE_PERSON t 
+		where  1 =1  and approven_rule_id =#{approvenRuleId} and
+        approven_function_id=#{approvenFunctionId} and
+        approven_user_id=#{approvenUserId}
+	</select>
+	<select id="queryByPkId" parameterType="java.lang.String"   resultMap="SysApprovenRulePersonMap">
+		SELECT   * FROM  SYS_APPROVEN_RULE_PERSON t  	where   APPROVEN_PERSON_ID=#{approvenPersonId}
+	</select>
+	
+	 
+<select id="queryListByPage" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson"  resultMap="SysApprovenRulePersonMap">
+		<![CDATA[ 
+		SELECT RW,a.*
+		FROM (
+		SELECT ROWNUM RW,
+		t.APPROVEN_PERSON_ID,
+		t.APPROVEN_RULE_ID,
+		t.APPROVEN_RULE_NAME,
+		t.APPROVEN_FUNCTION_ID,
+		t.APPROVEN_FUNCTION_NAME,
+		t.APPROVEN_USER_ID,
+		t.APPROVEN_USER_NAME,
+	 
+		APPROVEN_DEPART_NAME,
+	 
+		t.RULE_ORDER,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME
+		FROM  SYS_APPROVEN_RULE_PERSON t where APPROVEN_RULE_ID = #{approvenRuleId} order by rule_order 
+ 		) a 
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+		]]> 
+	</select>
+	<select id="queryList" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson"  resultMap="SysApprovenRulePersonMap">
+		SELECT 
+		*
+		FROM  SYS_APPROVEN_RULE_PERSON t where APPROVEN_RULE_ID = #{approvenRuleId} order by rule_order 
+	</select>
+	<insert id="add" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson" >
+	insert into SYS_APPROVEN_RULE_PERSON
+	(
+		APPROVEN_PERSON_ID,
+		APPROVEN_RULE_ID,
+		APPROVEN_RULE_NAME,
+		APPROVEN_FUNCTION_ID,
+		APPROVEN_FUNCTION_NAME,
+		APPROVEN_USER_ID,
+		APPROVEN_USER_NAME,
+		 
+		APPROVEN_DEPART_ID,
+		APPROVEN_DEPART_NAME,
+		 
+		rule_order   ,
+		 create_user_id,
+   create_user_name, 
+   create_depart_id,
+   create_depart_name 
+	)
+	 select 
+		fill_str_get_seq('sys_approven_rule_person_seq',10,'L'),
+		#{approvenRuleId},
+		#{approvenRuleName},
+		#{approvenFunctionId},
+		#{approvenFunctionName},
+		USER_ID,USER_NAME,
+		 
+		DEPART_ID,
+		DEPART_NAME,
+		 
+		(select nvl(max(t.rule_order),0)+1 from SYS_APPROVEN_RULE_PERSON t where approven_rule_id =#{approvenRuleId}),
+			#{createUserId},
+		    #{createUserName}, 
+		    #{createDepartId},
+		    #{createDepartName} 
+	 from sys_user_info t  where user_id=#{approvenUserId} 
+	</insert>
+	<delete id="delete"  parameterType="com.sd.farmework.pojo.SysApprovenRulePerson" >
+		delete from SYS_APPROVEN_RULE_PERSON where   APPROVEN_PERSON_ID=#{approvenPersonId}
+	</delete>
+	<select id="queryCount"  parameterType="com.sd.farmework.pojo.SysApprovenRulePerson"  resultType="java.lang.Integer">
+   		select    count(*) from SYS_APPROVEN_RULE_PERSON where  APPROVEN_RULE_ID = #{approvenRuleId} 
+	</select>
+</mapper> 
+
+
+

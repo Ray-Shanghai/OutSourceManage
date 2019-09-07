@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysLogInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysLogInfo" id="SysLogInfoMapForSqlserver"> 
+
+		<result column="LOG_ID" property="logId"/>
+		<result column="OPERATE_PERSON_ID" property="operatePersonId"/>
+		<result column="OPERATE_PERSON_NAME" property="operatePersonName"/>
+		<result column="FUNCTION_URL" property="functionUrl"/>
+		<result column="FUNCTION_NAME" property="functionName"/>
+		<result column="FUNCTION_DESC" property="functionDesc"/>
+		<result column="OPERATE_TIME" property="operateTime"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_TEAM_ID" property="createTeamId"/>
+		<result column="CREATE_TEAM_NAME" property="createTeamName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="CREATE_UNIT_ID" property="createUnitId"/>
+		<result column="CREATE_UNIT_Name" property="createUnitName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_TEAM_ID" property="lastUpdateTeamId"/>
+		<result column="LAST_UPDATE_TEAM_NAME" property="lastUpdateTeamName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<result column="LAST_UPDATE_UNIT_ID" property="lastUpdateUnitId"/>
+		<result column="LAST_UPDATE_UNIT_Name" property="lastUpdateUnitName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	 
+	
+	<select id="queryForSqlserver" parameterType="com.sd.farmework.pojo.SysLogInfo"  resultMap="SysLogInfoMapForSqlserver">
+		SELECT 
+		t.LOG_ID,
+		t.OPERATE_PERSON_ID,
+		t.OPERATE_PERSON_NAME,
+		t.REMARK,
+		t.FUNCTION_Desc,
+		t.FUNCTION_URL,
+		t.FUNCTION_NAME,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.OPERATE_TIME,
+		t.CREATE_USER_NAME
+		FROM  SYS_LOG_INFO t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForSqlserver" parameterType="com.sd.farmework.pojo.SysLogInfo"  resultMap="SysLogInfoMapForSqlserver">
+		 
+		select top ${pageSize} * from( 
+		SELECT row_number()OVER(order by create_time desc) rw,
+		t.LOG_ID,
+		t.OPERATE_PERSON_ID,
+		t.OPERATE_PERSON_NAME,
+		t.REMARK,
+		t.FUNCTION_URL,
+		t.FUNCTION_NAME,
+		t.CREATE_TIME,
+		t.FUNCTION_Desc,
+		t.CREATE_USER_ID,
+		t.OPERATE_TIME,
+		t.CREATE_USER_NAME
+		FROM  SYS_LOG_INFO t  
+		where 1=1 
+		<if test="operatePersonName!='' and operatePersonName!=null">
+		and OPERATE_PERSON_NAME like '%'+#{operatePersonName}+'%' 
+		</if>
+		) t where t.rw &gt; ${startRecod}	 
+	</select>
+	<select id="queryListForSqlserver" parameterType="com.sd.farmework.pojo.SysLogInfo"  resultMap="SysLogInfoMapForSqlserver">
+		SELECT 
+		t.LOG_ID,
+		t.OPERATE_PERSON_ID,
+		t.OPERATE_PERSON_NAME,
+		t.REMARK,
+		t.FUNCTION_URL,
+		t.FUNCTION_NAME,
+		t.CREATE_TIME,
+			t.FUNCTION_Desc,
+		t.CREATE_USER_ID,
+		t.OPERATE_TIME,
+		t.CREATE_USER_NAME
+		FROM  SYS_LOG_INFO t 
+	</select>
+	<insert id="addForSqlserver">
+	insert into SYS_LOG_INFO
+	(
+		OPERATE_PERSON_ID,
+		OPERATE_PERSON_NAME,
+		REMARK,
+		FUNCTION_URL,
+		FUNCTION_NAME,
+ 		CREATE_USER_ID,
+		OPERATE_TIME,
+		CREATE_USER_NAME,
+		FUNCTION_DESC
+	)
+	values
+	(
+		#{operatePersonId},
+		#{operatePersonName},
+		#{remark},
+		#{functionUrl},
+		#{functionName},
+ 		#{createUserId},
+		#{operateTime},
+		#{createUserName},
+		#{functionDesc}
+	)
+	</insert>
+	<delete id="deleteForSqlserver">
+		delete from SYS_LOG_INFO where 1=2 
+	</delete>
+	<select id="queryCountForSqlserver"  parameterType="com.sd.farmework.pojo.SysLogInfo"  resultType="java.lang.Integer">
+   		select    count(*) from SYS_LOG_INFO 
+		where 1=1 
+		<if test="operatePersonName!='' and operatePersonName!=null">
+		and OPERATE_PERSON_NAME like  '%'+#{operatePersonName}+'%' 
+		</if>
+	</select>
+</mapper> 
+

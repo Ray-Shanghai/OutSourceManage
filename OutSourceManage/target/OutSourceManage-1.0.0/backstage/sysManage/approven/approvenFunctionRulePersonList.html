@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>审批人列表</title>
+    	<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/icon.css">
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+	   <script src="../../../resources/js/base.js"></script>
+	<script type="text/javascript" src="../../js/myframe.js"></script>
+	<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+	<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+	<link rel="stylesheet" type="text/css" href="../../css/my.css"/> 
+
+</head>
+<body>
+	<table id="list_data" cellspacing="0" cellpadding="0"> 
+
+	</table>  
+ 
+</body>
+
+  
+  <script type="text/javascript">
+  layui.config({
+		base : '../../js/'
+	});
+  
+  
+	layui.use([  'form', 'element' ],function() {
+		var $ = layui.jquery;
+		 
+		});
+  </script>
+<script type="text/javascript">
+var approvenRuleId ="";
+var approvenRuleName = "";
+var approvenFunctionId = "";
+var approvenFunctionName ="";
+if(window.location.search.split("?").length>1){
+	approvenRuleId =window.location.search.split("?")[1].split("=")[1].split("&")[0];
+	approvenRuleName =(window.location.search.split("?")[1].split("=")[2].split("&")[0]);
+	approvenFunctionId =window.location.search.split("?")[1].split("=")[3].split("&")[0];
+	approvenFunctionName =(window.location.search.split("?")[1].split("=")[4].split("&")[0]);
+}
+	 
+$(function(){
+	
+	
+	//上移
+	function MoveUp() {
+	    var row = $("#list_data").datagrid('getSelected');
+	    var index = $("#list_data").datagrid('getRowIndex', row);
+	    mysort(index, 'up', 'list_data');
+	    
+	}
+	//下移
+	function MoveDown() {
+	    var row = $("#list_data").datagrid('getSelected');
+	    var index = $("#list_data").datagrid('getRowIndex', row);
+	    mysort(index, 'down', 'list_data');
+	     
+	}
+	 
+	 
+	function mysort(index, type, gridname) {
+	    if ("up" == type) {
+	        if (index != 0) {
+	            var toup = $('#' + gridname).datagrid('getData').rows[index];
+	            var todown = $('#' + gridname).datagrid('getData').rows[index - 1];
+	            $('#' + gridname).datagrid('getData').rows[index] = todown;
+	            $('#' + gridname).datagrid('getData').rows[index - 1] = toup;
+	            $('#' + gridname).datagrid('refreshRow', index);
+	            $('#' + gridname).datagrid('refreshRow', index - 1);
+	            $('#' + gridname).datagrid('selectRow', index - 1);
+	        }
+	    } else if ("down" == type) {
+	        var rows = $('#' + gridname).datagrid('getRows').length;
+	        if (index != rows - 1) {
+	            var todown = $('#' + gridname).datagrid('getData').rows[index];
+	            var toup = $('#' + gridname).datagrid('getData').rows[index + 1];
+	            $('#' + gridname).datagrid('getData').rows[index + 1] = todown;
+	            $('#' + gridname).datagrid('getData').rows[index] = toup;
+	            $('#' + gridname).datagrid('refreshRow', index);
+	            $('#' + gridname).datagrid('refreshRow', index + 1);
+	            $('#' + gridname).datagrid('selectRow', index + 1);
+	        }
+	    }
+	 
+	    
+	    var rowLength= $('#list_data').datagrid("getRows").length;
+	    var approvenP = [rowLength] ;
+	    for(var j=0;j<rowLength;j++){
+	    	approvenP[j]=$('#list_data').datagrid("getRows")[j].approvenPersonId;
+	    }
+	    
+	    $.ajax({ 
+	    	url: base.serverContet+"/manager/loginIn/approven/updatePersonOrder.do",
+	    	method:"POST", 
+	    	 async : false,  
+	    	data: {personIds:approvenP.join(",")}, 
+	    	success: function(){
+           
+           
+           }});
+	    
+	}
+	
+ 		 $('#list_data').datagrid({ 
+        iconCls:'icon-edit',//图标 
+        width: 800, 
+        height: '200', 
+        nowrap: false, 
+        striped: true, 
+        border: true, 
+        collapsible:false,//是否可折叠的 
+        checkOnSelect:true,//选择checkbox则选择行  
+        selectOnCheck:true,//选择行则选择checkbox 
+        fit: true,//自动大小 
+        url:base.serverContet+'/manager/loginIn/approven/approvenFunctionRulePersonDataList.do?approvenRuleId='+approvenRuleId, 
+        remoteSort:false,  
+        pageSize: 15,//每页显示的记录条数，默认为10 
+        pageList: [15,30,45],//可以设置每页记录条数的列表
+        idField:'approvenPersonId', 
+        singleSelect:true,//是否单选 
+        pagination:true,//分页控件 
+        rownumbers:true,//行号 
+        columns:[[
+				  {field:'approvenPersonId',title:'类型编号',width:100,hidden:true},
+                  {field:'approvenFunctionId',title:'类型编号',width:100},
+                  {field:'approvenFunctionName',title:'类型名称',width:100},
+                  {field:'approvenRuleName',title:'审批类型',width:150},
+				  {field:'approvenUserId',title:'审批人编号',width:100},
+                  {field:'approvenUserName',title:'审批人',width:100},
+                  {field:'approvenUnitName',title:'审批人所属单位',width:100},
+                  {field:'approvenDepartName',title:'审批人所属部门',width:100},
+                  {field:'approvenTeamName',title:'审批人所属班组',width:100},
+                  {field:'ruleOrder',title:'审批顺序',width:100,editor: { type: 'validatebox', options: { required: true} }}
+				  ]],
+        onClickRow: function(index, data) {
+        	var row = $('#list_data').datagrid('getSelected');
+         },
+        toolbar: [{ 
+            text: '添加', 
+            iconCls: 'icon-add', 
+            handler: function() { 
+            	if(approvenFunctionId==null||approvenRuleId==""){
+            		alert("请选择审批类型");
+            		
+            		return;
+            	}
+            	
+            	
+            	var url =base.serverContet+'/backstage/sysManage/approven/addApprovenFunctionRulePerson.html?approvenFunctionId='+approvenFunctionId+'&approvenFunctionName='+(approvenFunctionName)+"&approvenRuleId="+approvenRuleId+"&approvenRuleName="+(approvenRuleName);
+            	var title ="修改部门";
+            	var width ="800";
+            	var height="600";
+            	
+            	var funcName =function(layer,index,layero){
+            		var body = layer.getChildFrame('body', index);
+            		
+            		$.ajax({  
+                  		type : 'POST',  
+                   		url : base.serverContet+'/manager/loginIn/SysApprovenFunctionRule/saveApprovenRuleInfo.do',  
+                 		data: $(body).find('#J_Form').serialize(),  
+                  		async : false,  
+                  		success : function(data) {  
+                    	  	if(data.code=="000"){
+                    			layer.alert('信息保存成功',{icon : 6,yes:function(index1){
+                    				layer.close(index1);
+                    			 
+                    			}});
+                    			layer.close(index);
+                           	  }else{
+                          		layer.alert('信息保存失败',{icon : 6});
+                          		layer.close(index);
+                           	  }
+                  		   },error : function() {}  
+              		}); 
+            		
+            	}
+            	
+            	window.parent.opePage(url,title,width,height,funcName,false);
+            	
+            	
+             } 
+        },{ 
+            text: '删除', 
+            iconCls: 'icon-remove', 
+            handler: function() { 
+            	var row = $('#list_data').datagrid('getSelected');
+            	if(row==null||row==""){
+            		alert("请选择一行数据");
+            		return;
+            	}
+            	 
+            	var rowLength= $('#list_data').datagrid("getRows").length;
+        	    var approvenP1 = new Array() ;
+        	    var ii=0;
+        	    for(var j=0;j<rowLength;j++){
+        	    	
+        	    	if($('#list_data').datagrid("getRows")[j].approvenPersonId==row.approvenPersonId){
+        	    		continue;
+        	    	}
+        	    	ii++;
+        	    	approvenP1[ii]=$('#list_data').datagrid("getRows")[j].approvenPersonId;
+        	    }
+        	    ii =0;
+            	 $.ajax({ 
+         	    	url: base.serverContet+"/manager/loginIn/approven/updatePersonOrder.do?oper=delete",
+         	    	method:"POST", 
+         	    	 async : false,  
+         	    	data: {personIds:approvenP1.join(",").substring(1),approvenPersonId:row.approvenPersonId}, 
+         	    	success: function(){
+                    
+                    alert("删除成功");
+                    }});
+             	
+            } 
+        },  {
+            text: '上移', iconCls: 'icon-up', handler: function () {
+                MoveUp();
+            }
+        }, {
+            text: '下移', iconCls: 'icon-down', handler: function () {
+                MoveDown();
+            }
+        }] 
+    });
+ 		
+		 
+		//设置分页控件 
+		    var p = $('#list_data').datagrid('getPager'); 
+		    
+		    $(p).pagination({ 
+		        method : 'POST',
+		        loading:true,
+		        beforePageText: '第',//页数文本框前显示的汉字 
+		        afterPageText: '页    共 {pages} 页', 
+		        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录', 
+		        onBeforeRefresh:function(){
+		            $(this).pagination('loading');
+		            alert('before refresh');
+		            $(this).pagination('loaded');
+		        },
+		        onRefresh:function(){
+		        	   $(this).pagination('loading');
+			            alert('before onRefresh');
+			            $(this).pagination('loaded');
+		        	
+		        }
+		    });  
+		    $(p).pagination('loading');
+		
+});
+		
+	</script>
+	</html>
+   

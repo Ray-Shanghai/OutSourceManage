@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>角色信息</title>
+
+<link rel="stylesheet" type="text/css"
+	href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script src="../../../resources/js/base.js"></script>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css"
+	media="all">
+</head>
+<body>
+	<div class="easyui-layout" fit="true">
+		<div data-options="region:'west',split:true" style="width: 200px;">
+			<ul id="sysfunctionInfoId" class="easyui-tree"></ul>
+		</div>
+		<div data-options="region:'center',iconCls:'icon-ok'">
+
+			<form class="layui-form  mt-20 ml-30" id="form1" name="form1">
+				<input type="hidden" name="powerId" id="powerId">
+				<input type="hidden" name="functionIds" id="functionIds">
+				<div class="layui-form-item">
+					<label class="layui-form-label">职位名称:</label>
+					 <div id="positionId" style="margin-top:50px;font-size:20px"></div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use([ 'paging', 'form', 'element' ], function() {
+			var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+			paging = layui.paging(),
+					layerTips = parent.layer === undefined ? layui.layer
+							: parent.layer, //获取父窗口的layer对象
+					layer = layui.layer, //获取当前窗口的layer对象
+					form = layui.form();
+			
+			
+			
+			
+			var powerId = window.location.search.split("?")[1];
+			$("#powerId").val(powerId);
+
+			$.ajax({type : 'GET',
+				url : base.serverContent+ '/manager/loginIn/PowerPositionInfo/queryByPkId.do?powerId='+powerId,
+				async : false,
+				success : function(data) {
+						$("#positionId").text(data.powerPositionInfo.positionName);
+				},
+					error : function() {
+					}
+				});
+		$('#sysfunctionInfoId').tree({
+							url : '../../../manager/loginIn/PowerPositionInfo/queryList.do?powerId='+powerId,
+							method : 'get',
+							animate : true,
+							checkbox : true
+						});
+		
+ 
+		});
+		
+		
+		var getData =function(){
+
+			var nodes = $('#sysfunctionInfoId').tree(
+					'getChecked');
+			var s = '';
+			for (var i = 0; i < nodes.length; i++) {
+				if (s != '') {
+					s += ',';
+				}
+				var nodeId = nodes[i].id;
+					s += nodeId;
+			}
+			if (s.trim() == "") {
+				alert('请选择功能模块。');
+				return false;
+
+			}
+			$("#functionIds").val("," + s + ",");
+			return true;
+		}
+	</script>
+</body>
+</html>

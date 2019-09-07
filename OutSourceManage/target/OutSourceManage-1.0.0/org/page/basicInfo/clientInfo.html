@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Table</title>
+		<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../../css/font/iconfont1.css">
+		<link rel="stylesheet" href="../../css/my.css" />
+		<link rel="stylesheet" href="datatable/datatable.css" />
+	</head>
+
+	<body>
+		<div class="admin-main">
+			<blockquote class="layui-elem-quote">
+				<a href="javascript:void(0);" class="layui-btn layui-btn-small layui-btn-blue" onclick="addInfo()">
+					<i class="layui-icon">&#xe608;</i> 新增
+				</a>
+				<a href="javascript:void(0);" class="layui-btn layui-btn-small layui-btn-blue" onclick="updateInfo()">
+					<i class="layui-icon">&#xe642;</i> 修改
+				</a>
+				<a href="javascript:void(0);" class="layui-btn layui-btn-small layui-btn-blue" onclick="deleteInfo()">
+					<i class="layui-icon">&#xe640;</i> 删除
+				</a>
+				<a href="javascript:void(0);" class="layui-btn layui-btn-small layui-btn-blue">
+					<i class="fa fa-shopping-cart" aria-hidden="true"></i> 审核
+				</a>
+				<a href="javascript:void(0);" class="layui-btn layui-btn-small layui-btn-blue">
+					<i class="fa fa-shopping-cart" aria-hidden="true"></i> 反审
+				</a>
+				<div href="javascript:void(0);" class="btn-select layui-btn-small layui-btn-blue position-re">
+					<i class="fa fa-database" aria-hidden="true"></i> 其它
+					<div class="position-ab position-ct">
+						<ul>
+							<li>
+								<a href="javascript:void(0);" onclick="searchManage()">自定义查询</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);" onclick="searchForm()">自定义格式</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);" onclick="resetForm()">重置格式</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<a href="javascript:void(0);" class="layui-btn layui-btn-small layui-btn-blue" onclick="freshInfo()">
+					<i class="fa fa-refresh" aria-hidden="true"></i> 刷新
+				</a>
+				<a href="javascript:void(0);" class="layui-btn layui-btn-small layui-btn-blue" onclick="printInfo()">
+					<i class="fa fa-print" aria-hidden="true"></i> 打印
+				</a>
+			</blockquote>
+
+			<div class="module-title">搜索</div>
+			<fieldset class="layui-elem-field">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-inline ml-20 mt-10">
+							<label class="layui-form-label" style="width: 60px;">客户名称</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline ml-20 mt-10">
+							<label class="layui-form-label" style="width: 60px;">客户编号</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline ml-20 mt-10">
+							<label class="layui-form-label" style="width: 50px;">联系人</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline ml-20 mt-10">
+							<label class="layui-form-label" style="width: 50px;">电话</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline ml-20 mt-10">
+							<label class="layui-form-label" style="width: 70px;">搜索选择框</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<select name="modules" lay-verify="required" lay-search="">
+									<option value="">选择或搜索</option>
+									<option value="1">layer</option>
+									<option value="2">form</option>
+									<option value="3">layim</option>
+									<option value="4">element</option>
+									<option value="5">laytpl</option>
+									<option value="6">upload</option>
+									<option value="7">laydate</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-inline ml-20 mt-10">
+							<a href="javascript:void(0);" class="layui-btn layui-btn-mini layui-btn-blue" style="height: 26px;line-height: 10px;padding: 10px 16px;">
+								<i class="layui-icon">&#xe615;</i> 搜索
+							</a>
+						</div>
+					</div>
+
+				</form>
+			</fieldset>
+
+			<div class="module-title">客户信息列表</div>
+			<div class="layui-form">
+				<table class="layui-table admin-table mt-0" id="article">
+					<thead>
+						<tr>
+							<th class="sorting_desabled align-center"><input type="checkbox" id="checkAll"></th>
+							<th>客户编号</th>
+							<th>客户名称</th>
+							<th>联系人</th>
+							<th>电话号码</th>
+							<th>座机号码</th>
+							<th>传真号码</th>
+							<th>公司性质</th>
+							<th>用量</th>
+							<th>卸货方式</th>
+							<th>线路说明</th>
+							<th>客户地址</th>
+							<th>其它备注</th>
+							<th>录入人</th>
+							<th>录入时间</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!--模板-->
+		<script type="text/javascript" src="../../js/myframe.js"></script>
+		<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/jquery.min.js"></script>
+		<script>
+			layui.use('form', function() {});
+		</script>
+		<script>
+			layui.use('layer', function() {
+				var layer = layui.layer;
+			});
+
+			//添加    
+			function addInfo() {
+				layer.open({
+					type: 2,
+					title: '客户信息添加',
+					shadeClose: true,
+					shade: [0.6, '#393D49'],
+					maxmin: true, //开启最大化最小化按钮
+					area: ['800px', '500px'],
+					content: 'tc/add.html',
+					btn: ['确定']
+				});
+			}
+			//修改
+			function updateInfo() {
+				layer.open({
+					type: 2,
+					title: '客户信息修改',
+					shadeClose: true,
+					shade: [0.6, '#393D49'],
+					maxmin: false, //开启最大化最小化按钮
+					area: ['800px', '500px'],
+					content: 'tc/update.html',
+					btn: ['确定', '取消'],
+					btnAlign: 'c'
+				});
+			}
+			//删除		
+			function deleteInfo() {
+				var ids = [];
+
+				for(var i = 0; i < sd.getSelected().length; i++) {
+					ids[i] = sd.getSelected()[i][1];
+				}
+
+				layer.alert('确定要删除' + ids.join(",") + '吗？', {
+					skin: 'layui-layer-red' //样式类名
+						,
+					closeBtn: 0,
+					btn: ['确定', '取消'],
+					btnAlign: 'c'
+				});
+			}
+		 
+			//刷新		
+			function freshInfo() {
+				var index = layer.load(1, {
+					shade: [0.3, '#393D49'],
+					time: 2000,
+					end: function() {
+						window.location.reload()
+					}
+				});
+
+			}
+
+			//自定义查询			
+			function searchManage() {
+				layer.open({
+					type: 2,
+					title: '自定义查询添加',
+					shadeClose: true,
+					shade: [0.6, '#393D49'],
+					maxmin: false, //开启最大化最小化按钮
+					area: ['550px', '500px'],
+					content: 'tc/addelem.html',
+					btn: ['确定', '取消'],
+					btnAlign: 'c',
+					skin: 'layui-layer-bluelight',
+					closeBtn: 0
+				});
+			}
+			//自定义格式		
+			function searchForm() {
+				layer.open({
+					type: 2,
+					title: '自定义格式添加',
+					shadeClose: true,
+					shade: [0.6, '#393D49'],
+					maxmin: false, //开启最大化最小化按钮
+					area: ['550px', '500px'],
+					content: 'tc/addform.html',
+					btn: ['确定', '取消'],
+					btnAlign: 'c',
+					skin: 'layui-layer-bluelight',
+					closeBtn: 0
+				});
+			}
+			//重置格式	
+			function resetForm() {
+				layer.alert('确定要重置格式吗？', {
+					skin: 'layui-layer-bluelight', //样式类名	
+					closeBtn: 0,
+					btn: ['确定', '取消'],
+					btnAlign: 'c'
+				});
+			}
+
+			//打印		
+			function printInfo() {
+				layer.alert('确定要打印吗？', {
+					skin: 'layui-layer-blue', //样式类名
+					closeBtn: 0,
+					btn: ['确定', '取消'],
+					btnAlign: 'c'
+				});
+			}
+
+			//14列table 宽度100%显示;超过14列,宽度列数乘以120
+			$(function() {
+				var tableWidth = $('.layui-table thead th').length;
+
+				if(tableWidth < 15) {
+					$('.layui-table').css('width', '100%');
+				} else {
+					$('.layui-table').css('width', 120 * tableWidth);
+				}
+
+			});
+		</script>
+		<script>
+			layui.config({
+				base: 'datatable/' //自定义layui组件的目录
+			}).extend({ //设定组件别名
+				datatable: 'datatable',
+			});
+			layui.use(['jquery', 'datatable'], function() {
+				var $ = layui.jquery;
+				$(function() {
+					/**
+					 * 渲染数据
+					 */
+					var lang = {
+						"sProcessing": "处理中...",
+						"sLengthMenu": "每页 _MENU_项",
+						"sZeroRecords": "没有匹配结果",
+						"sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
+						"sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
+						"sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+						"sInfoPostFix": "",
+						"sSearch": "本地搜索：",
+						"sUrl": "",
+						"sEmptyTable": "暂无数据",
+						"sLoadingRecords": "载入中...",
+						"sInfoThousands": ",",
+						"oPaginate": {
+							"sFirst": "首页",
+							"sPrevious": "上页",
+							"sNext": "下页",
+							"sLast": "末页",
+							"sJump": "跳转"
+						},
+						"oAria": {
+							"sSortAscending": ": 以升序排列此列",
+							"sSortDescending": ": 以降序排列此列"
+						}
+					};
+					$('#article').dataTable({
+						"dom": '<"bottom"i>rt<"bottom"flp><"clear">',
+						"language": lang, //提示信息
+						"autoWidth": false, //自适应宽度，
+						"lengthMenu": [15, 30, 60],
+						"stripeClasses": ["odd", "even"], //为奇偶行加上样式，兼容不支持CSS伪类的场合
+						"searching": false, //是否允许Datatables开启本地搜索
+						"paging": true, //是否开启本地分页
+						"lengthChange": true, //是否允许产品改变表格每页显示的记录数
+						"info": false, //控制是否显示表格左下角的信息
+						//跟数组下标一样，第一列从0开始，这里表格初始化时，第四列默认降序
+						"order": [1, 'asc'], //asc升序   desc降序 
+						"aoColumnDefs": [{
+							"orderable": false,
+							"aTargets": [0, 4, 7] // 指定列不参与排序
+						}],
+						"deferRender": true, //延迟渲染
+						"ajax": "../../datas/laytpl_laypage_data.json", //数据的路径
+						"columns": [{ //定义列
+							"data": function(obj) {
+								return '<input type="checkbox" name="article-list" data-id=' + obj.id + '>';
+							}
+						}, {
+							"data": "id"
+						}, {
+							"data": "info1"
+						}, {
+							"data": "info2"
+						}, {
+							"data": "info3",
+						}, {
+							"data": "info4",
+						}, {
+							"data": "info5",
+						}, {
+							"data": "info6",
+						}, {
+							"data": "info7",
+						}, {
+							"data": "info8",
+						}, {
+							"data": "info9",
+						}, {
+							"data": "info10",
+						}, {
+							"data": "info11",
+						}, {
+							"data": "info12",
+						}, {
+							"data": "info13",
+						}]
+					});
+
+					$("#article").wrap("<div class='tableContent'></div>");
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			window.onload = function() {
+				$('body').delegate('#article tbody tr', 'click', function() {
+					if($(this).hasClass('bg-blue-selected')) {
+						$(this).removeClass('bg-blue-selected');
+						$(this).children().children('input[name="article-list"]').prop('checked', false);
+						selectInput();
+					} else {
+						$(this).addClass('bg-blue-selected');
+						$(this).children().children('input[name="article-list"]').prop('checked', true);
+						selectInput();
+					}
+				});
+				$('#checkAll').click(function() {
+					if($('#checkAll').prop('checked')) {
+						$('#article tbody tr').addClass('bg-blue-selected');
+						$('#article tbody tr').children().children('input[name="article-list"]').prop('checked', true);
+					} else {
+						$('#article tbody tr').removeClass('bg-blue-selected');
+						$('#article tbody tr').children().children('input[name="article-list"]').prop('checked', false);
+					}
+				})
+
+				$('body').click(function() {
+					var tableNumber = $('.layui-table tbody tr').length;
+					var tableSelect = $('.layui-table tbody tr.bg-blue-selected').length;
+					if(tableNumber == tableSelect) {
+						$('#checkAll').prop('checked', true);
+					};
+					selectInput();
+				})
+			}
+
+			function selectInput() {
+				$('.layui-table tbody tr input[name="article-list"]').each(function() {
+					if($(this).prop('checked') == false) {
+						$('#checkAll').prop('checked', false);
+					}
+				});
+			}
+
+			layui.use(['layer', 'element'], function() {
+				var $ = layui.jquery,
+					layer = layui.layer;
+
+				//这个是点击之后才添加的。
+				$('body').delegate('.detail-info', 'click', function(event) {
+					//这是核心的代码。
+					parent.tab.tabAdd({
+						href: 'page/basicInfo/tc/update.html', //地址
+						icon: 'fa-user',
+						title: '公司信息'
+					});
+					event.stopPropagation();
+				});
+			});
+		</script>
+	</body>
+
+</html>

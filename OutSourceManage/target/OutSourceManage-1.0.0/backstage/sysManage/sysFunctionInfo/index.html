@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>功能模块</title>
+
+<link rel="stylesheet" type="text/css"
+	href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script src="../../../resources/js/base.js"></script>
+ 
+<script type="text/javascript" src="../../js/myframe.js"></script>
+<script type="text/javascript" src="../../../resources/loginIn/sysManage/sysFunctionInfo.js"></script>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/my.css"/>
+</head>
+<body>
+	<div class="easyui-layout" fit="true">
+		<div data-options="region:'west',split:true" style="width: 200px;">
+			<ul id="sysfunctionInfoId" class="easyui-tree"
+				 ></ul>
+		</div>
+		<div data-options="region:'center',iconCls:'icon-ok'">
+
+			<div class="layui-form">
+				<div class="admin-main">
+					<blockquote class="layui-elem-quote">
+						<a href="javascript:;" class="layui-btn layui-btn-small layui-btn-blue" id="add">
+							<i class="layui-icon">&#xe608;</i> 添加
+						</a> <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-blue"
+							id="edit"> <i class="layui-icon ">&#xe642;</i> 修改
+						</a>  
+					</blockquote>
+					<div class="layui-form">
+						<table class="layui-table admin-table selected">
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th >功能编号</th>
+									<th>功能名称</th>
+									<th>功能地址</th>
+									 <th>功能图标</th>
+									<th>创建人</th>
+									<th>创建时间</th>
+									<th>状态</th>
+								</tr>
+							</thead>
+							<tbody id="content" class="selected">
+							</tbody>
+						</table>
+						
+					</div>
+					<div id="paged" class="page" style="text-align: center;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/html" id="tpl">
+	  {{#  
+      layui.each(d.rows, function(index, item){ }}
+			<tr>	
+				<td>{{ (index+1) }}</td>
+				<td>{{ item.functionId }}</td>
+				<td>{{ item.functionName }}</td>			
+				<td>{{ item.functionUrl }}</td>
+			 	<td>{{ item.functionIcon }}</td>
+				<td>{{ item.createUserName }}</td>
+				<td>{{ item.createTime }}</td>
+				<td>{{ item.status }}</td>
+			</tr>
+			{{# }); }}
+		</script>
+	<script type="text/javascript">
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use(
+						[ 'paging', 'form', 'element' ],
+						function() {
+							var $ = layui.jquery;
+						
+							$('#sysfunctionInfoId')
+							.tree(
+									{
+										url : '../../../manager/loginIn/SysFunctionInfo/queryList.do?functionType=&type=1',
+										method : 'get',
+										animate : true,
+										checkbox : false
+									});
+							
+							
+							$('#edit').on('click',function() {
+								if(sdfarme.getSelected().length==0){
+									layer.alert('请选一条数据进行操作',{icon : 6});
+								}else{
+									window.localStorage.setItem("departId",sdfarme.getSelected()[0][1]);
+ 										 
+										var title = "";
+										layer.open({
+											type : 2,
+											title : '修改功能',
+											content : base.serverContent+ '/backstage/sysManage/sysFunctionInfo/editFunctionInfo.html?'+sdfarme.getSelected()[0][1],
+
+											area : ['500px','500px' ],
+											scrollbar : false,
+											  btn:["提交"],
+											yes : function( index,layero) {
+												 var iframeWin = window[layero.find('iframe')[0]['name']];
+												 
+												 if(!iframeWin.CheckDate()){
+													 return;
+												 }
+												var body = layer.getChildFrame('body', index);
+												$.ajax({type : 'POST',
+													url : base.serverContent+ '/manager/loginIn/SysFunctionInfo/update.do',
+													data : $(body).find("#frm1").serialize(),
+													async : false,
+													success : function(data) {
+															if (data.code == "000") {
+																layer.alert('修改成功',{icon : 6});
+																$('#sysdepartInfoId').tree("reload");
+															} else {
+																layer.alert('修改失败',{icon : 6});
+																$('#sysdepartInfoId').tree("reload");
+															 }
+														},
+														error : function() {
+														}
+													});
+											}, cancel : function() {
+												$( '#sysdepartInfoId') .tree( "reload");
+											},success: function(layero){
+											}
+											 
+										});
+								}
+		 
+							});
+							 
+
+							
+							$('#add').on('click',
+											function() {
+												
+								 
+												 
+												layer.open({
+													type : 2,
+													title : '添加功能',
+													content : base.serverContent+ '/backstage/sysManage/sysFunctionInfo/addFunctionInfo.html',
+													area : ['400px','300px' ],
+													scrollbar : false,
+													  btn:["提交"],
+													yes : function( index,layero) {
+														 var iframeWin = window[layero.find('iframe')[0]['name']];
+														 
+														 if(!iframeWin.CheckDate()){
+															 return;
+														 }
+														var body = layer.getChildFrame('body', index);
+														$.ajax({type : 'POST',
+															url : base.serverContent+ '/manager/loginIn/SysFunctionInfo/add.do',
+															data : $(body).find("#frm1").serialize(),
+															async : false,
+															success : function(data) {
+																	if (data.code == "000") {
+																		layer.alert('添加成功',{icon : 6});
+																		$('#sysfunctionInfoId').tree("reload");
+																	} else {
+																		layer.alert('添加失败',{icon : 6});
+																		$('#sysfunctionInfoId').tree("reload");
+																	 }
+																},
+																error : function() {
+																}
+															});
+													}, cancel : function() {
+														$( '#sysfunctionInfoId') .tree( "reload");
+													},success: function(layero){
+													 
+													}
+												});
+												
+												
+												
+												 
+													 
+												 
+
+											});
+
+						});
+	</script>
+</body>
+</html>

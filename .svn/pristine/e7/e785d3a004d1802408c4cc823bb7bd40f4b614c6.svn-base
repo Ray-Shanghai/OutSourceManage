@@ -1,0 +1,200 @@
+package com.sd.farmework.service.impl; 
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.sd.farmework.pojo.SdCustomerInfo;
+import com.sd.farmework.pojo.SdOrderDetailInfo;
+import com.sd.farmework.pojo.SdOrderInfo;
+import com.sd.farmework.pojo.SdOrderTrack;
+import com.sd.farmework.pojo.SdProductInfo;
+import com.sd.farmework.service.SdOrderInfoService; 
+
+import org.springframework.stereotype.Service; 
+
+import com.sd.farmework.common.HttpSessionProvider;
+import com.sd.farmework.common.util.StringUtil;
+import com.sd.farmework.mapper.SdCustomerInfoMapper;
+import com.sd.farmework.mapper.SdOrderDetailInfoMapper;
+import com.sd.farmework.mapper.SdOrderInfoMapper; 
+import com.sd.farmework.mapper.SdOrderTrackMapper;
+import com.sd.farmework.mapper.SdProductInfoMapper;
+
+import org.springframework.beans.factory.annotation.Autowired; 
+
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+ @Service
+public class SdOrderInfoServiceImpl extends BaseInfoServiceImpl implements SdOrderInfoService{ 
+    @Autowired
+    private SdOrderInfoMapper baseMapper;
+    @Autowired
+    private SdOrderDetailInfoMapper sdOrderDetailInfoMapper;
+    @Autowired
+    private SdProductInfoMapper sdProductInfoMapper;
+    @Autowired
+    private SdCustomerInfoMapper  sdCustomerInfoMapper;
+    @Autowired
+    private SdOrderTrackMapper sdOrderTrackMapper;
+    public SdOrderInfoMapper getBaseMapper(){
+     return baseMapper;
+    }
+    public void setBaseMapper(SdOrderInfoMapper baseMapper){
+    	this.baseMapper = baseMapper;
+    }
+	@Override
+	public void addOrder(SdOrderInfo sdorderinfo,
+			SdOrderDetailInfo sdOrderDetailInfo, SdProductInfo sdProductInfo)
+			throws Exception {
+		SdCustomerInfo sdCustomerInfo=new SdCustomerInfo();
+		sdCustomerInfo.setcustomerName(sdorderinfo.getcustomerName());
+		String customerId="";
+		List<SdCustomerInfo> customerList=this.sdCustomerInfoMapper.queryForMysql(sdCustomerInfo);
+		if(customerList==null||customerList.size()==0){
+			sdCustomerInfo.setcustomerAddress(sdorderinfo.getcustomerAddress());
+			sdCustomerInfo.setCreateUserId(sdorderinfo.getCreateUserId());
+			sdCustomerInfo.setCreateUserName(sdorderinfo.getCreateUserName());
+			sdCustomerInfo.setCreateDepartId(sdorderinfo.getCreateDepartId());
+			sdCustomerInfo.setCreateDepartName(sdorderinfo.getCreateDepartName());
+			this.sdCustomerInfoMapper.addForMysql(sdCustomerInfo);
+			customerId=sdCustomerInfo.getcustomerId()+"";
+		}else{
+			customerId=customerList.get(0).getcustomerId()+"";
+		}
+		//1添加订单 可获取主键值
+		String orderCostPrice=sdorderinfo.getcostPrice().split(",")[0];//订单表中的成本价格
+		sdorderinfo.setorderNuber(getNowNumber()); //订单编号
+		sdorderinfo.setcostPrice(orderCostPrice);
+		sdorderinfo.setdataState("2");
+		sdorderinfo.setcustomerId(customerId);
+		this.baseMapper.addForMysql(sdorderinfo);
+		//2添加产品信息 可获取主键值
+		String detailCostPrice=sdOrderDetailInfo.getcostPrice().substring(sdOrderDetailInfo.getcostPrice().indexOf(",")+1); //产品成本
+		List<SdProductInfo> productList=new ArrayList<SdProductInfo>();
+		
+		for (int i = 0; i < detailCostPrice.split(",").length; i++) {
+			SdProductInfo sdProductInfo2=sdProductInfoMapper.queryProductByName(sdProductInfo.getproductName().split(",")[i]);
+			if(sdProductInfo2==null){//如果不存在此产品那么添加
+				SdProductInfo newProductInfo=new SdProductInfo();
+				newProductInfo.setproductCode(sdProductInfo.getproductCode().split(",")[i]);
+				newProductInfo.setcustomerSupplies(sdProductInfo.getcustomerSupplies().split(",")[i]);
+				newProductInfo.setproductName(sdProductInfo.getproductName().split(",")[i]);
+				newProductInfo.setproductStandard(sdProductInfo.getproductStandard().split(",")[i]); //产品规格
+				newProductInfo.setproductLength(sdProductInfo.getproductLength().split(",")[i]);
+				newProductInfo.setproductWidth(sdProductInfo.getproductWidth().split(",")[i]);
+				newProductInfo.setproductHeight(sdProductInfo.getproductHeight().split(",")[i]);
+				newProductInfo.setisLid(sdProductInfo.getisLid().split(",")[i]);
+				newProductInfo.setcostPrice(detailCostPrice.split(",")[i]);
+				newProductInfo.setproductTypeId(sdProductInfo.getproductTypeId().split(",")[i]);
+				newProductInfo.setproductGradeId(sdProductInfo.getproductGradeId().split(",")[i]);
+				newProductInfo.setproductInnerLength(sdProductInfo.getproductInnerLength().split(",")[i]);//内径余量长宽高
+				newProductInfo.setproductInnerWidth(sdProductInfo.getproductInnerWidth().split(",")[i]);
+				newProductInfo.setproductInnerHeight(sdProductInfo.getproductInnerHeight().split(",")[i]);
+				newProductInfo.setCreateUserId(sdProductInfo.getCreateUserId());
+				newProductInfo.setCreateUserName(sdProductInfo.getCreateUserName());
+				newProductInfo.setCreateDepartId(sdProductInfo.getCreateDepartId());
+				newProductInfo.setCreateDepartName(sdProductInfo.getCreateDepartName());
+				this.sdProductInfoMapper.addForMysql(newProductInfo);
+				productList.add(newProductInfo);
+			}else{
+				productList.add(sdProductInfo2);
+			}
+			
+		}
+		for (int j = 0; j < productList.size(); j++) {
+			//3.添加订单详情
+			SdOrderDetailInfo newSdOrderDetailInfo=new SdOrderDetailInfo();
+			newSdOrderDetailInfo.setorderId(sdorderinfo.getorderId());
+			newSdOrderDetailInfo.setproductId(productList.get(j).getproductId());
+			newSdOrderDetailInfo.setcustomerSupplies(sdOrderDetailInfo.getcustomerSupplies().split(",")[j]);
+			newSdOrderDetailInfo.setproductCode(sdOrderDetailInfo.getproductCode().split(",")[j]);
+			newSdOrderDetailInfo.setproductName(sdOrderDetailInfo.getproductName().split(",")[j]);
+			newSdOrderDetailInfo.setdetailLength(productList.get(j).getproductLength());
+			newSdOrderDetailInfo.setdetailWidth(productList.get(j).getproductWidth());
+			newSdOrderDetailInfo.setdetailHeight(productList.get(j).getproductHeight());
+			newSdOrderDetailInfo.setisLid(sdOrderDetailInfo.getisLid().split(",")[j]);
+			newSdOrderDetailInfo.setprice(sdOrderDetailInfo.getprice().split(",")[j]);
+			newSdOrderDetailInfo.setnumber(sdOrderDetailInfo.getnumber().split(",")[j]);
+			newSdOrderDetailInfo.setcostPrice(productList.get(j).getcostPrice());
+			newSdOrderDetailInfo.setproductTypeId(sdOrderDetailInfo.getproductTypeId().split(",")[j]);
+			newSdOrderDetailInfo.setproductGradeId(sdOrderDetailInfo.getproductGradeId().split(",")[j]);
+			newSdOrderDetailInfo.setimmediatelyInventory(sdOrderDetailInfo.getimmediatelyInventory().split(",")[j]);
+			newSdOrderDetailInfo.setdiscountBeforeSum(sdOrderDetailInfo.getdiscountBeforeSum().split(",")[j]);
+			newSdOrderDetailInfo.setmoney(sdOrderDetailInfo.getmoney().split(",")[j]);
+			newSdOrderDetailInfo.settaxRate(sdOrderDetailInfo.gettaxRate().split(",")[j]);
+			newSdOrderDetailInfo.setsellTax(sdOrderDetailInfo.getsellTax().split(",")[j]);
+			newSdOrderDetailInfo.setpracticalSellPrice(sdOrderDetailInfo.getpracticalSellPrice().split(",")[j]);
+			newSdOrderDetailInfo.setpriceSellSum(sdOrderDetailInfo.getpriceSellSum().split(",")[j]);
+			newSdOrderDetailInfo.setrelevanceNumber(sdOrderDetailInfo.getrelevanceNumber().split(",")[j]);
+			newSdOrderDetailInfo.settakeOutNumber(sdOrderDetailInfo.gettakeOutNumber().split(",")[j]);
+			newSdOrderDetailInfo.setbomType(sdOrderDetailInfo.getbomType().split(",")[j]);
+			newSdOrderDetailInfo.setfileUrl(sdOrderDetailInfo.getfileUrl().split(",")[j]);
+			newSdOrderDetailInfo.setfileName(sdOrderDetailInfo.getfileName().split(",")[j]);
+			newSdOrderDetailInfo.setCreateUserId(sdOrderDetailInfo.getCreateUserId());
+			newSdOrderDetailInfo.setCreateUserName(sdOrderDetailInfo.getCreateUserName());
+			newSdOrderDetailInfo.setCreateDepartId(sdOrderDetailInfo.getCreateDepartId());
+			newSdOrderDetailInfo.setCreateDepartName(sdOrderDetailInfo.getCreateDepartName());
+			this.sdOrderDetailInfoMapper.addForMysql(newSdOrderDetailInfo);
+		}
+		
+		//订单跟踪
+			SdOrderTrack sdOrderTrack=new SdOrderTrack();
+			sdOrderTrack.setorderId(sdorderinfo.getorderId()+"");
+			sdOrderTrack.setCreateUserId(sdorderinfo.getLastUpdateUserId());
+			sdOrderTrack.setCreateUserName(sdorderinfo.getLastUpdateUserName());
+			sdOrderTrack.setdataState("2");
+			sdOrderTrack.setdataStateName("新建订单");
+			sdOrderTrackMapper.addForMysql(sdOrderTrack);
+			
+	}
+	/**
+	 * 获取订单编号
+	 * */
+	public String getNowNumber()throws Exception{
+			Date date=new Date();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyMMdd");
+			String nowdate="AJ"+sdf.format(date);
+			String orderNuber=this.baseMapper.queryMaxOrderNuber(nowdate);
+			String newOrderNuber="";
+			if(StringUtil.isNotNullOrBlank(orderNuber)){
+				newOrderNuber=orderNuber.substring(8);
+				int i=Integer.parseInt(newOrderNuber);
+				String str=(i+1)+"";
+				if(str.length()==1){
+					newOrderNuber=nowdate+"00"+str;
+				}else if(str.length()==2){
+					newOrderNuber=nowdate+"0"+str;
+				}else{
+					newOrderNuber=nowdate+str;
+				}
+			}else{
+				newOrderNuber=nowdate+"001";
+			}
+			return newOrderNuber; 
+	}
+	@Override
+	public void comfirmOrderInfo(SdOrderInfo sdorderinfo) throws Exception {
+		//订单确认
+		this.baseMapper.updateForMysql(sdorderinfo);
+		//订单跟踪
+		SdOrderTrack sdOrderTrack=new SdOrderTrack();
+		sdOrderTrack.setorderId(sdorderinfo.getorderId()+"");
+		sdOrderTrack.setCreateUserId(sdorderinfo.getLastUpdateUserId());
+		sdOrderTrack.setCreateUserName(sdorderinfo.getLastUpdateUserName());
+		sdOrderTrack.setdataState("2");
+		sdOrderTrack.setdataStateName("订单确认");
+		sdOrderTrackMapper.addForMysql(sdOrderTrack);
+	}
+	
+	/*public static void main(String[] args) {
+		String a="123,456,789";
+		String b[]=a.split(",");
+		String s=a.substring(a.indexOf(",")+1);
+		System.out.println(s);
+	}*/
+}

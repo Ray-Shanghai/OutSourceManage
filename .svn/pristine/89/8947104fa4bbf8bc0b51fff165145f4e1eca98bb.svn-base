@@ -1,0 +1,65 @@
+package com.sd.farmework.service; 
+
+import java.util.List;
+import java.util.Map;
+
+import com.sd.farmework.pojo.SdOrderComplain;
+import com.sd.farmework.pojo.SdOrderDetailInfo;
+import com.sd.farmework.pojo.SdOrderInfo;
+import com.sd.farmework.pojo.SdProductInfo;
+import com.sd.farmework.pojo.SysUserInfo;
+
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+public interface SdOrderInfoService  extends BaseInfoService{
+	/**
+	 * 添加订单时同时检查是否可以添加
+	 * @param sdorderinfo
+	 * @param sdOrderDetailInfo
+	 * @param sdProductInfo
+	 * @throws Exception
+	 */
+	public Map<String,String> addOrder(SdOrderInfo sdorderinfo,SdOrderDetailInfo sdOrderDetailInfo,SdProductInfo sdProductInfo)throws Exception;
+	/**
+	 * 订单确认
+	 * @throws Exception
+	 */
+	public Map<String,String> addcomfirmOrderInfo(SdOrderInfo sdorderinfo)throws Exception;
+	/**
+	 * 状态修改更新订单信息
+	 * @param sdorderinfo
+	 * @throws Exception
+	 */
+	public Map<String,String> editOrder(SdOrderInfo sdorderinfo,SdOrderComplain sdOrderComplain)throws Exception;
+	/**
+	 * 订单跟踪列表
+	 * @param sdOrderInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public List<SdOrderInfo> queryListByTrack(SdOrderInfo sdOrderInfo)throws Exception;
+	/**
+	 * 订单数量
+	 * @param sdOrderInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public Integer queryCountByTrack(SdOrderInfo sdOrderInfo)throws Exception;
+	/**
+	 * 删除订单
+	 * @param sdOrderInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String,Object> deleteOrderInfo(SdOrderInfo sdOrderInfo,SysUserInfo user)throws Exception;
+	/**
+	 * 修改订单
+	 * @param sdOrderInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String,Object> editOrderInfo(SdOrderInfo sdOrderInfo,SdOrderDetailInfo SdOrderDetailInfo,String detailIds,String position)throws Exception;
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>添加人员</title>
+		<link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../css/table.css" />
+		<link rel="stylesheet" type="text/css" href="../css/my.css" />
+		<link rel="stylesheet" href="../datas/datatable/datatable.css" />
+		
+		<style>
+			.layui-table input[type=checkbox], .layui-table input[type=radio], #article_wrapper select {display:inline-block !important;}
+			.layui-table input{width: 15px; height: 15px; background:none; text-align: center;}
+			.layui-table input:checked {background-color: #28B779;border: solid 0 #28B779;}
+			input[type='checkbox'] {vertical-align: middle;}
+			.layui-table input {-webkit-appearance: none;position: relative;width: 15px;height: 15px;background-color: #FFFFFF;border: solid 1px #ddd;border-radius: 2px;background-clip: padding-box;display: inline-block;cursor: pointer;}
+			.layui-table input:checked::before {position: absolute;display: inline-block;right: 50%;bottom: 50%;transform: translate(50%, 50%);font-family: "Microsoft Yahei";content: "√";color: rgb(255, 255, 255);font-size: 14px;font-weight: 600;}
+			.tableContent{width: 100%; overflow: auto;}
+			.layui-table tr td:first-child{text-align: center !important;}
+			.layui-table .layui-form-checkbox{display: none;}
+			#article_length  .layui-form-select{display: none;}
+			.dataTables_wrapper .dataTables_paginate .paginate_button:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+			    background: #45afec;
+			    color: #fff;
+			}
+			.layui-btn{background: #45afec !important;}
+			.admin-main {margin: 15px;}
+			.addselect-list {
+			    background: #45afec !important;
+			    color: #fff !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="admin-main">
+			<form class="layui-form qinghua-table" id="form1">
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 70px;">姓名：</label>
+						<div class="layui-input-inline" style="width: 100px;">
+							<input type="text" name="userName" lay-verify="required" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 70px;">手机号码：</label>
+						<div class="layui-input-inline" style="width: 100px;">
+							<input type="text" name="phone" lay-verify="required" autocomplete="off" class="layui-input">
+							<input type="hidden" name="position" value="5">
+						</div>
+					</div>
+					<div class="layui-inline"  id="search" >
+						<a class="layui-btn layui-btn-mini layui-btn-blue" style="height: 26px;line-height: 10px;padding: 10px 16px;">
+							<i class="layui-icon">&#xe615;</i> 查询
+						</a>
+					</div>
+				</div>
+			</form>
+			<div class="layui-form" style="overflow: hidden;">
+				<form id="form2">
+				<table class="layui-table admin-table mt-0" id="article">
+					<thead>
+						<tr>
+							<th class="sorting_desabled" style="text-align: center;"><input type="checkbox" id="checkAll"></th>
+							<th>姓名</th>
+							<th>联系电话</th>
+							<th>职位</th>
+						</tr>
+					</thead>
+					<tbody id="content">
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<div id="paged"></div>
+		</div>
+		<script type="text/javascript" src="../js/jquery.min.js" ></script>
+		<script type="text/javascript" src="../js/myframe.js" ></script>
+		<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resources/js/base.js"></script>
+		<script type="text/html" id="tpl">
+	  {{# 
+		layui.each(d.rows, function(index, item){ }}
+			<tr>
+				<td><input type='checkbox' name='userIds' value='{{item.userId}}'></td>		
+				<td>{{ item.userName }}</td>
+				<td>{{ item.phone }}</td>			
+				<td>检验员</td>
+			</tr>
+			{{# }); }}
+		</script>
+		<script>
+		var position =$("input[name='position']").val();
+		layui.config({
+			base : '../js/'
+		});
+		layui.use([ 'jquery','paging', 'form', 'element'],
+				function() {
+					var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+							paging = layui.paging(),
+							layerTips = parent.layer === undefined ? layui.layer
+									: parent.layer, //获取父窗口的layer对象
+							layer = layui.layer, //获取当前窗口的layer对象
+							form = layui.form();
+							getData({'position':position});
+							
+					function getData(data){
+						paging.init({
+							url : base.serverContet
+									+ '/manager/loginIn/SysUserInfo/queryListForCaiGou.do', //地址
+							elem : '#content', //内容容器
+							params :data,
+							type : 'POST',
+							tempElem : '#tpl', //模块容器
+							pageConfig : { //分页参数配置
+								elem : '#paged', //分页容器
+								pageSize : base.pageSize,
+								pageIndex:1
+							//分页大小
+							},
+							success : function() { //渲染成功的回调
+								//alert('渲染成功');
+							},
+							fail : function(msg) { //获取数据失败的回调
+								//alert('获取数据失败')
+							},
+							complate : function() { //完成的回调
+								
+							},
+						});
+				
+					}
+					$("#search").click(function(){
+						  getData($("#form1").serializeObject());
+					});
+				
+		});
+		</script>
+		
+		<script type="text/javascript">
+				$('body').delegate('#article tbody tr', 'click', function() {
+					if($(this).hasClass('addselect-list')) {
+						$(this).removeClass('addselect-list');
+						$(this).children().children('input[name="userIds"]').prop('checked', false);
+						selectInput();
+					} else {
+						$(this).addClass('addselect-list');
+						$(this).children().children('input[name="userIds"]').prop('checked', true);
+						selectInput();
+					}
+				});
+				$('#checkAll').click(function() {
+					if($('#checkAll').prop('checked')) {
+						$('#article tbody tr').addClass('addselect-list');
+						$('#article tbody tr').children().children('input[name="userIds"]').prop('checked', true);
+					} else {
+						$('#article tbody tr').removeClass('addselect-list');
+						$('#article tbody tr').children().children('input[name="userIds"]').prop('checked', false);
+					}
+				})
+
+				$('body').click(function() {
+					var tableNumber = $('.layui-table tbody tr').length;
+					var tableSelect = $('.layui-table tbody tr.bg-blue-selected').length;
+					if(tableNumber == tableSelect) {
+						$('#checkAll').prop('checked', true);
+					};
+					selectInput();
+				})
+
+			function selectInput() {
+				$('.layui-table tbody tr input[name="userIds"]').each(function() {
+					if($(this).prop('checked') == false) {
+						$('#checkAll').prop('checked', false);
+					}
+				});
+			}
+		</script>
+		
+	</body>
+</html>

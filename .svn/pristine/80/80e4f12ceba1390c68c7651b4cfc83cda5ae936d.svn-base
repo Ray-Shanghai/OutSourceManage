@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单跟踪列表</title>
+		<link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../../css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../../css/font/iconfont1.css">
+		<link rel="stylesheet" type="text/css" href="../../css/table.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/my.css" />
+		<style>
+			.layui-tab-title .layui-this {
+				background: #eeeeee;
+			}
+			.file {
+			    position: relative;
+			    display: inline-block;
+			    background: #D0EEFF;
+			    border: 1px solid #99D3F5;
+			    border-radius: 4px;
+			    padding: 4px 8px;
+			    overflow: hidden;
+			    color: #1E88C7;
+			    text-decoration: none;
+			    text-indent: 0;
+			    line-height: 10px;
+			}
+			.file input {
+			    position: absolute;
+			    font-size: 100px;
+			    right: 0;
+			    top: 0;
+			    opacity: 0;
+			}
+			.file:hover {
+			    background: #AADFFD;
+			    border-color: #78C3F3;
+			    color: #004974;
+			    text-decoration: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="layui-tab">
+			<div class="layui-tab-content">
+				<div class="layui-tab-item table-edit layui-show">
+					<form class="layui-form" action="">
+						<div class="addInfo-title">
+							<span class="infoName">基本信息</span>
+						</div>
+						<div class="layui-form-item mt-10">
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width:70px;">公司名称</label>
+								<div class="layui-input-inline" style="width:150px;">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="上海XX有限公司" disabled="">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width:70px;">到货时间</label>
+								<div class="layui-input-inline" style="width:110px;">
+									<input type="text" name="date" class="layui-input" onclick="layui.laydate({elem: this, festival: true})" value="2016/07/10" disabled="">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width:70px;">采购</label>
+								<div class="layui-input-inline" style="width:110px;">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="采购500" disabled="">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width:70px;">订单价格</label>
+								<div class="layui-input-inline" style="width:110px;">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="300000元" disabled="">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width:70px;">核算成本</label>
+								<div class="layui-input-inline" style="width:110px;">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="220000元" disabled="">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width:70px;">商务报价</label>
+								<div class="layui-input-inline" style="width:110px;">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input"  value="380000元" disabled="">
+								</div>
+							</div>
+						</div>
+						<div class="addInfo-title mt-0">
+							<span class="infoName">物料信息</span>
+						</div>
+
+						<div class="personInfo mt-10 add1" id="111">
+							<div class="layui-form-item pt-10">
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">名称</label>
+									<div class="layui-input-inline" style="width:100px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input"  value="名称1" disabled="">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:60px;">规格/型号</label>
+									<div class="layui-input-inline" style="width:100px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input"  value="1.5L/m" disabled="">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">数量</label>
+									<div class="layui-input-inline" style="width:100px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input"  value="300个" disabled="">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">单位</label>
+									<div class="layui-input-inline" style="width:150px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input"  value="上海某某公司" disabled="">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">类别</label>
+									<div class="layui-input-inline" style="width:120px;">
+										<select name="modules" lay-verify="required" lay-search="">
+											<option value="">选择或搜索</option>								
+											<option value="1" selected="">栈板</option>
+											<option value="2">栈板</option>
+											<option value="3">栈板</option>
+										</select>
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">材质</label>
+									<div class="layui-input-inline" style="width:120px;">
+										<select name="modules" lay-verify="required" lay-search="">
+											<option value="">选择或搜索</option>								
+											<option value="1" selected="">实木</option>
+											<option value="2">原木</option>
+										</select>
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">单价</label>
+									<div class="layui-input-inline" style="width:60px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="3000" disabled="">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="personInfo mt-10 add1" id="111">
+							<div class="layui-form-item pt-10">
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">名称</label>
+									<div class="layui-input-inline" style="width:100px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input"  value="名称1" disabled="">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:60px;">规格/型号</label>
+									<div class="layui-input-inline" style="width:100px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input"  value="1.5L/m" disabled="">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">数量</label>
+									<div class="layui-input-inline" style="width:100px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input"  value="300个" disabled="">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">单位</label>
+									<div class="layui-input-inline" style="width:150px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input"  value="上海某某公司" disabled="">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">类别</label>
+									<div class="layui-input-inline" style="width:120px;">
+										<select name="modules" lay-verify="required" lay-search="">
+											<option value="">选择或搜索</option>								
+											<option value="1" selected="">栈板</option>
+											<option value="2">栈板</option>
+											<option value="3">栈板</option>
+										</select>
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">材质</label>
+									<div class="layui-input-inline" style="width:120px;">
+										<select name="modules" lay-verify="required" lay-search="">
+											<option value="">选择或搜索</option>								
+											<option value="1" selected="">实木</option>
+											<option value="2">原木</option>
+										</select>
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label" style="width:40px;">单价</label>
+									<div class="layui-input-inline" style="width:60px;">
+										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="3000" disabled="">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="addInfo-title">
+							<span class="infoName">附件上传</span>
+						</div>
+						<div class="mt-10 pt-10 pb-10 file">已上传图纸
+							<input type="file" name="file" disabled="">
+						</div>
+						<span class="showFileName">sdadasdsa.jpg</span>
+						<div class="addInfo-title">
+							<span class="infoName">跟踪记录</span>
+						</div>
+						<div class="layui-form-item pt-10">
+							<ul>
+								<li>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">跟踪时间</label>
+										<div class="layui-input-inline" style="width:110px;">
+											<input type="text" name="date" class="layui-input" onclick="layui.laydate({elem: this, festival: true})" value="2016/07/10" disabled="">
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">跟踪人</label>
+										<div class="layui-input-inline" style="width:110px;">
+											<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="王某某" disabled="">
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">跟踪状态</label>
+										<div class="layui-input-inline" style="width:150px;">
+											<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="成交" disabled="">
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">跟踪时间</label>
+										<div class="layui-input-inline" style="width:110px;">
+											<input type="text" name="date" class="layui-input" onclick="layui.laydate({elem: this, festival: true})" value="2016/05/08" disabled="">
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">跟踪人</label>
+										<div class="layui-input-inline" style="width:110px;">
+											<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="王某某" disabled="">
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">跟踪状态</label>
+										<div class="layui-input-inline" style="width:150px;">
+											<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="审核" disabled="">
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">跟踪时间</label>
+										<div class="layui-input-inline" style="width:110px;">
+											<input type="text" name="date" class="layui-input" onclick="layui.laydate({elem: this, festival: true})" value="2016/03/18" disabled="">
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">跟踪人</label>
+										<div class="layui-input-inline" style="width:110px;">
+											<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="王某某" disabled="">
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label" style="width:70px;">跟踪状态</label>
+										<div class="layui-input-inline" style="width:150px;">
+											<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="接受订单" disabled="">
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/tab.js"></script>
+	<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+	<script type="text/javascript" src="../../js/jquery.min.js"></script>
+	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	<script>
+		layui.use('element', function() {
+			var $ = layui.jquery,
+				element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+			//触发事件
+			var active = {
+				tabAdd: function() {
+					//新增一个Tab项
+					element.tabAdd('demo', {
+						title: '新选项' + (Math.random() * 1000 | 0) //用于演示
+							,
+						content: '内容' + (Math.random() * 1000 | 0),
+						id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+					})
+				},
+				tabDelete: function(othis) {
+					//删除指定Tab项
+					element.tabDelete('demo', '44'); //删除：“商品管理”
+
+					othis.addClass('layui-btn-disabled');
+				},
+				tabChange: function() {
+					//切换到指定Tab项
+					element.tabChange('demo', '22'); //切换到：用户管理
+				}
+			};
+
+			$('.site-demo-active').on('click', function() {
+				var othis = $(this),
+					type = othis.data('type');
+				active[type] ? active[type].call(this, othis) : '';
+			});
+
+			//Hash地址的定位
+			var layid = location.hash.replace(/^#test=/, '');
+			element.tabChange('test', layid);
+
+			element.on('tab(test)', function(elem) {
+				location.hash = 'test=' + $(this).attr('lay-id');
+			});
+
+		});
+	</script>
+	<script>
+		layui.use(['form', 'layedit', 'laydate'], function() {
+			var $ = layui.jquery,
+				form = layui.form();
+			layer = layui.layer,
+				layedit = layui.layedit,
+				laydate = layui.laydate;
+			form.on('checkbox(allChoose)', function(data) {
+				var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+				child.each(function(index, item) {
+					item.checked = data.elem.checked;
+				});
+				form.render('checkbox');
+			});
+
+		});
+	</script>
+	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	<script>
+		layui.use(['laypage', 'layer'], function() {
+			var laypage = layui.laypage,
+				layer = layui.layer;
+			laypage({
+				cont: 'demo2',
+				pages: 100,
+				skin: '#1E9FFF'
+			});
+			var nums = 5;
+			var render = function(data, curr) {
+				var arr = [],
+					thisData = data.concat().splice(curr * nums - nums, nums);
+				layui.each(thisData, function(index, item) {
+					arr.push('<li>' + item + '</li>');
+				});
+				return arr.join('');
+			};
+			laypage({
+				cont: 'demo8',
+				pages: Math.ceil(data.length / nums) //得到总页数
+					,
+				jump: function(obj) {
+					document.getElementById('biuuu_city_list').innerHTML = render(data, obj.curr);
+				}
+			});
+		});
+
+		//   添加删除 
+		function addFile(id) {
+			var tag = $("#" + id);
+			tag.after($(tag).prop("outerHTML"));
+		}
+
+		function delFile(tag) {
+			if($(".personInfo").length > 1) {
+				$(tag).parent().parent().remove();
+			} else {
+				alert("只有一行不能再删除");
+			}
+		}
+
+		layui.use(['layer'], function() {
+			var $ = layui.jquery,
+				layer = layui.layer;
+
+			//这个是点击之后才添加的。
+			$('.detail-order').on('click', function() {
+				//这是核心的代码。
+				parent.tab.tabAdd({
+					href: 'page/orderInfo/orderDetail.html', //地址
+					icon: 'fa-user',
+					title: '跟踪详情'
+				});
+			});
+		});
+	</script>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>系统列表</title>
+		<link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../../css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../../css/font/iconfont1.css">
+		<link rel="stylesheet" type="text/css" href="../../css/table.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/my.css" />
+		<style>
+			.layui-tab-title .layui-this {
+				background: #eeeeee;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-tab">
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show table-edit">
+					<form class="layui-form" action="frm1">
+						<div class="layui-form-item">
+							<a href="javascript:;" class="layui-btn layui-btn-normal" onclick="addInfo()">
+									<i class="layui-icon"></i> 添加系统
+							</a>
+							<a href="javascript:;" class="layui-btn layui-btn-normal" onclick="addFunctionInfo()">
+									<i class="layui-icon"></i> 添加功能
+							</a>
+							<a href="javascript:;" class="layui-btn layui-btn-normal" onclick="addInfo()">
+									<i class="layui-icon"></i> 流程设置
+							</a>
+							<a href="javascript:;" class="layui-btn layui-btn-normal" onclick="addInfo()">
+									<i class="layui-icon"></i> 生成源码
+							</a>
+						</div>
+					</form>
+					<div class="layui-form">
+						<table class="layui-table selected " >
+							<thead>
+								<tr>
+									<th style="width: 30px;">编号</th>
+									<th style="width: 80px;">系统编号</th>
+									<th style="width: 180px;">系统名称</th>
+									<th style="width: 80px;">webRoot</th>
+									<th style="width: 80px;">数据库类型</th>
+									<th style="width: 100px;">数据库名称</th>
+									<th style="width: 100px;">创建时间</th>
+									<th style="width: 100px;">创建人</th>
+									<th style="width: 80px;">操作</th>
+								</tr>
+							</thead>
+							<tbody id="content"  class="selected">
+							 
+							</tbody>
+						</table>
+					</div>
+					<div id="paged" class="page" style="text-align: center;"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../../resources/js/base.js"></script>
+	<script type="text/javascript" src="../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../js/myframe.js"></script>
+	<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+	<script src="../../js/tab.js"></script>
+	<script type="text/html" id="tpl">
+	  	{{#  
+      		layui.each(d.rows, function(index, item){ }}
+			<tr>	
+				<td>{{ (index+1) }}</td>
+				<td>{{ item.systemInfoId }}</td>
+				<td>{{ item.systemName }}</td>			
+				<td>{{ item.systemWebcontext }}</td>
+ 				<td>{{ item.dbTypeName }}</td>
+				<td>{{ item.dbUsername }}</td>
+				<td>{{ item.createTime }}</td>
+				<td>{{ item.createUserName }}</td>
+				<td>
+					<a href="javascript:void(0);" onclick="editData('{{ item.systemInfoId }}')" class="layui-btn layui-btn-normal layui-btn-mini" data-opt="showPlay">编辑</a>
+					<a href="javascript:void(0);" onclick="deleteData('{{ item.systemInfoId }}')" data-name="{{ item.company }}" data-opt="edit" class="layui-btn layui-btn-mini layui-btn-danger">删除</a>
+				</td>
+				
+			</tr>
+		{{# }); }}
+	</script>
+	<script type="text/javascript">
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use([ 'paging', 'form', 'element' ],function() {
+			var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+			paging = layui.paging(),
+			layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
+			layer = layui.layer, //获取当前窗口的layer对象
+			form = layui.form();
+			getData({});
+									
+			function getData(data){
+				paging.init({
+					url : base.serverContet + '/manager/loginIn/SdSystemInfo/queryListByPageIndex.do', //地址
+					elem : '#content', //内容容器
+					params :data,
+					type : 'GET',
+					tempElem : '#tpl', //模块容器
+					pageConfig : { //分页参数配置
+						elem : '#paged', //分页容器
+						pageSize : 10,
+						pageIndex:1 //分页大小
+					},
+					success : function() { //渲染成功的回调
+						//alert('渲染成功');
+					},
+					fail : function(msg) { //获取数据失败的回调
+						//alert('获取数据失败')
+					},
+					complate : function() { //完成的回调
+	
+					},
+				});
+			}
+			$("#searc").click(function(){
+				getData($("#frm1").serializeObject());
+			});
+							
+		});
+		//添加功能页面
+		function addFunctionInfo(id){
+			if(sdfarme.getSelected().length==0){
+				layer.alert('请选一条数据进行操作',{icon : 6});
+			}else{
+				var systemInfoId = sdfarme.getSelected()[0][1];
+				window.localStorage.setItem("systemInfoId",systemInfoId);
+				parent.tab.tabAdd({
+					href: 'sdManage/sdFunctionInfo/index.html', //地址
+					icon: 'fa-user',
+					title: '添加系统功能'
+				});
+			}
+			
+		}
+		//流程设置方法
+		 
+		//弹出新增框
+		function addInfo(){
+        	layer.open({
+		      type: 2,
+		      title: '添加系统信息',
+		      shadeClose: true,
+		      shade: [0.6, '#393D49'],
+		      maxmin: false, //开启最大化最小化按钮
+		      area: ['450px', '400px'],
+		      offset: ['60px', '280px'],
+		      content: 'addSdSytemInfo.html',
+		      cancel:function(){	//关闭事件
+		    	 
+		      }
+		    });
+        }
+		//修改方法
+		function editData(id){
+			window.localStorage.setItem("systemInfoId",id);
+			layer.open({
+			      type: 2,
+			      title: '系统信息编辑',
+			      shadeClose: true,
+			      shade: [0.6, '#393D49'],
+			      maxmin: false, //开启最大化最小化按钮
+			      area: ['450px', '400px'],
+			      offset: ['60px', '280px'],
+			      content: 'editSdSytemInfo.html' 
+			    });
+		}
+		//删除方法
+		function deleteData(id){
+			
+			layer.confirm('确定删除吗？', { btn: ['确定','关闭']
+				}, function(){
+					$.ajax({
+						type : "POST",
+						url : base.serverContet +"/manager/loginIn/SdSystemInfo/delete.do",
+						data : {"pkId":id},
+						success : function(data) {
+							if(data.code=="000"){
+								layer.alert('删除成功！',{icon : 6,yes:function(){
+									location.reload();
+								}}); 
+							}else{
+								base.failAlert(data);
+							}	
+						},error : function(rec) {
+							console.info("网络异常,请稍后再试");
+						}
+					});
+				}, function(){}
+			 );
+		}
+	</script>
+</html>

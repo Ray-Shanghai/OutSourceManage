@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加系统功能</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/global.css" media="all">
+<link rel="stylesheet" href="../../css/common.css" media="all">
+<link rel="stylesheet" href="../../css/my.css" media="all">
+<style>
+   .layui-form-radio{margin:0;}
+   .layui-form-item .layui-inline{margin-right:0;}
+</style>
+</head>
+<body>
+
+	<form class="layui-form ml-20 mt-10" id="frm1" >
+		<input type="hidden" name="parentFunctionId" id="parentFunctionId" />
+    	<input type="hidden" value="1" name="isOpen" id="isOpen">
+    	<input  type="hidden" name="systemInfoId" id="systemInfoId"   >
+    	
+    	<div class="layui-form-item">
+			    <div class="layui-inline">
+			      <label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">功能名称</label>
+						<div class="layui-input-inline" style="width: 150px;">
+							<input type="text" name="functionName" id="functionName" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+						</div>
+			    </div>
+			    <div class="layui-inline">
+					<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">文字图标 </label>
+					<div class="layui-input-inline" style="width: 150px;">
+						<input type="text" name="functionIcon" id="functionIcon" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+			    
+			    
+			     <div class="layui-inline">
+				<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">功能分类</label>
+				<div class="layui-input-inline" style="width: 150px;" id="operationMenu">
+					  <select name="typeId" id="typeId" lay-verify="required" lay-search="" lay-filter="typeId">
+				          <option value='1'>系统功能</option>
+				          <option value='2'>业务功能</option>
+				          <option value='3'>常用功能</option>
+				     </select>
+				</div>
+			</div>
+			 
+			  <div class="layui-inline">
+				<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">展示方式 </label>
+				<div class="layui-input-inline" style="width: 150px;">
+					 <select name="functionShowTypeId" id="functionShowTypeId" lay-verify="required" lay-search="" lay-filter="functionShowTypeId">
+				          <option value=''>请选择</option>
+				     </select>
+				</div>
+			</div>
+			  
+				 
+			  <div class="layui-inline" style="margin-right:0;">
+				<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">状态</label>
+				<div class="layui-input-inline" style="width: 175px;">
+					<input type="radio" name="status" value="Y" title="启用" checked> 
+					<input type="radio" name="status" value="N" title="禁用">
+				</div>
+			</div>
+ 
+			
+  		</div>
+  		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">功能地址</label>
+			<div class="layui-input-block" style="margin-left:110px !important;margin-right: 37px;"  >
+				 <input type="text" name="functionUrl" id="functionUrl" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+  		
+  		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">操作按钮</label>
+			<div class="layui-input-block" style="margin-left:110px !important;margin-right: 37px;" id="functionOpear">
+			 
+			</div>
+		</div>
+		 <div class="layui-form-item">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">功能描述</label>
+			<div class="layui-input-block" style="margin-left:110px !important;margin-right: 37px;">
+			<textarea placeholder="请输入内容" class="layui-textarea" name="functionDesc" id="functionDesc" ></textarea>
+			</div>
+		</div>
+		 <div class="layui-form-item">
+			<label class="layui-form-label" style="width: 100px; background: none !important; border: none !important;">绑定脚本</label>
+			<div class="layui-input-block" style="margin-left:110px !important;margin-right: 37px;">
+			<textarea placeholder="请输入内容" class="layui-textarea" name="fromScript" id="fromScript"></textarea>
+			</div>
+		</div>
+ 
+	</form>
+	
+	<script type="text/javascript" src="../../js/jquery.min.js"></script>
+	<script src="../../../resources/js/base.js"></script>
+	<script type="text/javascript" src="../../js/myframe.js"></script>
+	<script src="../../plugins/layui/layui.js" charset="utf-8"></script>
+
+	<script>
+	layui.use(['form', 'layedit', 'laydate'], function(){
+		var form = layui.form() ,layer = layui.layer ,layedit = layui.layedit ,laydate = layui.laydate;
+		
+		var sdParentFunctionId = window.localStorage .getItem("sdParentFunctionId");
+		$("#parentFunctionId").val(sdParentFunctionId);
+		var systemInfoId = window.localStorage .getItem("systemInfoId");
+		$("#systemInfoId").val(systemInfoId);
+		
+		//查询数据库类型
+		$.ajax({
+			type : "GET",
+			url : base.serverContet +"/manager/loginIn/SdFunctionInfo/queryDictionaryInfo.do",
+			data : {"":""},
+			async : false,
+			success : function(data) {
+				if(data.code=="000"){
+					
+			        $("#functionShowTypeId").html("");
+			        $.each(data.showType,function(index,tag){
+			        	$("#functionShowTypeId").append(new Option(this.dictionaryName,this.dictionaryId+"&"+this.dictionaryName));
+			        });
+			        $.each(data.list,function(index,tag){
+			        	$("#functionOpear").append(' <input type="checkbox" value="'+this.dictionaryId+"&"+this.dictionaryName+'" name="functionOpear" lay-skin="primary" title="'+this.dictionaryName+'">');
+			        });
+			        
+			        layui.form().render('select'); 
+			        layui.form().render('checkbox'); 
+				} 
+			},error : function(rec) {
+				console.info("网络异常,请稍后再试");
+			}
+		});
+		//检测下拉框改变事件
+		form.on('select(functionShowTypeId)',function(data){
+			 $("#functionShowTypeId").val(data.value);
+		});
+		form.on('select(typeId)',function(data){
+			 $("#typeId").val(data.value);
+		});
+		
+		
+	});
+	</script>
+
+</body>
+</html>

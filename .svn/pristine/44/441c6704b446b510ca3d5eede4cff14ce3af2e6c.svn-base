@@ -1,0 +1,537 @@
+/**
+ * 成本核算相关js
+ * wangli
+ */
+$(function(){
+	
+	//加载数据
+	var productName=window.localStorage.getItem("productName");
+	var productTypeId=window.localStorage.getItem("productTypeId");
+	var isLid=window.localStorage.getItem("isLid");
+	var productOther=window.localStorage.getItem("productOther");
+	var productStandard=window.localStorage.getItem("productStandard");
+	var productLength=window.localStorage.getItem("productLength"); 
+	var productWidth=window.localStorage.getItem("productWidth");   
+	var productHeight=window.localStorage.getItem("productHeight");
+	var productInnerLength=window.localStorage.getItem("productInnerLength");
+	var productInnerWidth=window.localStorage.getItem("productInnerWidth");
+	var productInnerHeight=window.localStorage.getItem("productInnerHeight");
+	
+	$("input[name='productName']").val(productName);
+	$("input[name='productTypeId']").val(productTypeId);
+	if(isLid==0){
+		$("#isLid1").attr("checked","checked");
+	}else{
+		$("#isLid2").attr("checked","checked");
+	}
+	$("input[name='productOther']").val(productOther);
+	$("input[name='productStandard']").val(productStandard);
+	$("input[name='productLength']").val(productLength);
+	$("input[name='productWidth']").val(productWidth);
+	$("input[name='productHeight']").val(productHeight);
+	$("input[name='productInnerLength']").val(productInnerLength);
+	$("input[name='productInnerWidth']").val(productInnerWidth);
+	$("input[name='productInnerHeight']").val(productInnerHeight);
+});
+
+$("#supply-btn").click(function(){
+	/*箱子长宽高*/
+	var productLength=$("input[name='productLength']").val();
+	var productWidth=$("input[name='productWidth']").val();
+	var productHeight=$("input[name='productHeight']").val();
+	/*余量长宽高*/
+	var productInnerLength=$("input[name='productInnerLength']").val();
+	var productInnerWidth=$("input[name='productInnerWidth']").val();
+	var productInnerHeight=$("input[name='productInnerHeight']").val();
+	/*需要输入的值*/
+	var gbhou=$("input[name='gbhou']").val(); //盖板厚
+	var gbcxblkuan=$("input[name='gbcxblkuan']").val(); //盖板长项边料宽
+	var gbcxblhou=$("input[name='gbcxblhou']").val();//盖板长项边料厚
+	var gbkxblnum=$("input[name='gbkxblnum']").val();//盖板宽项边料数量
+	var dqbcxblkuan=$("input[name='dqbcxblkuan']").val();//大墙板长项边料宽
+	var dqbcxblhou=$("input[name='dqbcxblhou']").val();//大墙板长项边料厚
+	var xqbkxblnum=$("input[name='xqbkxblnum']").val();//小墙板宽项边料数量
+	var dbhou=$("input[name='dbhou']").val();//底板厚
+	
+	/*计算所需箱子基础信息*/
+	//箱子内径长=设备尺寸长+内径余量长，箱子内径宽=设备尺寸宽+内径余量宽，箱子内径厚=设备内径高+内径余量高。
+	var innerLength=numSub(productLength,productInnerLength);
+	$("input[name='innerLength']").val(innerLength);
+	var innerWidth=numSub(productWidth,productInnerWidth);
+	$("input[name='innerWidth']").val(innerWidth);
+	var innerHeight=numSub(productHeight,productInnerHeight)
+	$("input[name='innerHeight']").val(innerHeight);
+	//小墙板长=箱子内径宽+盖板长项边料厚*2，小墙板宽=箱子内径厚+底板厚，小墙板厚=盖板厚，小墙板数量=2。
+	$("input[name='xqbchang']").val(numSub($("input[name='innerWidth']").val(),gbcxblhou*2));
+	$("input[name='xqbkuan']").val(numSub($("input[name='innerHeight']").val(),dbhou));
+	$("input[name='xqbhou']").val(gbhou);
+	$("input[name='xqbnum']").val("2");
+	/*小墙板长项边料长=小墙板长，小墙板长项边料宽=盖板宽项边料宽，小墙板长项边料厚=盖板宽向边料厚，
+	小墙板长项边料数量=（箱子内径厚+底板厚+盖板长项边料厚）区间｛0-2440，4；2440-4880，6；4880以上，8｝；
+	小墙板宽向边料长=箱子内径厚+盖板长项边料宽*2，小墙板宽向边料宽=盖板宽向边料宽，小墙板宽向边料厚=盖板宽向边料厚，*/
+	
+	$("input[name='xqbcxblchang']").val($("input[name='xqbchang']").val());
+	$("input[name='xqbcxblkuan']").val(gbcxblkuan);
+	$("input[name='xqbcxblhou']").val(gbcxblhou);
+	var xqbcxblnum=numSub($("input[name='innerHeight']").val(),dbhou);
+	xqbcxblnum=numSub(xqbcxblnum,gbcxblhou);
+	if(xqbcxblnum>0&&xqbcxblnum<2440){
+		$("input[name='xqbcxblnum']").val("4");
+	}else if(xqbcxblnum>=2440&&xqbcxblnum<=4880){
+		$("input[name='xqbcxblnum']").val("6");
+	}else if(xqbcxblnum>4880){
+		$("input[name='xqbcxblnum']").val("8");
+	}else{
+		$("input[name='xqbcxblnum']").val("1");
+	}
+	$("input[name='xqbkxblchang']").val(numSub($("input[name='innerHeight']").val(),gbcxblkuan*2));
+	$("input[name='xqbkxblkuan']").val(gbcxblkuan);
+	$("input[name='xqbkxblhou']").val(gbcxblhou);
+	
+	/*箱子外径长=箱子内径长+小墙板厚*2+小墙板长项边料厚*2，箱子外径宽=箱子内径宽+大墙板长项边料厚*2+大墙板厚*2，
+		箱子外径厚=箱子内径厚+盖板厚+底板厚+长方厚+短方厚+盖板长项边料厚（如果有盖板）。 */
+	var outLength=numSub($("input[name='innerLength']").val(),gbhou);
+	outLength=numSub(outLength,gbcxblhou);
+	$("input[name='outLength']").val(outLength);
+	var outWidth=numSub($("input[name='innerWidth']").val(),dqbcxblhou);
+	outWidth=numSub(outWidth,gbhou);
+	$("input[name='outWidth']").val(outWidth);
+	var outHeight=numSub($("input[name='innerHeight']").val(),gbhou);
+	var outHeight1=numSub(dbhou,$("input[name='cfhou']").val());
+	var outHeight2=numSub($("input[name='duanfhou']").val(),gbcxblhou);
+	outHeight=numSub(outHeight,outHeight1);
+	outHeight=numSub(outHeight,outHeight2);
+	$("input[name='outHeight']").val(outHeight);
+	/*小墙板宽向边料数量=向上去整【（箱子外径宽/611+1）*2】。边料数量*2。*/
+	var xqbkxblnum=Math.ceil(((outWidth/611)+1)*2);
+	$("input[name='xqbkxblnum']").val(xqbkxblnum)
+	/* 大墙板长=箱子内径长+小墙板厚*2+小墙板长向边料厚*2，大墙板宽=箱子内径厚+底板厚+盖板长项边料厚+长方厚，
+	 * 大墙板厚=盖板厚，大墙板数量=2；大墙板长项边料长=大墙板长-小墙板厚*2-小墙板长项边料厚*2，
+	 * 大墙板长项边料宽=盖板宽项边料宽，大墙板长项边料厚=盖板宽向边料厚，
+	 * 大墙板长项边料数量=箱子外径厚区间｛0-2440，4；2440-4880，6；4880以上，8｝；
+	 * 大墙板宽向边料长=箱子内径厚+底板厚-大墙板长项边料宽*2，大墙板宽向边料宽=盖板宽向边料宽，
+	 * 大墙板宽向边料厚=盖板宽向边料厚，大墙板宽向边料数量=盖板宽向边料数量*2。*/
+	var dqbchang=numSub($("input[name='innerLength']").val(),gbhou*2);
+	dqbchang=numSub(dqbchang,gbcxblhou);
+	$("input[name='dqbchang']").val(dqbchang)
+	var dqbkuan=numSub($("input[name='innerHeight']").val(),dbhou);
+	var dqbkuan1=numSub(gbcxblhou,$("input[name='cfhou']").val());
+	dqbkuan=numSub(dqbkuan,dqbkuan1);
+	$("input[name='dqbkuan']").val(dqbkuan);
+	$("input[name='dqbhou']").val(gbhou);
+	$("input[name='dqbnum']").val("2");
+	var dqbcxblchang=numDif(dqbchang,gbhou*2);
+	dqbcxblchang=numDif(dqbcxblchang,gbcxblhou*2);
+	$("input[name='dqbcxblchang']").val(dqbcxblchang);
+	$("input[name='dqbcxblkuan']").val(gbcxblkuan);
+	$("input[name='dqbcxblhou']").val(gbcxblhou);
+	if(outHeight>0&&outHeight<2440){
+		$("input[name='dqbcxblnum']").val("4");
+	}else if(outHeight>=2440&&outHeight<=4880){
+		$("input[name='dqbcxblnum']").val("6");
+	}else if(outHeight>4880){
+		$("input[name='dqbcxblnum']").val("8");
+	}else{
+		$("input[name='dqbcxblnum']").val("1");
+	}
+	var dqbkxblchang=numSub($("input[name='innerHeight']").val(),dbhou);
+	/*资料上是减*/
+	dqbkxblchang=accSub(dqbkxblchang,gbcxblkuan*2);
+	$("input[name='dqbkxblchang']").val(dqbkxblchang);
+	$("input[name='dqbkxblkuan']").val(gbcxblkuan);
+	$("input[name='dqbkxblhou']").val(gbcxblhou);
+	$("input[name='dqbkxblnum']").val(gbkxblnum*2)
+	
+	/*盖板长=箱子内径长+小墙板厚*2+小墙板长向边料厚*2，盖板宽=箱子内径宽+大墙板厚*2+大墙板长向边料*2；
+	 盖板长向边料长=盖板长-小墙板厚*2-大墙板长向变量厚*2，盖板长项边料数量=箱子外径厚区间｛0-2440，2；2440-4880，3；4880以上，4｝；
+	 盖板宽向边料长=箱子内径宽-长项边料宽*2，盖板宽向边料宽=盖板长项边料宽，盖板宽向边料厚=盖板长项边料厚，宽向边料数量=四舍五入（箱子外径长/611+1）*/
+	var gbchang=numSub($("input[name='innerLength']").val(),gbhou*2);
+	gbchang=numSub(gbchang,gbcxblhou*2);
+	$("input[name='gbchang']").val(gbchang);
+	var gbkuan=numSub($("input[name='innerWidth']").val(),gbhou*2);
+	gbkuan=numSub(gbkuan,dqbcxblkuan*2);
+	$("input[name='gbkuan']").val(gbkuan);
+	$("input[name='gbnum']").val("1");
+	var gbcxblchang=numDif(gbchang,gbhou*2);
+	gbcxblchang=numDif(gbcxblchang,dqbcxblhou*2);
+	$("input[name='gbcxblchang']").val(gbcxblchang);
+	if(outHeight>0&&outHeight<2440){
+		$("input[name='gbcxblnum']").val("4");
+	}else if(outHeight>=2440&&outHeight<=4880){
+		$("input[name='gbcxblnum']").val("6");
+	}else if(outHeight>4880){
+		$("input[name='gbcxblnum']").val("8");
+	}else{
+		$("input[name='dqbcxblnum']").val("1");
+	}
+	$("input[name='gbkxblchang']").val(numDif($("input[name='innerWidth']").val(),gbcxblkuan*2));
+	$("input[name='gbkxblkuan']").val(gbcxblkuan);
+	$("input[name='gbkxblhou']").val(gbcxblhou);
+	$("input[name='gbkxblnum']").val(((outLength/611)+1).toFixed(2));
+	/*底板长=箱子内径长，底板宽=箱子内径宽，底板数量=1。*/
+	$("input[name='dbchang']").val($("input[name='innerLength']").val());
+	$("input[name='dbkuan']").val($("input[name='innerWidth']").val());
+	$("input[name='dbnum']").val("1");
+	$("input[name='cfchang']").val(gbchang);//长方长=盖板长。
+	$("input[name='duanfchang']").val(gbkuan);//短方长=盖板宽。
+	$("input[name='tfchang']").val(innerWidth);//挑方长=箱子内径宽。
+	$("input[name='dianfchang']").val(innerWidth);//垫方长=箱子内径宽。
+	$("input[name='zhichenglchang']").val(innerWidth);//支撑料长=箱子内径宽。
+	$("input[name='gudingmuchang']").val(innerWidth);//固定木长=箱子内径宽。
+	
+	/*单位用量=长*宽*厚*数量* 0.000000001。
+	未税单价=含税单价/1.17。
+	单位成本（未税）=单位用量*未税单价。*/
+	//var gbdanwei=gbchang*gbkuan*gbhou*1*0.000000001; //盖板单位用量
+	var gbdanwei=calculateByDanWei(gbchang,gbkuan,gbhou,1);
+	$("input[name='gbdanwei']").val(gbdanwei);
+	//var gbcxbldanwei=gbcxblchang*gbcxblkuan*gbcxblhou*$("input[name='gbcxblnum']").val()*0.000000001;//盖板长项边料单位用量
+	var gbcxbldanwei=calculateByDanWei(gbcxblchang,gbcxblkuan,gbcxblhou,$("input[name='gbcxblnum']").val());
+	$("input[name='gbcxbldanwei']").val(gbcxbldanwei);
+	//var gbkxbldanwei=$("input[name='gbkxblchang']").val()*gbcxblkuan*gbcxblhou*$("input[name='gbkxblnum']").val()*0.000000001;//盖板宽项边料长
+	var gbkxbldanwei=calculateByDanWei($("input[name='gbkxblchang']").val(),gbcxblkuan,gbcxblhou,$("input[name='gbkxblnum']").val());
+	$("input[name='gbkxbldanwei']").val(gbkxbldanwei);
+	//var dqbdanwei=dqbchang*dqbkuan*gbhou*2*0.000000001;//大墙板单位用量
+	var dqbdanwei=calculateByDanWei(dqbchang,dqbkuan,gbhou,2);
+	$("input[name='dqbdanwei']").val(dqbdanwei);
+	//var dqbcxbldanwei=dqbcxblchang*dqbcxblkuan*dqbcxblhou*$("input[name='dqbcxblnum']").val()*0.000000001;//大墙板长项边料单位用量
+	var dqbcxbldanwei=calculateByDanWei(dqbcxblchang,dqbcxblkuan,dqbcxblhou,$("input[name='dqbcxblnum']").val());
+	$("input[name='dqbcxbldanwei']").val(dqbcxbldanwei);
+	//var dqbkxbldanwei=dqbkxblchang*gbcxblkuan*gbcxblhou*$("input[name='dqbkxblnum']").val()*0.000000001;//大墙板宽项边料单位用量
+	var dqbkxbldanwei=calculateByDanWei(dqbkxblchang,gbcxblkuan,gbcxblhou,$("input[name='dqbkxblnum']").val());
+	$("input[name='dqbkxbldanwei']").val(dqbkxbldanwei);
+	//var xqbdanwei=$("input[name='xqbchang']").val()*$("input[name='xqbkuan']").val()*gbhou*2*0.000000001;//小墙板单位用量
+	var xqbdanwei=calculateByDanWei($("input[name='xqbchang']").val(),$("input[name='xqbkuan']").val(),gbhou,2);
+	$("input[name='xqbdanwei']").val(xqbdanwei);
+	//var xqbcxbldanwei=$("input[name='xqbcxblchang']").val()*gbcxblkuan*gbcxblhou*$("input[name='xqbcxblnum']").val()*0.000000001;//小墙板长项边料单位用量
+	var xqbcxbldanwei=calculateByDanWei($("input[name='xqbcxblchang']").val(),gbcxblkuan,gbcxblhou,$("input[name='xqbcxblnum']").val());
+	$("input[name='xqbcxbldanwei']").val(xqbcxbldanwei);
+	//var xqbkxbldanwei=$("input[name='xqbkxblchang']").val()*gbcxblkuan*gbcxblhou*xqbkxblnum*0.000000001;//小墙板宽项边料单位用量
+	var xqbkxbldanwei=calculateByDanWei($("input[name='xqbkxblchang']").val(),gbcxblkuan,gbcxblhou,xqbkxblnum);
+	$("input[name='xqbkxbldanwei']").val(xqbkxbldanwei);
+	//var dbdanwei=$("input[name='dbchang']").val()*$("input[name='dbkuan']").val()*dbhou*1*0.000000001;//底板长项边料单位用量
+	var dbdanwei=calculateByDanWei($("input[name='dbchang']").val(),$("input[name='dbkuan']").val(),dbhou,1);
+	$("input[name='dbdanwei']").val(dbdanwei);
+	//var cfdanwei=gbchang*$("input[name='cfkuan']").val()*$("input[name='cfhou']").val()*$("input[name='cfnum']").val()*0.000000001;//长方单位用量
+	var cfdanwei=calculateByDanWei(gbchang,$("input[name='cfkuan']").val(),$("input[name='cfhou']").val(),$("input[name='cfnum']").val());
+	$("input[name='cfdanwei']").val(cfdanwei);
+	//var duanfdanwei=$("input[name='duanfchang']").val()*$("input[name=''duanfkuan]").val()*$("input[name='duanfhou']").val()*$("input[name='duanfnum']").val()*0.000000001;//短方单位用量
+	var duanfdanwei=calculateByDanWei($("input[name='duanfchang']").val(),$("input[name='duanfkuan']").val(),$("input[name='duanfhou']").val(),$("input[name='duanfnum']").val());
+	$("input[name='duanfdanwei']").val(duanfdanwei);
+	var tfdanwei=calculateByDanWei(innerWidth,$("input[name='tfkuan']").val(),$("input[name='tfhou']").val(),$("input[name='tfnum']").val());
+	$("input[name='tfdanwei']").val(tfdanwei);
+	var dianfdanwei=calculateByDanWei(innerWidth,$("input[name='dianfkuan']").val(),$("input[name='dianfhou']").val(),$("input[name='dianfnum']").val());
+	$("input[name='dianfdanwei']").val(dianfdanwei);
+	var gudingmudanwei=calculateByDanWei($("input[name='gudingmuchang']").val(),$("input[name='gudingmukuan']").val(),$("input[name='gudingmuhou']").val(),$("input[name='gudingmunum']").val());
+	$("input[name='gudingmudanwei']").val(gudingmudanwei);
+	var zhichengldanwei=calculateByDanWei($("input[name='zhichenglchang']").val(),$("input[name='zhichenglkuan']").val(),$("input[name='zhichenglhou']").val(),$("input[name='zhichenglnum']").val());
+	$("input[name='zhichengldanwei']").val(zhichengldanwei);
+	/*未税单价=含税单价/1.17*/
+	var gbweisui=($("input[name='gbhansui']").val()/1.17).toFixed(2);
+	$("input[name='gbweisui']").val(gbweisui);
+	var gbcxblweisui=($("input[name='gbcxblhansui']").val()/1.17).toFixed(2);
+	$("input[name='gbcxblweisui']").val(gbcxblweisui);
+	var gbkxblweisui=($("input[name='gbkxblhansui']").val()/1.17).toFixed(2);
+	$("input[name='gbkxblweisui']").val(gbkxblweisui);
+	var dqbweisui=($("input[name='dqbhansui']").val()/1.17).toFixed(2);
+	$("input[name='dqbweisui']").val(dqbweisui);
+	var dqbcxblweisui=($("input[name='dqbcxblhansui']").val()/1.17).toFixed(2);
+	$("input[name='dqbcxblweisui']").val(dqbcxblweisui);
+	var dqbkxblweisui=($("input[name='dqbkxblhansui']").val()/1.17).toFixed(2);
+	$("input[name='dqbkxblweisui']").val(dqbkxblweisui);
+	var xqbweisui=($("input[name='xqbhansui']").val()/1.17).toFixed(2);
+	$("input[name='xqbweisui']").val(xqbweisui);
+	var xqbcxblweisui=($("input[name='xqbcxblhansui']").val()/1.17).toFixed(2);
+	$("input[name='xqbcxblweisui']").val(xqbcxblweisui);
+	var xqbkxblweisui=($("input[name='xqbkxblhansui']").val()/1.17).toFixed(2);
+	$("input[name='xqbkxblweisui']").val(xqbkxblweisui);
+	var dbweisui=($("input[name='dbhansui']").val()/1.17).toFixed(2);
+	$("input[name='dbweisui']").val(dbweisui);
+	var cfweisui=($("input[name='cfhansui']").val()/1.17).toFixed(2);
+	$("input[name='cfweisui']").val(cfweisui);
+	var duanfweisui=($("input[name='duanfhansui']").val()/1.17).toFixed(2);
+	$("input[name='duanfweisui']").val(duanfweisui);
+	var tfweisui=($("input[name='tfhansui']").val()/1.17).toFixed(2);
+	$("input[name='tfweisui']").val(tfweisui);
+	var dianfweisui=($("input[name='dianfhansui']").val()/1.17).toFixed(2);
+	$("input[name='dianfweisui']").val(dianfweisui);
+	var gudingmuweisui=($("input[name='gudingmuhansui']").val()/1.17).toFixed(2);
+	$("input[name='gudingmuweisui']").val(gudingmuweisui);
+	var zhichenglweisui=($("input[name='zhichenglhansui']").val()/1.17).toFixed(2);
+	$("input[name='zhichenglweisui']").val(zhichenglweisui);
+	/*单位成本（未税）=单位用量*未税单价。*/
+	var gbdwchengben=(gbdanwei*gbweisui).toFixed(2);
+	$("input[name='gbdwchengben']").val(gbdwchengben);
+	var gbcxblchenben=(gbcxbldanwei*gbcxblweisui).toFixed(2);
+	$("input[name='gbcxblchenben']").val(gbcxblchenben);
+	var gbkxblchenben=(gbkxbldanwei*gbkxblweisui).toFixed(2);
+	$("input[name='gbkxblchenben']").val(gbkxblchenben);
+	var dqbchenben=(dqbdanwei*dqbweisui).toFixed(2);
+	$("input[name='dqbchenben']").val(dqbchenben);
+	var dqbcxblchenben=(dqbcxbldanwei*dqbcxblweisui).toFixed(2);
+	$("input[name='dqbcxblchenben']").val(dqbcxblchenben);
+	var dqbkxblchenben=(dqbkxbldanwei*dqbkxblweisui).toFixed(2);
+	$("input[name='dqbkxblchenben']").val(dqbkxblchenben);
+	var xqbchenben=(xqbdanwei*xqbweisui).toFixed(2);
+	$("input[name='xqbchenben']").val(xqbchenben);
+	var xqbcxblchenben=(xqbcxbldanwei*xqbcxblweisui).toFixed(2);
+	$("input[name='xqbcxblchenben']").val(xqbcxblchenben);
+	var xqbkxblchenben=(xqbkxbldanwei*xqbkxblweisui).toFixed(2);
+	$("input[name='xqbkxblchenben']").val(xqbkxblchenben);
+	var dbchenben=(dbdanwei*dbweisui).toFixed(2);
+	$("input[name='dbchenben']").val(dbchenben);
+	var cfchenben=(cfdanwei*cfweisui).toFixed(2);
+	$("input[name='cfchenben']").val(cfchenben);
+	var duanfchenben=(duanfdanwei*duanfweisui).toFixed(2);
+	$("input[name='duanfchenben']").val(duanfchenben);
+	
+	var tfchenben=(tfdanwei*tfweisui).toFixed(2);
+	$("input[name='tfchenben']").val(tfchenben);
+	var dianfchenben=(dianfdanwei*dianfweisui).toFixed(2);
+	$("input[name='dianfchenben']").val(dianfchenben);
+	
+	var gudingmuchenben=(gudingmudanwei*gudingmuweisui).toFixed(2);
+	$("input[name='gudingmuchenben']").val(gudingmuchenben);
+	var zhichenglchenben=(zhichengldanwei*zhichenglweisui).toFixed(2);
+	$("input[name='zhichenglchenben']").val(zhichenglchenben);
+	/*主材合计=sum（盖板、盖板长向边料、盖板宽向边料、大墙板、
+	 * 大墙板长向边料、大墙板宽向边料、小墙板、小墙板长向边料、小墙板宽向边料、底板、长方、短方、挑方、垫方）单位成本*/
+	var zcheji;
+	zcheji=numSub(gbdwchengben,gbcxblchenben);
+	zcheji=numSub(zcheji,gbkxblchenben);
+	zcheji=numSub(zcheji,dqbchenben);
+	zcheji=numSub(zcheji,dqbcxblchenben);
+	zcheji=numSub(zcheji,dqbkxblchenben);
+	zcheji=numSub(zcheji,xqbchenben);
+	zcheji=numSub(zcheji,xqbcxblchenben);
+	zcheji=numSub(zcheji,xqbkxblchenben);
+	zcheji=numSub(zcheji,dbchenben);
+	zcheji=numSub(zcheji,cfchenben);
+	zcheji=numSub(zcheji,duanfchenben);
+	$("input[name='zcheji']").val(zcheji);
+	/*木箱重量=（盖板单位用量+盖板长向边料单位用量+盖板宽向边料单位用量+大墙板单位用量+大墙板长向边料单位用量+大墙板宽向边料单位用量
+	 * +小墙板单位用量+小墙板长向边料单位用量+小墙板宽向边料单位用量+底板单位用量+长方单位用量+短方单位用量+挑方单位用量+垫方单位用量
+	 * +支撑料单位用量+固定木单位用量）*0.6*1000。*/
+	var productBoxWeight;
+	productBoxWeight=numSub(gbdanwei,gbcxbldanwei);
+	productBoxWeight=numSub(productBoxWeight,gbkxbldanwei);
+	productBoxWeight=numSub(productBoxWeight,dqbdanwei);
+	productBoxWeight=numSub(productBoxWeight,dqbcxbldanwei);
+	productBoxWeight=numSub(productBoxWeight,dqbkxbldanwei);
+	productBoxWeight=numSub(productBoxWeight,xqbdanwei);
+	productBoxWeight=numSub(productBoxWeight,xqbcxbldanwei);
+	productBoxWeight=numSub(productBoxWeight,xqbkxbldanwei);
+	productBoxWeight=numSub(productBoxWeight,dbdanwei);
+	productBoxWeight=numSub(productBoxWeight,cfdanwei);
+	productBoxWeight=numSub(productBoxWeight,duanfdanwei);
+	productBoxWeight=numSub(productBoxWeight,tfdanwei);
+	productBoxWeight=numSub(productBoxWeight,dianfdanwei);
+	productBoxWeight=numSub(productBoxWeight,gudingmudanwei);
+	productBoxWeight=numSub(productBoxWeight,zhichengldanwei);
+	productBoxWeight=(productBoxWeight*0.6*1000).toFixed(1);
+	$("input[name='productBoxWeight']").val(productBoxWeight);
+	/*盖板外面积=箱子外径长*箱子外径宽/1000000。*/
+	var productOuterArea=((outLength*outWidth)/1000000).toFixed(1);
+	$("input[name='productOuterArea']").val(productOuterArea);
+	/*小墙板外面积-双=小墙板长*小墙板宽/1000000*2。*/
+	var productSmallOuterArea=(($("input[name='xqbchang']").val()*$("input[name='xqbkuan']").val())/2000000).toFixed(1);
+	$("input[name='productSmallOuterArea']").val(productSmallOuterArea);
+	/*木箱外面积=盖板长*盖板宽*2/1000000+盖板长*箱子外径厚*2/1000000+盖板宽*箱子外径厚*2/1000000。*/
+	var productBoxOuterArea=((gbchang*gbkuan*2/1000000)+(gbchang*outHeight*2/1000000)+(gbkuan*outHeight*2/1000000)).toFixed(1);
+	$("input[name='productBoxOuterArea']").val(productBoxOuterArea);
+	/*盖板内面积=箱子内径长*箱子内径宽/1000000。*/
+	var productInnerArea=(innerLength*innerWidth/1000000).toFixed(1);
+	$("input[name='productInnerArea']").val(productInnerArea);
+	/*小墙板内面积-双=箱子内径宽*箱子内径厚/1000000*2。*/
+	var productSmallInnerArea=(innerWidth*innerHeight/1000000*2).toFixed(1);
+	$("input[name='productSmallInnerArea']").val(productSmallInnerArea);
+	/*木箱底面积=箱子外径长*箱子外径宽*0.000001。*/
+	var productBoxBottomArea=(outLength*outWidth*0.000001).toFixed(1);
+	$("input[name='productBoxBottomArea']").val(productBoxBottomArea);
+	/*木箱内表面=箱子内径长*箱子内径宽*2/1000000+箱子内径长*箱子内径厚*2/1000000+箱子内径宽*箱子内径厚*2/1000000。*/
+	var productBoxInternalSurface=((innerLength*innerWidth*2/1000000)+(innerLength*innerHeight*2/1000000)+(innerWidth*innerHeight*2/1000000)).toFixed(1);
+	$("input[name='productBoxInternalSurface']").val(productBoxInternalSurface);
+	/*大墙板外面积-双=大墙板长*大墙板宽/1000000*2。*/
+	var productBigOuterArea=(dqbchang*dqbkuan/1000000*2).toFixed(1);
+	$("input[name='productBigOuterArea']").val(productBigOuterArea);
+	/*木箱平方单价=含税价/木箱外面积。*/
+	var productBoxSquareUnitPrice=($("input[name='shijihansui']").val()/productBoxOuterArea);
+	$("input[name='productBoxSquareUnitPrice']").val(productBoxSquareUnitPrice);
+	/*木箱立方数=箱子外径长*箱子外径宽*箱子外径厚/ 1000000000。*/
+	var productBoxCubicUnitNumber=(outLength*outWidth*outHeight/1000000000).toFixed(1);
+	$("input[name='productBoxCubicUnitNumber']").val(productBoxCubicUnitNumber);
+	/*木箱容量=箱子内径长*箱子内径宽*箱子内径厚/ 1000000000。*/
+	var productBoxVolume=(innerLength*innerWidth*innerHeight/1000000000).toFixed(1);
+	$("input[name='productBoxVolume']").val(productBoxVolume);
+	/*大墙板内面积-双=箱子内径长*箱子内径厚/ 1000000*2。*/
+	var productBigInnerArea=(innerLength*innerHeight/1000000*2).toFixed(1);
+	$("input[name='productBigInnerArea']").val(productBigInnerArea);
+	/*木箱立方单价=含税价/木箱立方数。*/
+	var productBoxCubicUnitPrice=($("input[name='shijihansui']").val()/productBoxCubicUnitNumber);
+	$("input[name='productBoxCubicUnitPrice']").val(productBoxCubicUnitPrice);
+	/*产品规格*/
+	$("input[name='productStandard']").val(outLength+"*"+outWidth+"*"+outHeight);
+	/*辅材价格（未税）=辅材用量*辅材单价（未税）*1.2。*/
+	
+	/*雨布用量=木箱外面积，雨布价格（未税）=雨布用量*雨布单价（未税）*1.2。                            待定*/
+	var yubuprice=productBoxOuterArea;
+	$("input[name='yubuprice']").val(yubuprice);
+	var yubuweisui=($("input[name='yubuhansui']").val()/1.17).toFixed(2);
+	$("input[name='yubuweisui']").val(yubuweisui);
+	var yubudanwei=(yubuprice*yubuweisui*1.2).toFixed(2);
+	$("input[name='yubudanwei']").val(yubudanwei);
+	/*真空袋用量=木箱外面积。*/
+	var zhenkongprice=productBoxOuterArea;
+	$("input[name='zhenkongprice']").val(zhenkongprice);
+	var zhenkongweisui=($("input[name='zhenkonghansui']").val()/1.17).toFixed(2);
+	$("input[name='zhenkongweisui']").val(zhenkongweisui);
+	var zhenkongdanwei=(zhenkongprice*zhenkongweisui*1.2).toFixed(2);
+	$("input[name='zhenkongdanwei']").val(zhenkongdanwei);
+	/*干燥剂用量=木箱立方数。*/
+	var ganzhaoprice=productBoxCubicUnitNumber;
+	$("input[name='ganzhaoprice']").val(ganzhaoprice);
+	var ganzhaoweisui=($("input[name='ganzhaohansui']").val()/1.17).toFixed(2);
+	$("input[name='ganzhaoweisui']").val(ganzhaoweisui);
+	var ganzhaodanwei=(ganzhaoprice*ganzhaoweisui*1.2).toFixed(2);
+	$("input[name='ganzhaodanwei']").val(ganzhaodanwei);
+	/*PE袋用量=木箱外面积。
+		PE膜/汽泡垫/珍珠棉用量=木箱内表面。
+		钉子用量=木箱外面积。
+		螺杆、自攻钉用量=长方数量*（短方数量+挑方数量）。
+		丝杆用量=1。
+		打包带用量=1。
+		起吊护角用量=1。*/
+	var peprice=productBoxOuterArea;
+	$("input[name='peprice']").val(peprice);
+	var peweisui=($("input[name='pehansui']").val()/1.17).toFixed(2);
+	$("input[name='peweisui']").val(peweisui);
+	var pedanwei=(peprice*peweisui*1.2).toFixed(2);
+	$("input[name='pedanwei']").val(pedanwei);
+	
+	var pqzprice=productBoxInternalSurface;
+	$("input[name='pqzprice']").val(pqzprice);
+	var pqzweisui=($("input[name='pqzhansui']").val()/1.17).toFixed(2);
+	$("input[name='pqzweisui']").val(pqzweisui);
+	var pqzdanwei=(pqzprice*pqzweisui*1.2).toFixed(2);
+	$("input[name='pqzdanwei']").val(pqzdanwei);
+	
+	var dingziprice=productBoxOuterArea;
+	$("input[name='dingziprice']").val(dingziprice);
+	var dingziweisui=($("input[name='dingzihansui']").val()/1.17).toFixed(2);
+	$("input[name='dingziweisui']").val(dingziweisui);
+	var dingzidanwei=(pqzprice*dingziweisui*1.2).toFixed(2);
+	$("input[name='dingzidanwei']").val(dingzidanwei);
+	
+	var luoganprice=($("input[name='cfnum']").val()*($("input[name='duanfnum']").val()+$("input[name='tfnum']").val())).toFixed(1);
+	$("input[name='luoganprice']").val(luoganprice);
+	var luoganweisui=($("input[name='luoganhansui']").val()/1.17).toFixed(2);
+	$("input[name='luoganweisui']").val(luoganweisui);
+	var luogandanwei=(luoganprice*luoganweisui*1.2).toFixed(2);
+	$("input[name='luogandanwei']").val(luogandanwei);
+	/*上起吊护角，下起吊护角，卡扣，焊材，钢带，钢扣单位价格*/
+	var shujiaoweisui=($("input[name='shujiaohansui']").val()/1.17).toFixed(2);
+	$("input[name='shujiaoweisui']").val(shujiaoweisui);
+	var shujiaodanwei=($("input[name='shujiaoprice']").val()*shujiaoweisui*1.2).toFixed(2);
+	$("input[name='shujiaodanwei']").val(shujiaodanwei);
+	
+	var xhujiaoweisui=($("input[name='xhujiaohansui']").val()/1.17).toFixed(2);
+	$("input[name='xhujiaoweisui']").val(xhujiaoweisui);
+	var xhujiaodanwei=($("input[name='xhujiaoprice']").val()*xhujiaoweisui*1.2).toFixed(2);
+	$("input[name='xhujiaodanwei']").val(xhujiaodanwei);
+	
+	var kakouweisui=($("input[name='kakouhansui']").val()/1.17).toFixed(2);
+	$("input[name='kakouweisui']").val(kakouweisui);
+	var kakoudanwei=($("input[name='kakouprice']").val()*kakouweisui*1.2).toFixed(2);
+	$("input[name='kakoudanwei']").val(kakoudanwei);
+	
+	var hancaiweisui=($("input[name='hancaihansui']").val()/1.17).toFixed(2);
+	$("input[name='hancaiweisui']").val(hancaiweisui);
+	var hancaidanwei=($("input[name='hancaiprice']").val()*hancaiweisui*1.2).toFixed(2);
+	$("input[name='hancaidanwei']").val(hancaidanwei);
+	
+	var gangdaiweisui=($("input[name='gangdaihansui']").val()/1.17).toFixed(2);
+	$("input[name='gangdaiweisui']").val(gangdaiweisui);
+	var gangdaidanwei=($("input[name='gangdaiprice']").val()*gangdaiweisui*1.2).toFixed(2);
+	$("input[name='gangdaidanwei']").val(gangdaidanwei);
+	
+	var gangkouweisui=($("input[name='gangkouhansui']").val()/1.17).toFixed(2);
+	$("input[name='gangkouweisui']").val(gangkouweisui);
+	var gangkoudanwei=($("input[name='gangkouprice']").val()*gangkouweisui*1.2).toFixed(2);
+	$("input[name='gangkoudanwei']").val(gangkoudanwei);
+	/*辅材合计=sum（雨布、真空袋、干燥剂、PE袋、PE膜/汽泡垫/珍珠棉、钉子、螺杆、自攻钉、丝杆、打包带、起吊护角）。*/
+	var fucaiheji;
+	fucaiheji=numSub(yubudanwei,zhenkongdanwei);
+	fucaiheji=numSub(fucaiheji,ganzhaodanwei);
+	fucaiheji=numSub(fucaiheji,pedanwei);
+	fucaiheji=numSub(fucaiheji,pqzdanwei);
+	fucaiheji=numSub(fucaiheji,dingzidanwei);
+	fucaiheji=numSub(fucaiheji,luogandanwei);
+	fucaiheji=numSub(fucaiheji,3);
+	$("input[name='fucaiheji']").val(fucaiheji);
+	/*材料合计=主材合计+辅材合计。*/
+	var cailiaoheji=numSub(zcheji,fucaiheji);
+	$("input[name='cailiaoheji']").val(cailiaoheji);
+	/*人工费用单位成本=人工费用单价*人工费用数量*2。*/
+	var persondanwei=($("input[name='persontime']").val()*$("input[name='personprice']").val()*2).toFixed(2);
+	$("input[name='persondanwei']").val(persondanwei);
+	//外组装费单位成本=外装费用单价*外装费用数量。
+	var wzzfdanwei=($("input[name='wzzfnum']").val()*$("input[name='wzzfdanjia']").val()).toFixed(2);
+	$("input[name='wzzfdanwei']").val(wzzfdanwei);
+	//熏蒸费用单位成本=熏蒸数量*熏蒸单价。
+	var xzdanwei=($("input[name='xznum']").val()*$("input[name='xzdanjia']").val()).toFixed(2);
+	$("input[name='xzdanwei']").val(xzdanwei);
+	//吊装费用单位成本=吊装数量*吊装单价。
+	var dzdanwei=($("input[name='dznum']").val()*$("input[name='dzdanjia']").val()).toFixed(2);
+	$("input[name='dzdanwei']").val(dzdanwei);
+	//运输费用单位成本=运输数量*运输单价。
+	var yshudanwei=($("input[name='yshunum']").val()*$("input[name='yshudanjia']").val()).toFixed(2);
+	$("input[name='yshudanwei']").val(yshudanwei);
+	/*合计=sum（人工费用、外组装费、熏蒸费用、吊装费用、运输费用）。*/
+	var heji;
+	heji=numSub(persondanwei,wzzfdanwei);
+	heji=numSub(heji,xzdanwei);
+	heji=numSub(heji,dzdanwei);
+	heji=numSub(heji,yshudanwei);
+	$("input[name='heji']").val(heji);
+	/*综合费用=（材料费用+合计）*1.5*12%。*/
+	var zonghe=(numSub(cailiaoheji,heji)*1.5*0.12).toFixed(2);
+	$("input[name='zonghe']").val(zonghe);
+	/*费用合计=合计+综合费用。
+	材料、费用合计=材料合计+费用合计。*/
+	var fyongheji=numSub(heji,zonghe);
+	var caifeiheji=numSub(cailiaoheji,fyongheji);
+	$("input[name='fyongheji']").val(fyongheji);
+	$("input[name='caifeiheji']").val(caifeiheji);
+	/*计划毛利率=10%/（1-25%）【企业所得税税率25%，计划净利润率10%】。*/
+	var jihuamllv=0.1333;
+	/*最低报价（未税价）=材料、费用合计/（1-计划毛利率）。
+	最低报价（含税价）=未税价*（1+17%）。
+	最低报价比=材料合计/未税价格。*/
+	var zuidiweisui=(caifeiheji/(1-jihuamllv)).toFixed(2);
+	$("input[name='zuidiweisui']").val(zuidiweisui);
+	var zuidihansui=(zuidiweisui*1.17).toFixed(2);
+	$("input[name='zuidihansui']").val(zuidihansui);
+	var zuidibaojiabi=divisionMethod(cailiaoheji,zuidiweisui);
+	$("input[name='zuidibaojiabi']").val((zuidibaojiabi*100)+"%");
+	/*实际报价（未税价）=含税价/1.17。*/
+	var shijiweisui=($("input[name='shijihansui']").val()/1.17).toFixed(2);
+	$("input[name='shijiweisui']").val(shijiweisui);
+	//实际报价材料售价比（未税）=材料合计/未税价格。
+	var cailiaoshoujiabi=divisionMethod(cailiaoheji,shijiweisui);
+	$("input[name='shijiweisui']").val((cailiaoshoujiabi*100)+"%");
+	//不确定因素金额=实际报价未税价格*不确定因素比例/100。
+	var unsureprice=(shijiweisui*$("input[name='unsurebili']").val()/100).toFixed(2);
+	$("input[name='unsureprice']").val(unsureprice);
+	//不确定因素订单支出=不确定因素金额*数量
+	var unsurezhichu=unsureprice*1;
+	$("input[name='unsurezhichu']").val(unsurezhichu);
+	/*实际净利润率比例=（实际报价（未税价）-材料、费用合计-不确定因素评估金额）*（1-25%）/实际报价（未税价）*100。*/
+	var shijibili=((shijiweisui-caifeiheji-unsureprice)*0.75/shijiweisui*100).toFixed(2);
+	$("input[name='shijibili']").val(shijibili);
+	/*预报价（未税价）=（材料、费用合计+不确定因素评估金额）*（1-25%）/（1-25%-预测净利润率%）。*/
+	var yubaojiaweisui=divisionMethod((numSub(caifeiheji,unsureprice))*0.75,(0.75-($("input[name='yucebili']").val()/100)));
+	$("input[name='yubaojiaweisui']").val(yubaojiaweisui);
+	//预报价（含税价）=预报价（未税价）*1.17。
+	var yubaojiahansui=(yubaojiaweisui*1.17).toFixed(2);
+	$("input[name='yubaojiahansui']").val(yubaojiahansui);
+})

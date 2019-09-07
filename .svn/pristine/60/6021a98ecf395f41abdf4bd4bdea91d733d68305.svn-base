@@ -1,0 +1,602 @@
+package com.sd.farmework.controller; 
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.sd.farmework.service.SdOrderAssignService;
+import com.sd.farmework.service.SdOrderInfoService; 
+import com.sd.farmework.service.SdOrderQuoteService;
+import com.sd.farmework.pojo.SdOrderAssign;
+import com.sd.farmework.pojo.SdOrderComplain;
+import com.sd.farmework.pojo.SdOrderDetailInfo;
+import com.sd.farmework.pojo.SdOrderInfo; 
+import com.sd.farmework.pojo.SdOrderQuote;
+import com.sd.farmework.pojo.SdProductInfo;
+import com.sd.farmework.pojo.SysUserInfo;
+import com.sd.farmework.common.BaseInfo;
+import com.sd.farmework.common.HttpSessionProvider;
+import com.sd.farmework.common.JSONUtils;
+import com.sd.farmework.common.util.StringUtil;
+
+import net.sf.json.JSONArray;
+
+import org.springframework.ui.Model;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import  javax.servlet.http.HttpServletRequest;
+import  javax.servlet.http.HttpServletResponse;
+import  javax.servlet.http.HttpSession;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+ @Controller
+ @Scope("prototype")
+ @RequestMapping(value="/manager/loginIn/SdOrderInfo")
+public class SdOrderInfoController{ 
+    @Autowired
+    private SdOrderInfoService sdorderinfoService;
+    @Autowired
+    private SdOrderQuoteService sdOrderQuoteService;
+    @Autowired
+    private SdOrderAssignService sdOrderAssignService;
+    /**
+    * 添加订单
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param model
+    * @return
+    */
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    public String  add(HttpSession session,HttpServletRequest request,HttpServletResponse response,
+    		SdOrderInfo sdorderinfo,SdOrderDetailInfo sdOrderDetailInfo,SdProductInfo sdProductInfo, Model model){
+		try {
+			System.out.println(sdorderinfo.toString());
+			System.out.println(sdOrderDetailInfo.toString());
+			System.out.println(sdProductInfo.toString());
+			HttpSessionProvider  sessionProvider= new HttpSessionProvider();
+			sdProductInfo=(SdProductInfo) sessionProvider.fillBaseInfo(sdProductInfo, session, request, response);
+			sdorderinfo=(SdOrderInfo) sessionProvider.fillBaseInfo(sdorderinfo, session, request, response);
+			sdOrderDetailInfo=(SdOrderDetailInfo)sessionProvider.fillBaseInfo(sdOrderDetailInfo, session, request, response);
+			//添加操作
+			Map<String,String> map=this.sdorderinfoService.addOrder(sdorderinfo, sdOrderDetailInfo, sdProductInfo);
+			JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+		return null;
+	}
+    /**
+    * 订单确认
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param model
+    * @return
+    */
+    @RequestMapping(value = "/confirmOrder",method = RequestMethod.POST)
+    public String  update(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdOrderInfo sdorderinfo,Model model){
+		try {
+			HttpSessionProvider  sessionProvider= new HttpSessionProvider();
+			sdorderinfo=(SdOrderInfo) sessionProvider.fillBaseInfo(sdorderinfo, session, request, response);
+			Map<String,String> map =this.sdorderinfoService.addcomfirmOrderInfo(sdorderinfo);
+			JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+		return null;
+	}
+    /**
+    * 修改
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param model
+    * @return
+    */
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    public String  delete(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdOrderInfo sdorderinfo,Model model){
+		try {
+			sdorderinfoService.delete(sdorderinfo);	
+		} catch (Exception e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+    /**
+    * 查询不分页列表
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param model
+    * @return
+    */
+    @RequestMapping(value = "/queryList",method = RequestMethod.POST)
+    public String  queryList(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdOrderInfo sdorderinfo,Model model){
+		try {
+			sdorderinfoService.queryList(sdorderinfo);	
+		} catch (Exception e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+    /**
+    * 查询分页列表
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param mark 标记这条请求的来源位置
+    * @param model
+    * @return
+    */
+    @ResponseBody
+    @RequestMapping(value = "/queryListByPage",method = RequestMethod.POST)
+    public void  queryListByPage(HttpSession session,HttpServletRequest request,HttpServletResponse response,
+    		SdOrderInfo sdorderinfo,Model model,int pageIndex,int pageSize,String mark){
+		try {
+			//取出当前用户信息
+			HttpSessionProvider sessionProvider=new HttpSessionProvider();
+			SysUserInfo user=sessionProvider.getCurrentUserSession(session, request, response);
+			//判断是否为系统管理员
+			List<BaseInfo> list=new ArrayList<BaseInfo>();
+			List<String> dataStateList=new ArrayList<String>();
+			int count=0;
+			if("0000000001".equals(user.getUserId())){
+				if(StringUtil.isNotNullOrBlank(sdorderinfo.getdataState())){
+					dataStateList.add(sdorderinfo.getdataState());
+					sdorderinfo.setDataStateList(dataStateList);
+				}
+				sdorderinfo.setCurrPage(pageIndex);
+				sdorderinfo.setPageSize(pageSize);
+				list=sdorderinfoService.queryListByPage(sdorderinfo);
+				count=sdorderinfoService.queryCount(sdorderinfo);
+			}else{
+				if("4".equals(sdorderinfo.getdataState())){//如果订单状态是报价中,则显示俩种状态的订单
+					dataStateList.add("4");
+					dataStateList.add("5");
+				}else if("allLink".equals(sdorderinfo.getdataState())){//首页点击订单生产
+					dataStateList.add("7");
+					dataStateList.add("8");
+					dataStateList.add("9");
+					dataStateList.add("10");
+					dataStateList.add("11");
+					dataStateList.add("12");
+					dataStateList.add("14");
+				}else{
+					if(StringUtil.isNotNullOrBlank(sdorderinfo.getdataState())){
+						dataStateList.add(sdorderinfo.getdataState());
+					}else{
+						dataStateList=null;
+					}
+				}
+				if(StringUtil.isNotNullOrBlank(mark)&&mark.equals("assignOrder")){//标记请求来自指派订单列
+					if(user.getPosition().equals("2")){//采购经理
+						dataStateList.add("3");
+						sdorderinfo.setprocurementUserId(user.getUserId());//采购经理
+					}else if(user.getPosition().equals("3")){//检验经理
+						dataStateList.add("6");
+						sdorderinfo.setcheckoutUserId(user.getUserId());
+					}else{//不展示指派数据
+						dataStateList.add("N");
+						sdorderinfo.setprocurementUserId("N");
+						sdorderinfo.setcheckoutUserId("N");
+					}
+				}
+				//采购员
+				if(StringUtil.isNotNullOrBlank(mark)&&mark.equals("listOrder")){//标记请求来自订单列表页
+					if(user.getPosition().equals("4")||user.getPosition().equals("5")){//获取采购员检验员参与的订单
+						SdOrderAssign soa=new SdOrderAssign();
+						soa.setacceptUserName(user.getUserId());
+						List<SdOrderAssign> soaList=sdOrderAssignService.query(soa);
+						List<String> acceptUserList=new ArrayList<String>();
+						if(soaList!=null&&soaList.size()>0){
+							for (int i = 0; i < soaList.size(); i++) {
+								acceptUserList.add(soaList.get(i).getorderId());
+							}
+							sdorderinfo.setAcceptUserList(acceptUserList);
+						}
+					}else if(user.getPosition().equals("2")){//采购经理
+						sdorderinfo.setprocurementUserId(user.getUserId());
+						dataStateList.add("7");
+						dataStateList.add("8");
+						dataStateList.add("9");
+						dataStateList.add("10");
+						dataStateList.add("11");
+						dataStateList.add("12");
+						dataStateList.add("14");
+					}else if(user.getPosition().equals("3")){
+						sdorderinfo.setcheckoutUserId(user.getUserId());
+						dataStateList.add("7");
+						dataStateList.add("8");
+						dataStateList.add("9");
+						dataStateList.add("10");
+						dataStateList.add("11");
+						dataStateList.add("12");
+						dataStateList.add("14");
+					}else if(user.getPosition().equals("0")){//外协
+						sdorderinfo.setCreateUserId(user.getUserId());
+						dataStateList.add("2");//外协经理只能看到待确认
+					}else if(user.getPosition().equals("1")){//核价
+						dataStateList.add("5");//如果是核价经理,那么只能查看核价状态的订单
+					}
+				}
+			
+				
+				sdorderinfo.setDataStateList(dataStateList);
+				sdorderinfo.setCurrPage(pageIndex);
+				sdorderinfo.setPageSize(pageSize);
+				list=sdorderinfoService.queryListByPage(sdorderinfo);
+				count=sdorderinfoService.queryCount(sdorderinfo);
+			}
+			
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("count", count);
+			map.put("code", 0);
+			map.put("rows", JSONArray.fromObject(list));
+			JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+	}
+    
+    @ResponseBody
+    @RequestMapping(value = "/queryListByWxPage",method = RequestMethod.POST)
+    public void  queryListByWxPage(HttpSession session,HttpServletRequest request,HttpServletResponse response,
+    		SdOrderInfo sdorderinfo,Model model,int pageIndex,int pageSize,String mark){
+		try {
+			//取出当前用户信息
+			HttpSessionProvider sessionProvider=new HttpSessionProvider();
+			SysUserInfo user=sessionProvider.getCurrentUserSession(session, request, response);
+			//判断是否为系统管理员
+			List<SdOrderInfo> list=new ArrayList<SdOrderInfo>();
+			List<String> dataStateList=new ArrayList<String>();
+			int count=0;
+			if("0000000001".equals(user.getUserId())){
+				if(StringUtil.isNotNullOrBlank(sdorderinfo.getdataState())){
+					dataStateList.add(sdorderinfo.getdataState());
+					sdorderinfo.setDataStateList(dataStateList);
+				}
+				sdorderinfo.setCurrPage(pageIndex);
+				sdorderinfo.setPageSize(pageSize);
+				list=sdorderinfoService.queryListByWxPage(sdorderinfo);
+				count=sdorderinfoService.queryCountByWxPage(sdorderinfo);
+			}else{
+				if("4".equals(sdorderinfo.getdataState())){//首页点击订单报价,如果订单状态是报价中,则显示俩种状态的订单
+					dataStateList.add("4");
+					dataStateList.add("5");
+				}else if("allLink".equals(sdorderinfo.getdataState())){//首页点击订单生产
+					dataStateList.add("7");
+					dataStateList.add("8");
+					dataStateList.add("9");
+					dataStateList.add("10");
+					dataStateList.add("11");
+					dataStateList.add("12");
+					dataStateList.add("14");
+				}else{
+					if(StringUtil.isNotNullOrBlank(sdorderinfo.getdataState())){
+						dataStateList.add(sdorderinfo.getdataState());
+					}else{
+						dataStateList=null;
+					}
+				}
+				//采购员
+				if(StringUtil.isNotNullOrBlank(mark)&&mark.equals("listOrder")){//标记请求来自订单列表页
+					if(user.getPosition().equals("4")||user.getPosition().equals("5")){//获取采购员检验员参与的订单
+						SdOrderAssign soa=new SdOrderAssign();
+						soa.setacceptUserName(user.getUserId());
+						List<SdOrderAssign> soaList=sdOrderAssignService.query(soa);
+						List<String> acceptUserList=new ArrayList<String>();
+						if(soaList!=null&&soaList.size()>0){
+							for (int i = 0; i < soaList.size(); i++) {
+								acceptUserList.add(soaList.get(i).getorderId());
+							}
+							sdorderinfo.setAcceptUserList(acceptUserList);
+						}
+					}else if(user.getPosition().equals("2")){
+						sdorderinfo.setprocurementUserId(user.getUserId());
+						dataStateList.add("7");
+						dataStateList.add("8");
+						dataStateList.add("9");
+						dataStateList.add("10");
+						dataStateList.add("11");
+						dataStateList.add("12");
+						dataStateList.add("14");
+					}else if(user.getPosition().equals("3")){
+						sdorderinfo.setcheckoutUserId(user.getUserId());
+						dataStateList.add("7");
+						dataStateList.add("8");
+						dataStateList.add("9");
+						dataStateList.add("10");
+						dataStateList.add("11");
+						dataStateList.add("12");
+						dataStateList.add("14");
+					}else if(user.getPosition().equals("0")){//外协
+						sdorderinfo.setCreateUserId(user.getUserId());
+						dataStateList.add("2");
+					}else if(user.getPosition().equals("1")){//核价
+						dataStateList.add("5");//如果是核价经理,那么只能查看核价状态的订单
+					}
+				}
+			
+				
+				sdorderinfo.setDataStateList(dataStateList);
+				sdorderinfo.setCurrPage(pageIndex);
+				sdorderinfo.setPageSize(pageSize);
+				list=sdorderinfoService.queryListByWxPage(sdorderinfo);
+				count=sdorderinfoService.queryCountByWxPage(sdorderinfo);
+			}
+			
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("count", count);
+			map.put("code", 0);
+			map.put("rows", JSONArray.fromObject(list));
+			JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+	}
+    /**
+     * 订单跟踪列表
+     * @param session
+     * @param request
+     * @param response
+     * @param SysApprovenFunction
+     * @param model
+     * @return
+     */
+     @ResponseBody
+     @RequestMapping(value = "/queryListByTrack",method = RequestMethod.POST)
+     public void  queryListByTrack(HttpSession session,HttpServletRequest request,HttpServletResponse response,
+     		SdOrderInfo sdorderinfo,Model model,int pageIndex,int pageSize){
+ 		try {
+ 			//取出当前用户信息
+ 			HttpSessionProvider sessionProvider=new HttpSessionProvider();
+ 			SysUserInfo user=sessionProvider.getCurrentUserSession(session, request, response);
+ 			//判断是否为系统管理员
+			List<SdOrderInfo> list=new ArrayList<SdOrderInfo>();
+			List<String> dataStateList=new ArrayList<String>();
+			int count=0;
+			String position=user.getPosition();
+			if("0000000001".equals(user.getUserId())){
+				if(StringUtil.isNotNullOrBlank(sdorderinfo.getdataState())){
+					dataStateList.add(sdorderinfo.getdataState());
+					sdorderinfo.setDataStateList(dataStateList);
+				}
+				sdorderinfo.setCurrPage(pageIndex);
+				sdorderinfo.setPageSize(pageSize);
+				list=sdorderinfoService.queryListByTrack(sdorderinfo);
+				count=sdorderinfoService.queryCountByTrack(sdorderinfo);
+			}else{
+				List<String> acceptUserList=new ArrayList<String>();
+				if(position.equals("4")||position.equals("5")){//获取采购员检验员参与的订单
+					SdOrderAssign soa=new SdOrderAssign();
+					soa.setacceptUserName(user.getUserId());
+					List<SdOrderAssign> soaList=sdOrderAssignService.query(soa);
+					if(soaList!=null&&soaList.size()>0){
+						for (int i = 0; i < soaList.size(); i++) {
+							acceptUserList.add(soaList.get(i).getorderId());
+						}
+						sdorderinfo.setAcceptUserList(acceptUserList);
+					}
+				}else if(position.equals("2")){
+					sdorderinfo.setprocurementUserId(user.getUserId());
+				}else if(position.equals("3")){
+					sdorderinfo.setcheckoutUserId(user.getUserId());
+				}else if(position.equals("0")){//外协
+					sdorderinfo.setCreateUserId(user.getUserId());
+				}else if(position.equals("1")){//核价
+					//sdorderinfo.setdataState("5");
+					SdOrderQuote sdOrderQuote=new SdOrderQuote();
+					sdOrderQuote.setorderAssignId(user.getUserId());
+					List<SdOrderQuote> quoteList=this.sdOrderQuoteService.queryList(sdOrderQuote);
+					if(quoteList!=null&&quoteList.size()>0){
+						for (int i = 0; i < quoteList.size(); i++) {
+							acceptUserList.add(quoteList.get(i).getorderId());
+						}
+						sdorderinfo.setAcceptUserList(acceptUserList);
+					}
+				}
+				sdorderinfo.setCurrPage(pageIndex);
+				sdorderinfo.setPageSize(pageSize);
+		        list=sdorderinfoService.queryListByTrack(sdorderinfo);
+		        count=sdorderinfoService.queryCountByTrack(sdorderinfo);
+			}
+ 			
+ 			Map<String,Object> map = new HashMap<String,Object>();
+ 			map.put("count",count );
+ 			map.put("code", 0);
+ 			map.put("rows", JSONArray.fromObject(list));
+ 			
+ 			JSONUtils.objectToJson(request, response, map);
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 			Map<String,String> map = new HashMap<String,String>();
+ 			map.put("code", "001");
+ 			map.put("msg", "系统繁忙");
+ 			JSONUtils.objectToJson(request, response, map);
+ 		}
+ 	}
+    /**
+    * 通过订单主键查询订单详情
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param model
+    * @return
+    */
+    @RequestMapping(value = "/queryByPkId",method = RequestMethod.POST)
+    public String  queryByPkId(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdOrderInfo sdorderinfo,Model model){
+		try {
+			HttpSessionProvider sessionProvider=new HttpSessionProvider();
+			SysUserInfo user=sessionProvider.getCurrentUserSession(session, request, response);
+			sdorderinfo=(SdOrderInfo) sdorderinfoService.queryByPkId(sdorderinfo.getorderId()+"");
+			
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("code", "000");
+			map.put("sdorderinfo",sdorderinfo );
+			map.put("position", user.getPosition());
+			JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+		return null;
+	}
+    /**
+    * 通过任意条件查询一条信息
+    * @param session
+    * @param request
+    * @param response
+    * @param SysApprovenFunction
+    * @param model
+    * @return
+    */
+    @RequestMapping(value = "/query",method = RequestMethod.POST)
+    public String  query(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdOrderInfo sdorderinfo,Model model){
+		try {
+			sdorderinfoService.query(sdorderinfo);	
+		} catch (Exception e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+    /**
+     * 状态改变修改订单信息
+     * @param session
+     * @param request
+     * @param response
+     * @param sdorderinfo
+     * @param model
+     */
+    @RequestMapping(value="/updateOrder",method=RequestMethod.POST)
+    public void updateOrder(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdOrderInfo sdorderinfo,SdOrderComplain sdOrderComplain, Model model){
+    	try {
+    		HttpSessionProvider sessionProvider=new HttpSessionProvider();
+    		sdorderinfo=(SdOrderInfo) sessionProvider.fillBaseInfo(sdorderinfo, session, request, response);
+    		sdOrderComplain=(SdOrderComplain) sessionProvider.fillBaseInfo(sdOrderComplain, session, request, response);
+    		Map<String, String> map=sdorderinfoService.editOrder(sdorderinfo,sdOrderComplain);
+			JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+    }
+    /**
+     * 删除订单所有相关信息
+     * @param session
+     * @param request
+     * @param response
+     * @param sdorderinfo
+     * @param model
+     */
+    @ResponseBody
+    @RequestMapping(value="/deleteOrderInfo",method=RequestMethod.POST)
+    public void deleteOrderInfo(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdOrderInfo sdorderinfo, Model model){
+    	try {
+    		HttpSessionProvider sessionProvider=new HttpSessionProvider();
+    		SysUserInfo user=sessionProvider.getCurrentUserSession(session, request, response);
+			Map<String ,Object> map=this.sdorderinfoService.deleteOrderInfo(sdorderinfo,user);
+			JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+    }
+    /**
+     * 核价前订单修改
+     * @param session
+     * @param request
+     * @param response
+     * @param sdorderinfo
+     * @param model
+     */
+    @ResponseBody
+    @RequestMapping(value="/editOrderInfo",method=RequestMethod.POST)
+    public void editOrderInfo(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdOrderInfo sdorderinfo,SdOrderDetailInfo sdOrderDetailInfo,String detailIds, Model model){
+    	try {
+    		HttpSessionProvider  sessionProvider= new HttpSessionProvider();
+			sdorderinfo=(SdOrderInfo) sessionProvider.fillBaseInfo(sdorderinfo, session, request, response);
+			SysUserInfo user=sessionProvider.getCurrentUserSession(session, request, response);
+			sdOrderDetailInfo=(SdOrderDetailInfo) sessionProvider.fillBaseInfo(sdOrderDetailInfo, session, request, response);
+    		Map<String ,Object> map=this.sdorderinfoService.editOrderInfo(sdorderinfo,sdOrderDetailInfo,detailIds,user.getPosition());
+    		JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("code", "001");
+			map.put("msg", "系统繁忙");
+			JSONUtils.objectToJson(request, response, map);
+		}
+    }
+    /**
+     * 判定客户订单号是否存在
+     * @param session
+     * @param request
+     * @param response
+     * @param sdorderinfo
+     */
+    @ResponseBody
+    @RequestMapping(value="/queryByCustomerNo",method=RequestMethod.POST)
+    public void queryByCustomerNo(HttpSession session,HttpServletRequest request,HttpServletResponse response,SdOrderInfo sdorderinfo){
+		Map<String ,Object> map=new HashMap<String, Object>();
+		try {
+			SdOrderInfo sdOrderInfo2=(SdOrderInfo) this.sdorderinfoService.queryById(sdorderinfo);
+			if(sdOrderInfo2==null){
+				map.put("code", "000");
+				map.put("cusNoYN", "Y");
+			}else{
+				map.put("code", "002");
+				map.put("cusNoYN", "N");
+			}
+			JSONUtils.objectToJson(request, response, map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("code", "001");
+			JSONUtils.objectToJson(request, response, map);
+		}
+    }
+}

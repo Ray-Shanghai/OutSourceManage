@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>组织架构</title>
+
+<link rel="stylesheet" type="text/css"
+	href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script src="../../../resources/js/base.js"></script>
+<script type="text/javascript" src="../../js/myframe.js"></script>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/my.css"/>
+<script type="text/javascript" src="../../../resources/loginIn/sysManage/sysUnitInfo.js"></script>
+</head>
+<body>
+<input type="hidden" id="parentId" >
+	<div class="easyui-layout" fit="true">
+		<div data-options="region:'west',split:true" style="width: 200px;">
+			<ul id="sysdepartInfoId" class="easyui-tree"
+				data-options="url:'../../../manager/loginIn/SysDepartInfo/queryList.do',method:'get',animate:true,checkbox:false"></ul>
+		</div>
+		<div data-options="region:'center',iconCls:'icon-ok'">
+
+			<div class="layui-form">
+				<div class="admin-main">
+					<blockquote class="layui-elem-quote">
+						<a href="javascript:;" class="layui-btn layui-btn-small layui-btn-blue" id="add">
+							<i class="layui-icon">&#xe608;</i> 添加
+						</a> <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-blue"
+							id="edit"> <i class="layui-icon ">&#xe608;</i> 修改
+						</a> <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-blue"  
+							id="detail"> <i class="layui-icon">&#xe608;</i> 详情
+						</a>
+					</blockquote>
+					<div class="layui-form">
+						<table class="layui-table admin-table selected">
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th  >单位编号</th>
+									<th>单位名称</th>
+									<th>部门名称</th>
+									<th  style="display:none">部门描述</th>
+									<th>创建人</th>
+									<th>创建时间</th>
+									<th>状态</th>
+								</tr>
+							</thead>
+							<tbody id="content" class="selected">
+							</tbody>
+						</table>
+						
+					</div>
+					<div id="paged" class="page" style="text-align: center;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/html" id="tpl">
+	  {{#  
+      layui.each(d.rows, function(index, item){ }}
+			<tr>	
+				<td>{{ (index+1) }}</td>
+				<td  >{{ item.departId }}</td>
+				<td>{{ item.unitName }}</td>			
+				<td>{{ item.departName }}</td>
+				<td style='display:none'>{{ item.departDesc }}</td>
+				<td>{{ item.createUserName }}</td>
+				<td>{{ item.createTime }}</td>
+				<td>{{ item.status }}</td>
+			</tr>
+			{{# }); }}
+		</script>
+	<script type="text/javascript">
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use(
+						[ 'paging', 'form', 'element' ],
+						function() {
+							var $ = layui.jquery;
+						
+							$('#edit').on('click',function() {
+								if(sdfarme.getSelected().length==0){
+									layer.alert('请选一条数据进行操作',{icon : 6});
+								}else{
+									if (sdfarme.getSelected()[0][1].substring(sdfarme.getSelected()[0][1].length - 6,sdfarme.getSelected()[0][1].length - 3) != "002") {
+										 
+										var title = "";
+										layer.open({
+											type : 2,
+											title : '修改部门',
+											content : base.serverContent
+													+ '/backstage/sysManage/sysUnitInfo/editDepart.html?'+sdfarme.getSelected()[0][1],
+											area : ['400px','300px' ],
+											scrollbar : false,
+											  btn:["提交"],
+											yes : function( index,layero) {
+												var body = layer.getChildFrame('body', index);
+												$.ajax({type : 'POST',
+													url : base.serverContent+ '/manager/loginIn/SysDepartInfo/saveEditDepartInfo.do',
+													data : $(body).find("#frm1").serialize(),
+													async : false,
+													success : function(data) {
+															if (data.code == "000") {
+																layer.alert('修改成功',{icon : 6});
+																$('#sysdepartInfoId').tree("reload");
+															} else {
+																layer.alert('修改失败',{icon : 6});
+																$('#sysdepartInfoId').tree("reload");
+															 }
+														},
+														error : function() {
+														}
+													});
+											}, cancel : function() {
+												$( '#sysdepartInfoId') .tree( "reload");
+											},success: function(layero){
+											 
+											}
+										});
+										
+									}else{
+										layer.open({
+											type : 2,
+											title : '修改角色',
+											content : base.serverContent
+													+ '/backstage/sysManage/sysUnitInfo/editRoleInfo.html?'+sdfarme.getSelected()[0][1],
+											area : [
+													'800px',
+													'500px' ],
+													 btn:["提交"],
+											scrollbar : false,
+											yes : function(
+													index,
+													layero) {
+												 var iframeWin = window[layero.find('iframe')[0]['name']];
+												 
+												 if(!iframeWin.getData()){
+													 return;
+												 }
+													var body = layer.getChildFrame('body', index);
+													
+													
+												$.ajax({
+													type : 'POST',
+													 url : base.serverContet+'/manager/loginIn/SysRoleInfo/saveAddUnitRole.do?opear=edit',  
+													data : $(body).find('#form1').serialize(),
+													//同步  
+													async : false,
+													success : function(data) {
+														if (data.code == "000") {
+															layer.alert('修改成功', {
+																icon : 6
+															});
+															$('#sysdepartInfoId').tree("reload");
+														} else {
+															layer.alert('修改失败', {
+																icon : 6
+															});
+														}
+													},
+													error : function() {
+													}
+												});
+
+											},
+											cancel : function() {
+												$(
+														'#sysdepartInfoId')
+														.tree(
+																"reload");
+											}
+
+										});
+										
+									}
+									
+									
+								}
+							});
+							 
+							$('#add').on('click', function() {
+												
+								var parentDepartId =$("#parentId").val();
+												 
+								var length = parentDepartId.length;
+								if (length != 12&& length != 18&& length != 6&& length != 24) {
+									layer.alert('请选择对应的节点操作，您可以点击(单位、部门、角色、班组)节点进行操作',{icon : 6});
+									return;
+								}
+
+								if (parentDepartId.substring(parentDepartId.length - 3) == "002") {
+									
+									
+									
+									
+									if (parentDepartId.substring(parentDepartId.length - 3) == "002") {
+										layer.open({
+													type : 2,
+													title : '添加角色',
+													content : base.serverContent
+															+ '/backstage/sysManage/sysUnitInfo/addRoleInfo.html?'+parentDepartId,
+													area : [
+															'800px',
+															'500px' ],
+															 btn:["提交"],
+													scrollbar : false,
+													yes : function(
+															index,
+															layero) {
+														
+														
+														 var iframeWin = window[layero.find('iframe')[0]['name']];
+														 
+														 if(!iframeWin.getData()){
+															 return;
+														 }
+															var body = layer.getChildFrame('body', index);
+															
+															
+														$.ajax({
+															type : 'POST',
+															 url : base.serverContet+'/manager/loginIn/SysRoleInfo/saveAddUnitRole.do',  
+															data : $(body).find('#form1').serialize(),
+															//同步  
+															async : false,
+															success : function(data) {
+																if (data.code == "000") {
+																	layer.alert('添加成功', {
+																		icon : 6
+																	});
+																	$('#sysdepartInfoId').tree("reload");
+																} else {
+																	layer.alert('添加失败', {
+																		icon : 6
+																	});
+																}
+															}});
+
+													},
+													cancel : function() {
+														$(
+																'#sysdepartInfoId')
+																.tree(
+																		"reload");
+													}
+
+												});
+									} 
+									
+									
+									
+								} else {
+									layer.open({
+										type : 2,
+										title : '添加部门',
+										content : base.serverContent
+												+ '/backstage/sysManage/sysUnitInfo/addDepart.html?'+parentDepartId,
+										area : ['400px','300px' ],
+										scrollbar : false,
+										  btn:["提交"],
+										yes : function( index,layero) {
+											var body = layer.getChildFrame('body', index);
+											$.ajax({type : 'POST',
+												url : base.serverContent+ '/manager/loginIn/SysDepartInfo/saveAddUnit.do',
+												data : $(body).find("#frm1").serialize(),
+												async : false,
+												success : function(data) {
+														if (data.code == "000") {
+															layer.alert('添加成功',{icon : 6});
+															$('#sysdepartInfoId').tree("reload");
+														} else {
+															layer.alert('添加失败',{icon : 6});
+															$('#sysdepartInfoId').tree("reload");
+														 }
+													},
+													error : function() {
+													}
+												});
+										}, cancel : function() {
+											$( '#sysdepartInfoId') .tree( "reload");
+										},success: function(layero){
+										 
+										}
+									});
+								}
+
+						});
+
+						});
+	</script>
+</body>
+</html>

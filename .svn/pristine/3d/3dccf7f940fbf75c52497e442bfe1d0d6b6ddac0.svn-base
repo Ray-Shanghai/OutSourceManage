@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdSupplierContactMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdSupplierContact" id="sdsuppliercontactMap"> 
+
+		<result column="contact_id" property="contactId"/>
+		<result column="supplier_id" property="supplierId"/>
+		<result column="contact_name" property="contactName"/>
+		<result column="telephone" property="telephone"/>
+		<result column="mobilephone" property="mobilephone"/>
+		<result column="email" property="email"/>
+		<result column="QQ" property="qq"/>
+		<result column="WeChat" property="wechat"/>
+		<result column="sd_id" property="sdId"/>
+
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdSupplierContact">
+		UPDATE sd_supplier_contact set 
+		t.contact_id=#{contactId},
+		t.supplier_id=#{supplierId},
+		t.contact_name=#{contactName},
+		t.telephone=#{telephone},
+		t.mobilephone=#{mobilephone},
+		t.email=#{email},
+		t.QQ=#{qq},
+		t.WeChat=#{wechat},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdSupplierContact"  resultMap="sdsuppliercontactMap">
+		SELECT 
+		t.contact_id,
+		t.supplier_id,
+		t.contact_name,
+		t.telephone,
+		t.mobilephone,
+		t.email,
+		t.QQ,
+		t.WeChat,
+		t.sd_id
+		FROM  sd_supplier_contact t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdSupplierContact"  resultMap="sdsuppliercontactMap">
+		SELECT 
+		t.contact_id,
+		t.supplier_id,
+		t.contact_name,
+		t.telephone,
+		t.mobilephone,
+		t.email,
+		t.QQ,
+		t.WeChat,
+		t.sd_id
+		FROM  sd_supplier_contact t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdSupplierContact"  resultMap="sdsuppliercontactMap">
+		SELECT  
+		t.contact_id,
+		t.supplier_id,
+		t.contact_name,
+		t.telephone,
+		t.mobilephone,
+		t.email,
+		t.QQ,
+		t.WeChat,
+		t.sd_id
+		FROM  sd_supplier_contact t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdSupplierContact"  resultMap="sdsuppliercontactMap">
+		SELECT 
+		t.contact_id,
+		t.supplier_id,
+		t.contact_name,
+		t.telephone,
+		t.mobilephone,
+		t.email,
+		t.QQ,
+		t.WeChat,
+		t.sd_id
+		FROM  sd_supplier_contact t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdSupplierContact">
+	insert into sd_supplier_contact
+	(
+		contact_id,
+		supplier_id,
+		contact_name,
+		telephone,
+		mobilephone,
+		email,
+		QQ,
+		WeChat,
+		sd_id
+	)
+	values
+	(
+		#{contactId},
+		#{supplierId},
+		#{contactName},
+		#{telephone},
+		#{mobilephone},
+		#{email},
+		#{qq},
+		#{wechat},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdSupplierContact">
+		delete from sd_supplier_contact where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdSupplierContact"  resultType="java.lang.Integer">
+   		select    count(*) from sd_supplier_contact where 1=1
+	</select>
+</mapper> 
+

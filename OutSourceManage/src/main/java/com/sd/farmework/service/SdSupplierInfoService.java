@@ -1,0 +1,15 @@
+package com.sd.farmework.service; 
+
+import com.sd.farmework.pojo.SdSupplierContact;
+import com.sd.farmework.pojo.SdSupplierInfo;
+
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+public interface SdSupplierInfoService  extends BaseInfoService{
+	public void add(SdSupplierInfo sdsupplierinfo,SdSupplierContact sdsuppliercontact);
+	public void update(SdSupplierInfo sdsupplierinfo,SdSupplierContact sdsuppliercontact,String hidDelContactId);
+	public void delete(SdSupplierInfo sdsupplierinfo);
+}

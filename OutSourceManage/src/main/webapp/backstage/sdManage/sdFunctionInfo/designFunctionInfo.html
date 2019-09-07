@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加系统功能</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/global.css" media="all">
+<link rel="stylesheet" href="../../css/common.css" media="all">
+<link rel="stylesheet" href="../../css/my.css" media="all">
+<style>
+   .layui-form-radio{margin:0;}
+   .layui-form-item .layui-inline{margin-right:0;}
+</style>
+</head>
+<body>
+
+<form id="frm1">
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title" style="position:fixed; top:0; left:0; background:#fff;width: 100%;z-index: 50;">
+    <li class="layui-this">事件</li>
+    <li>查询条件</li>
+    <li>查询列表</li>
+     
+  </ul>
+  <div class="layui-tab-content" style="height: 100px;">
+
+  		<input type="hidden" id="functionId" name="functionId" >
+  	
+    <div class="layui-tab-item layui-show pt-30" id="eventDiv"> </div>
+    <div class="layui-tab-item pt-30">
+    <div class="layui-form">
+		  <table class="layui-table">
+		    <thead>
+		      <tr>
+		        <th style="width: 180px;">表单lable</th>
+		        <th style="width: 100px;">表单name</th>
+		        <th style="width: 180px;">表单类型</th>
+		        <th style="width: 180px;">数据格式</th>
+		        <th style="width: 180px;">数据来源</th>
+		        <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose">是否显示</th>
+		      </tr> 
+		    </thead>
+		    <tbody id="searchDiv">
+		    </tbody>
+		  </table>
+	</div>
+    
+    </div>
+    <div class="layui-tab-item pt-30">
+    <div class="layui-form">
+    	<table class="layui-table">
+		    <thead>
+		      <tr>
+		        <th>表单lable</th>
+		        <th>表单name</th>
+		        <th>数据格式</th>
+		        <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose">是否显示</th>
+		      </tr> 
+		    </thead>
+		    <tbody id="searchListDiv">
+		    </tbody>
+		  </table>
+    </div>
+    </div>
+
+  </div>
+</div> 
+</form>
+	<script type="text/javascript" src="../../js/jquery.min.js"></script>
+	<script src="../../../resources/js/base.js"></script>
+	<script type="text/javascript" src="../../js/myframe.js"></script>
+	<script src="../../plugins/layui/layui.js" charset="utf-8"></script>
+
+	<script type="text/javascript">
+	layui.use(['element','form', 'layedit', 'laydate'], function(){
+		var form = layui.form() ,layer = layui.layer ,layedit = layui.layedit ,laydate = layui.laydate;
+		 var $ = layui.jquery
+		  ,element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+		 $("#functionId").val(window.location.search.split("?")[1]);
+		  
+		
+		//查询数据库类型
+		$.ajax({
+			type : "GET",
+			url : base.serverContet +"/manager/loginIn/SdFunctionInfo/queryByPkparentFunctionId.do?functionId="+window.location.search.split("?")[1],
+ 			async : false,
+			success : function(data) {
+			        for(obj in data){
+			        	var ob = data[obj];
+			        	$("#eventDiv").append('<a href="javascript:;" class="layui-btn layui-btn-normal" onclick=""> <i class="layui-icon"></i> '+ob.functionName+' </a>');
+			        }
+			        layui.form().render(); 
+			},error : function(rec) {
+				console.info("网络异常,请稍后再试");
+			}
+		});
+		//查询数据库类型
+		$.ajax({
+			type : "GET",
+			url : base.serverContet +"/manager/loginIn/SdFunctionInfo/queryByPkId.do?pkId="+window.location.search.split("?")[1],
+ 			async : false,
+			success : function(data) {
+	        	var filedArray=(data.obj.fromScript.split("select")[1].split("from")[0]).split(",");
+	        	
+	        	var formType='<select name="dataType" lay-verify="required">';
+	        	   formType+='<option value="text" selected>text</option>';
+	        	   formType+='<option value="date">date</option>';
+	        	   formType+='<option value="select">select</option>';
+	        	   formType+='</select>';
+	        	var btn='<a href="javascript:;" class="layui-btn layui-btn-normal" onclick=""> <i class="layui-icon"></i> 绑定数据源 </a>';
+	        	
+	        	for(var filed in filedArray){
+		        	$("#searchDiv").append('<tr>');
+		        	$("#searchDiv").append('<td><input type="text" name="queryFiledLableName" lay-verify="required|number" autocomplete="off" value='+filedArray[filed]+' class="layui-input"></td>');
+		         	$("#searchDiv").append('<td>'+filedArray[filed]+'<input type="hidden" name="queryFiledName" value="'+filedArray[filed]+'"/></td>');
+		         	$("#searchDiv").append('<td>'+formType+'</td>');
+		         	$("#searchDiv").append('<td><input type="text" name="regularExpression" lay-verify="required|number" class="layui-input"/></td>');
+		         	$("#searchDiv").append('<td>'+btn+'<input type="hidden" name="dataSource"/></td>');
+		        	$("#searchDiv").append('<td><input type="checkbox" name="" lay-skin="primary" lay-filter="isShow" ><input type="hidden" name="areaIsShow" value="N" /></td>');
+		        	$("#searchDiv").append(' </tr>');
+		        	
+	        	}
+			        	
+			    
+			},error : function(rec) {
+				console.info("网络异常,请稍后再试");
+			}
+		});
+		
+		//查询数据库类型
+		$.ajax({
+			type : "GET",
+			url : base.serverContet +"/manager/loginIn/SdFunctionInfo/queryByPkId.do?pkId="+window.location.search.split("?")[1],
+ 			async : false,
+			success : function(data) {
+	        	var filedArray=(data.obj.fromScript.split("select")[1].split("from")[0]).split(",");
+	         
+	        	var btn='<a href="javascript:;" class="layui-btn layui-btn-normal" onclick=""> <i class="layui-icon"></i>  设置数据格式</a>';
+	        	
+	        	for(var filed in filedArray){
+	 
+		        	$("#searchListDiv").append('<tr>');
+		        	$("#searchListDiv").append('<td><input type="text" name="listFiledLableName" lay-verify="required|number" autocomplete="off" value='+filedArray[filed]+' class="layui-input"></td>');
+		         	$("#searchListDiv").append('<td>'+filedArray[filed]+'<input type="hidden" name="listFiledName" value="'+filedArray[filed]+'"></td>');
+		         	 
+		         	$("#searchListDiv").append('<td>'+btn+'<input type="hidden" name="functionName"/></td>');
+		        	$("#searchListDiv").append('<td><input type="checkbox" name="" lay-skin="primary" lay-filter="isShow" ><input type="hidden" name="ListIsShow" value="N" /></td>');
+		        	$("#searchListDiv").append(' </tr>');
+		        	
+	        	}
+			    
+			},error : function(rec) {
+				console.info("网络异常,请稍后再试");
+			}
+		});
+	    layui.form().render('checkbox'); 
+        layui.form().render(); 
+        layui.form().render('select'); 
+        
+        
+      	//监听指定开关
+	 	form.on('checkbox(isShow)', function(data){
+	 		if(this.checked==false || this.checked=="false"){
+	 			$(this).parent().find("input[type='hidden']").val("N");
+			}else{
+				$(this).parent().find("input[type='hidden']").val("Y");
+			}
+	 	});
+		
+	});
+	</script>
+
+</body>
+</html>

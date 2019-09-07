@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>新增订单</title>
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/purchase.css" />
+		<link rel="stylesheet" href="css/table.css" />
+		<link rel="stylesheet" href="css/zy.css" />
+		<link rel="stylesheet" href="font/iconfont.css" />
+	</head>
+	<body>
+		<div class="header">
+			<div class="header-logo"><img src="images/angelic_logo.png" style="vertical-align: bottom;"/>全国最大的木箱包装领航企业</div>
+			<div class="header-right">
+				<span class="iconfont icon-renyuan1"></span>
+				<span class="name-word">用户A&ensp;<span class="iconfont icon-icon-test"></span></span>
+			    <div class="personal">
+			    	<div class="person-class">
+			    		<ul>
+			    			<li class="active">月度</li>
+			    			<li>年度</li>
+			    		</ul>
+			    		<div class="line-height-16"></div>
+			    	 </div>
+			    	<div class="person-content">
+			    		<div class="person-number">&emsp;成交量：<span>2</span>件</div>
+			    		<div class="person-number">&emsp;销售额：<span>255445.4</span>元</div>
+			    		<div class="person-number">预计收益：<span>2444</span>元</div>
+			    	</div>
+			    	<div class="person-content" style="display: none;">
+			    		<div class="person-number">&emsp;成交量：<span>5</span>件</div>
+			    		<div class="person-number">&emsp;销售额：<span>255</span>元</div>
+			    		<div class="person-number">预计收益：<span>24</span>元</div>
+			    	</div>
+			    	<div class="person-img"><img src="images/money.png" width="260"/></div>
+			   </div>
+			</div>
+		</div>
+		<div class="nav">
+	        <ul class="nav-main container jz">
+	        	<li class="fl">
+					<a href="index.html">首页</a>
+				</li>
+				<li class="fl active">
+					<a href="javascript:void(0);">新增订单</a>
+				</li>			
+				<li class="fl">
+					<a href="assignOrder.html">指派订单</a>
+				</li>			
+				<li class="fl">
+					<a href="listOrder.html">订单列表</a>
+				</li>			
+				<li class="fl">
+					<a href="afterOrder.html">订单跟踪</a>
+				</li>			
+	        </ul>
+        </div>
+        <div class="content mt-10 mb-80">
+        	<div class="container content-box">
+        		<div class="product-release-title">
+					<span class="product-release-title-content1">新增订单</span>
+				</div>
+				<div class="product-main-content">
+					<div class="ml-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">订单信息</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important;">
+						<tbody>
+							<tr class="fl">
+								<th valign="middle">客户名称：</th>
+								<td><input type="text" style="width:446px; margin-right: 20px;" class="lg-input" name="location" value="" placeholder="请输入客户的名称"></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">客户地址：</th>
+								<td><input type="text" style="width:406px;" class="lg-input" name="location" value="" placeholder="请输入地址信息"></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">交货日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm rq-input fl" id="retime1" value="" name="retime">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">建议交货日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm rq-input fl" id="retime2" value="" name="retime">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">订单价格：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">成本价格：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">商务报价：</th>
+								<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="ml-20 mt-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">物料信息</span>
+						<label class="fr product-add" onclick="addFile('222')"><span class="iconfont icon-tianjia"></span>添加物料</label>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<div class="table-content" id="222">
+						<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important; padding-bottom: 30px; border-bottom: 1px solid #ddd;">
+							<tbody>
+								<tr class="fl">
+									<th valign="middle">客户料号：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="" placeholder=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;产品代码：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="" placeholder=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;产品名称：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value="" placeholder="请输入产品名称"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;成本核算：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" placeholder="核算成本"></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;长：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;宽：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;&emsp;高：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl" style="height: 44px;line-height: 34px;">
+									<th valign="middle">&emsp;是否带盖：</th>
+									<td><label><input value="1" name="sample" type="radio" checked="">需要带盖</label><label><input value="2" name="sample" class="ml-20" type="radio">不需要带盖</label></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl ml-30">
+									<th valign="middle">&emsp;&emsp;数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;类别：</th>
+									<td colspan="2" id="selectpaytime">
+										<select name="paytime" class="select" style="width:160px; margin-right: 10px;">
+											<option>请选择</option>
+											<option value="1">类别一</option>
+											<option value="2">类别二</option>
+											<option value="3">类别三</option>
+											<option value="4">类别四</option>						
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;材质：</th>
+									<td colspan="2" id="selectpaytime">
+										<select name="paytime" class="select" style="width:160px;">
+											<option>请选择</option>
+											<option value="1">材质一</option>
+											<option value="2">材质二</option>
+											<option value="3">材质三</option>
+											<option value="4">材质四</option>						
+										</select>
+									</td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">即时库存：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>								
+								<tr class="fl">
+									<th valign="middle">整单折前金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;&emsp;金额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;&emsp;税率：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">销项税额：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">实际含税单价：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&emsp;价税合计：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;关联数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">出库数量：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl">
+									<th valign="middle">&emsp;&nbsp;&nbsp;BOM类别：</th>
+									<td><input type="text" style="width:160px;" class="lg-input" name="location" value=""></td>
+								</tr>
+								<tr class="fl" style="height: 44px;line-height: 34px;">
+									<th valign="middle" style="padding-top: 0 !important;">&emsp;&emsp;上传图纸：</th>
+									<td>
+										<div class="file"><span class="iconfont icon-tianjia" style="color: #1E88C7;"></span>上传<input type="file" name="location" value=""></div>
+									    <span class="showFileName"></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					    <div class="delete-info">
+							<span class="iconfont icon-jianhao" onclick="delFile(this)"></span>
+						</div>
+				    </div>
+				    <div class="ml-20 mt-20" style="position:relative;">
+						<span class="bold color-orange mr-10" style="display: inline-block;height: 20px;border-left: 4px solid #f60;line-height: 25px;position: absolute;top: 13px;"></span>
+						<span class="product-main-content-center-title ml-15">选择采购经理</span>
+					</div>
+					<div class="split-line2 ml-20 mr-20"></div>
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important;">
+						<tbody>
+							<tr class="fl">
+								<th valign="middle">选择采购经理：</th>
+								<td colspan="2" id="selectpaytime">
+									<select name="paytime" class="select" style="width:160px;">
+										<option>请选择</option>
+										<option value="1">陈某某</option>
+										<option value="2">王某某</option>
+										<option value="3">李某某</option>
+										<option value="4">杨某某</option>						
+									</select>
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">&emsp;选择检验经理：</th>
+								<td colspan="2" id="selectpaytime">
+									<select name="paytime" class="select" style="width:160px;">
+										<option>请选择</option>
+										<option value="1">陈某某</option>
+										<option value="2">王某某</option>
+										<option value="3">李某某</option>
+										<option value="4">杨某某</option>						
+									</select>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="mb-40 mt-100" style="text-align: center;"><button type="submit" id="supply-btn" class="orange-md-btn">确定新增</button></p>
+				</div>
+        	</div> 	
+        </div>
+        <div class="footer fixed">安捷包装（苏州）股份有限公司</div>
+        <script type="text/javascript" src="laydate/laydate.js" ></script>
+        <script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script>
+			lay('#version').html('-v'+ laydate.v);
+			
+			//执行一个laydate实例
+			laydate.render({
+			  elem: '#retime' //指定元素
+			});
+			laydate.render({
+			  elem: '#retime1' //指定元素
+			});
+			laydate.render({
+			  elem: '#retime2' //指定元素
+			});
+			
+			
+			
+					//   添加删除 
+		function addFile(id) {
+			var len = $(".table-content").length;
+			var tag = $(".table-content").eq(len-1);
+			
+			var htmlStr =  $(tag).prop("outerHTML");
+				tag.after(htmlStr);
+				 
+		  $(".table-content").eq(len).find("input").each(function(index,obj){
+		  		$(obj).val("");
+		  });
+		  $(".table-content").eq(len).find(".showFileName").each(function(index,obj1){
+		  		$(obj1).text("");
+		  		fileNameShow();
+		  });
+		 }
+
+		function delFile(tag) {
+			if($(".table-content").length > 1) {
+				$(tag).parent().parent().remove();
+			} else {
+				alert("只有一行不能再删除");
+			}
+		}
+		var fileNameShow=function (){
+			$(".file").on("change","input[type='file']",function(){
+			    	var filePath=$(this).val();
+			        var arr=filePath.split('\\');
+			        var fileName=arr[arr.length-1];
+			        $(this).parent().parent().find(".showFileName").html(fileName);
+			})
+		};
+		</script>
+	</body>
+</html>

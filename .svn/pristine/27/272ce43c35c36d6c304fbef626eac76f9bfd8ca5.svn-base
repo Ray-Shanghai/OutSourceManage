@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdProductGradeMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdProductGrade" id="sdproductgradeMap"> 
+
+		<result column="product_grade_id" property="productGradeId"/>
+		<result column="product_grade_name" property="productGradeName"/>
+		<result column="product_grade_index" property="productGradeIndex"/>
+		<result column="sd_id" property="sdId"/>
+		
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_USER_NAME" property="lastUpdateUserName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade">
+		UPDATE sd_product_grade t set 
+		t.product_grade_name=#{productGradeName},
+		t.product_grade_index=#{productGradeIndex},
+		t.remark = #{remark},
+		t.LAST_UPDATE_TIME=now(),
+		t.LAST_UPDATE_USER_ID=#{lastUpdateUserId},
+		t.LAST_UPDATE_USER_NAME=#{lastUpdateUserName},
+		t.LAST_UPDATE_DEPART_ID=#{lastUpdateDepartId},
+		t.LAST_UPDATE_DEPART_NAME=#{lastUpdateDepartName}
+		where t.product_grade_id=#{productGradeId}
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade"  resultMap="sdproductgradeMap">
+		SELECT 
+		t.product_grade_id,
+		t.product_grade_name,
+		t.product_grade_index,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_product_grade t 
+		where  product_grade_id = #{productGradeId}  
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade"  resultMap="sdproductgradeMap">
+		SELECT 
+		t.product_grade_id,
+		t.product_grade_name,
+		t.product_grade_index,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_product_grade t 
+		where  1 = 1  
+		<if test="productGradeName !=null and productGradeName !=''">
+			and t.product_grade_name  like concat('%',#{productGradeName},'%')	
+		</if>
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade"  resultMap="sdproductgradeMap">
+		SELECT  
+		t.product_grade_id,
+		t.product_grade_name,
+		t.product_grade_index,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME
+		FROM  sd_product_grade t where 1=1 
+		<if test="productGradeName !=null and productGradeName !=''">
+			and t.product_grade_name  like concat('%',#{productGradeName},'%')	
+		</if>
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade"  resultMap="sdproductgradeMap">
+		SELECT 
+		t.product_grade_id,
+		t.product_grade_name,
+		t.product_grade_index,
+		t.remark,
+		t.status,
+		t.CREATE_TIME,
+		t.CREATE_USER_ID,
+		t.CREATE_USER_NAME,
+		t.CREATE_DEPART_ID,
+		t.CREATE_DEPART_NAME,
+		t.LAST_UPDATE_TIME,
+		t.LAST_UPDATE_USER_ID,
+		t.LAST_UPDATE_USER_NAME,
+		t.LAST_UPDATE_DEPART_ID,
+		t.LAST_UPDATE_DEPART_NAME 
+		FROM  sd_product_grade t where 1 = 1 
+		<if test="productGradeName !=null and productGradeName !=''">
+			and t.product_grade_name  like concat('%',#{productGradeName},'%')
+		</if>
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade">
+	insert into sd_product_grade
+	(
+		product_grade_name,
+		product_grade_index,
+		remark,
+		status,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME
+	)
+	values
+	(
+		#{productGradeName},
+		#{productGradeIndex},
+		#{remark},
+		'Y',
+		now(),
+		#{createUserId},
+		#{createUserName},
+		#{createDepartId},
+		#{createDepartName}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdProductGrade">
+		delete from sd_product_grade where product_grade_id = #{productGradeId} 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdProductGrade"  resultType="java.lang.Integer">
+   		select    count(*) from sd_product_grade t where 1=1 
+   		<if test="productGradeName !=null and productGradeName !=''">
+			and t.product_grade_name  like concat('%',#{productGradeName},'%')
+		</if>
+	</select>
+</mapper> 
+

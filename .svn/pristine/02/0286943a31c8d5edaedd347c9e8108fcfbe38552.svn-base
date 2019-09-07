@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>功能模块设置</title>
+
+	<link href="../../assets/css/dpl-min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/bui-min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/page-min.css" rel="stylesheet" type="text/css" />   <!-- 下面的样式，仅是为了显示代码，而不应该在项目中使用-->
+   <link href="../../assets/css/prettify.css" rel="stylesheet" type="text/css" />
+ </head>
+<body >
+	<div class="container">
+    <div class="row">
+      <form id="J_Form"  class="form-horizontal" >
+ 	   	   <input value="" name="functionId" id="functionId"  type="hidden">
+ 	   	   <input value="" name="systemInfoId" id="systemInfoId"  type="hidden">
+        <div class="row">
+          <div class="control-group span20">
+            <label class="control-label"><s>*</s>功能名称：</label>
+            <div class="controls" id="unitNameDiv">
+                <input  type="text" name="functionName"  id="functionName" data-rules="{required:true}" class="input-normal control-text">
+             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="control-group span20">
+            <label class="control-label"><s>*</s>功能类别：</label>
+            <div class="controls" >
+			<label for="typeId01">系统功能</label>
+              <input id="typeId01" type="radio" value="1" name="typeId" checked="checked" data-rules="{required:true}" >
+             <label for="typeId02">业务功能</label>
+              <input id="typeId02"  type="radio" value="2" name="typeId"  data-rules="{required:true}" >
+                         	
+             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="control-group span20">
+            <label class="control-label"><s>*</s>状态：</label>
+            <div class="controls">
+            <label for="statusY">正常</label>
+              <input id="statusY" type="radio" value="Y" name="status" checked="checked" data-rules="{required:true}" >
+             <label for="statusN">禁用</label>
+              <input id="statusN"  type="radio" value="N" name="status"  data-rules="{required:true}" >
+              
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="control-group span15">
+            <label class="control-label">备注：</label>
+            <div class="controls control-row4">
+              <textarea name="functionDesc" id="functionDesc" class="input-large"  data-rules="{required:true}"  type="text"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row form-actions actions-bar">
+            <div class="span8 offset3 ">
+              <button type="submit" class="button button-primary" >保存</button>
+              <button type="reset" class="button">重置</button>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script type="text/javascript" src="../../assets/js/jquery-1.8.1.min.js"></script>
+  <script type="text/javascript" src="../../assets/js/bui-min.js"></script>
+  <script type="text/javascript" src="../../assets/js/config-min.js"></script>
+  <script src="../../../resources/js/base.js"></script>
+  <script type="text/javascript">
+    BUI.use('common/page');
+  </script>
+<script type="text/javascript">
+	$(document).ready(function() { 
+	 
+		   $("#functionId").val(window.location.search.split("?")[1].split("=")[1].split("&")[0].split("&")[0]);
+		   $("#functionName").val(unescape(window.location.search.split("?")[1].split("=")[2].split("&")[0]));
+ 		   $("#functionDesc").val(unescape(window.location.search.split("?")[1].split("=")[4].split("&")[0]));
+ 		   $("#systemInfoId").val(unescape(window.location.search.split("?")[1].split("=")[5].split("&")[0]));
+
+		 
+	});
+ 
+  BUI.use('bui/form',function (Form) {
+       var f1 = new Form.Form({
+        srcNode : '#J_Form'
+      }).render();
+        
+  	  $("#J_Form").submit(function() {  
+	 	if(f1.isValid()){
+          $.ajax({  
+              type : 'POST',  
+               url : base.serverContet+'/manager/loginIn/SdFunctionInfo/update.do',  
+              data: $('#J_Form').serialize(),  
+              //同步  
+              async : false,  
+              success : function(data) {  
+            	  if(JSON.parse(data).code=="000"){
+            		  BUI.Message.Alert('信息修改成功',function(){
+            			  top.topManager.reloadPage("001001001")
+            			  top.topManager.closePage();
+            	        },'info');
+                   }else{
+             		  BUI.Message.Alert('信息保存失败，系统繁忙',function(){
+             	        },'info');
+                   }
+              },error : function() {  
+              }  
+          });  
+          return false;
+	 	}
+    });
+	return false;
+    } );
+  //})
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdOrderComplainMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdOrderComplain" id="sdordercomplainMap"> 
+
+		<result column="order_complain_id" property="orderComplainId"/>
+		<result column="order_id" property="orderId"/>
+		<result column="complain_content" property="complainContent"/>
+		<result column="data_state" property="dataState"/>
+		<result column="data_state_name" property="dataStateName"/>
+		<result column="sd_id" property="sdId"/>
+
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdOrderComplain">
+		UPDATE sd_order_complain set 
+		t.order_complain_id=#{orderComplainId},
+		t.order_id=#{orderId},
+		t.complain_content=#{complainContent},
+		t.data_state=#{dataState},
+		t.data_state_name=#{dataStateName},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdOrderComplain"  resultMap="sdordercomplainMap">
+		SELECT 
+		t.order_complain_id,
+		t.order_id,
+		t.complain_content,
+		t.data_state,
+		t.data_state_name,
+		t.sd_id
+		FROM  sd_order_complain t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdOrderComplain"  resultMap="sdordercomplainMap">
+		SELECT 
+		t.order_complain_id,
+		t.order_id,
+		t.complain_content,
+		t.data_state,
+		t.data_state_name,
+		t.sd_id
+		FROM  sd_order_complain t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdOrderComplain"  resultMap="sdordercomplainMap">
+		SELECT  
+		t.order_complain_id,
+		t.order_id,
+		t.complain_content,
+		t.data_state,
+		t.data_state_name,
+		t.sd_id
+		FROM  sd_order_complain t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdOrderComplain"  resultMap="sdordercomplainMap">
+		SELECT 
+		t.order_complain_id,
+		t.order_id,
+		t.complain_content,
+		t.data_state,
+		t.data_state_name,
+		t.sd_id
+		FROM  sd_order_complain t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdOrderComplain">
+	insert into sd_order_complain
+	(
+		order_complain_id,
+		order_id,
+		complain_content,
+		data_state,
+		data_state_name,
+		sd_id
+	)
+	values
+	(
+		#{orderComplainId},
+		#{orderId},
+		#{complainContent},
+		#{dataState},
+		#{dataStateName},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdOrderComplain">
+		delete from sd_order_complain where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdOrderComplain"  resultType="java.lang.Integer">
+   		select    count(*) from sd_order_complain where 1=1
+	</select>
+</mapper> 
+

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>供应商信息</title>
+
+<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script src="../../../resources/js/base.js"></script>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/my.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/font/iconfont1.css">
+<style type="text/css">
+   .layui-form-radio{
+   		margin:0;
+   }
+ </style>
+</head>
+<body>
+	<form class="layui-form  ml-30" id="frm1" name="frm1">
+		<input type="hidden" id="supplierId" name="supplierId"/>
+		<div class="layui-form-item mt-10">
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:100px">供应商名称：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="supplierName" id="supplierName" onblur="queryName()" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+					<input type="hidden" name="hidSupplierName" id="hidSupplierName">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:100px">供应商地址：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="supplierAddress" id="supplierAddress" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:100px">结算方式：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="balanceType" id="balanceType" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:100px">银行账号：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="bankAccount" id="bankAccount" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:100px">开户人：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="accountHolder" id="accountHolder" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:100px">开户行：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="text" name="openingBank" id="openingBank" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style ="width:100px">备注：</label>
+				<div class="layui-input-inline dx-input-required">
+					<input type="textarea" rows="5" name="remark" id="remark" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+			</div>
+			<div class="addInfo-title mt-0">
+				<span class="infoName">联系人信息</span>
+				<input type="hidden" name="hidDelContactId" id="hidDelContactId" />
+				<span class="add-btn fa fa-plus-square" title="添加联系人信息" onclick="addFile('111','.conRow')"></span>
+			</div>
+			<div id="contact">
+			<div class="personInfo mt-10 add1 conRow" id="111">
+				<div class="layui-form-item pt-10">
+					<div class="layui-inline">
+						<div class="layui-input-inline" onclick="checkIsDefault(this)" style="width:80px;">
+							<input type="radio" name="isDefault1" title="默认"  class="isDefault1" />
+							<input type="hidden" name="isDefault" class="isDefault" value="1" />
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width:45px;">联系人</label>
+						<div class="layui-input-inline" style="width:100px;">
+							<input type="text" name="contactName" lay-verify="" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width:30px;">手机</label>
+						<div class="layui-input-inline" style="width:100px;">
+							<input type="text" name="mobilephone" lay-verify="mobilePhone" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width:30px;">座机</label>
+						<div class="layui-input-inline" style="width:100px;">
+							<input type="text" name="telephone" lay-verify="telePhone" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width:30px;">QQ</label>
+						<div class="layui-input-inline" style="width:100px;">
+							<input type="text" name="qq" lay-verify="" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width:30px;">微信</label>
+						<div class="layui-input-inline" style="width:100px;">
+							<input type="text" name="wechat" lay-verify="" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width:30px;">邮箱</label>
+						<div class="layui-input-inline" style="width:100px;">
+							<input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+						</div>
+					</div>					
+				</div>
+				<div class="deleteInfo">
+					<span class="delete-btn fa fa-minus-square" title="删除该联系人信息" onclick="delFile(this,'add1')"></span>
+				</div>
+			</div>
+			</div>
+		</div>
+	</form>
+	<script type="text/html" id="dataList">
+	{{#  layui.each(d.rowsDetail, function(index, item){ }}
+		<div class="personInfo mt-10 add1 conRow" id="111">
+	    	<div class="layui-form-item pt-10">
+				<div class="layui-inline">
+					
+					<div class="layui-input-inline" onclick="checkIsDefault(this)" style="width:80px;">
+						<input type="radio" name="isDefault1" title="默认"  class="isDefault1" {{item.isDefault=='1'?'checked="checked"':''}} />
+						<input type="hidden" name="isDefault" class="isDefault" value="{{item.isDefault}}" />
+						<input type="hidden" name="contactId" class="contactId" value="{{item.contactId}}" />
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label" style="width:45px;">联系人</label>
+					<div class="layui-input-inline" style="width:100px;">
+						<input type="text" name="contactName" value="{{item.contactName}}" lay-verify="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label" style="width:30px;">手机</label>
+					<div class="layui-input-inline" style="width:100px;">
+						<input type="text" name="mobilephone" value="{{item.mobilephone}}" lay-verify="mobilePhone" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label" style="width:30px;">座机</label>
+					<div class="layui-input-inline" style="width:100px;">
+						<input type="text" name="telephone" value="{{item.telephone}}" lay-verify="telePhone" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label" style="width:30px;">QQ</label>
+					<div class="layui-input-inline" style="width:100px;">
+						<input type="text" name="qq" value="{{item.qq}}" lay-verify="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label" style="width:30px;">微信</label>
+					<div class="layui-input-inline" style="width:100px;">
+						<input type="text" name="wechat" value="{{item.wechat}}" lay-verify="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label" style="width:30px;">邮箱</label>
+					<div class="layui-input-inline" style="width:100px;">
+						<input type="text" name="email" value="{{item.email}}" lay-verify="email" autocomplete="off" class="layui-input">
+					</div>
+				</div>					
+			</div>
+			<div class="deleteInfo">
+				<span class="delete-btn fa fa-minus-square" title="删除该联系人信息" onclick="delFile(this,'add1')"></span>
+			</div>
+		</div>
+	{{#  }); }}
+	</script>
+	<script type="text/javascript">
+		var supplierId = window.location.search.split("?")[1];
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use([ 'paging', 'form', 'element','laytpl' ], function() {
+			var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+			paging = layui.paging(),
+			laytpl = layui.laytpl,
+			layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
+			layer = layui.layer, //获取当前窗口的layer对象
+			form = layui.form();
+			
+			//查询修改数据
+			$.ajax({
+				type : 'POST',
+				url: base.serverContet+'/SdSupplierInfo/queryByPkId.do', //地址
+				data:{'pkId':supplierId},
+				async : false,//同步  
+				success : function(data) {
+					if(data.code=="000"){
+						$("#supplierId").val(data.rows.supplierId);
+						$("#supplierName").val(data.rows.supplierName);
+						$("#supplierAddress").val(data.rows.supplierAddress);
+						$("#balanceType").val(data.rows.balanceType);
+						$("#bankAccount").val(data.rows.bankAccount);
+						$("#accountHolder").val(data.rows.accountHolder);
+						$("#openingBank").val(data.rows.openingBank);
+						$("#remark").val(data.rows.remark);
+						
+						var conTpl = dataList.innerHTML;
+						laytpl(conTpl).render(data, function(html){
+							if(data.rowsDetail.length>0){
+								$("#contact").html("");
+								$("#contact").after(html);
+							}
+						});
+					}
+					layui.form().render();	
+				},
+				error : function() {
+				}
+			}); 
+		});
+		
+		$().ready(function(){
+			$(".isDefault1").prop("checked",true);
+		});
+		
+		function checkIsDefault(obj){
+			$(".isDefault").val("0");
+			$(obj).find(".isDefault").val("1");
+		}
+		
+		function queryName(){
+			//查询供应商名称是否重复
+			$.ajax({
+				type : "GET",
+				url : base.serverContet +"/SdSupplierInfo/query.do",
+				data : {"supplierName":$("#supplierName").val()},
+				async : false,
+				success : function(data) {
+					if(data.code=="000"){
+						$("#hidSupplierName").val("1");
+					}else{
+						$("#hidSupplierName").val("0");
+					}
+				},error : function(rec) {
+					console.info("网络异常,请稍后再试");
+				}
+			});
+		}
+		
+		//添加删除 
+		function addFile(id) {
+			var len = $(".personInfo").length;
+			var tag = $(".personInfo").eq(len-1);
+			var isChecked=$(tag).find("input[type='radio']:checked").length>0?true:false;
+			$(tag).find("input[type='radio']").removeAttr("checked");
+  				
+			var htmlStr =  $(tag).prop("outerHTML");
+				tag.after(htmlStr);
+				 
+		  	$(".personInfo").eq(len).find("input").each(function(index,obj){
+		  		$(obj).val("");
+		  		if($(obj).attr("name") == "isDefault")
+	  			{
+		  			$(obj).val("0");
+	  			}else if($(obj).attr("name") == "contactId")
+	  			{
+	  				$(obj).val("-1");
+	  			}
+		  		if($(obj).attr("class") == "isDefault1"){
+		  			$(obj).removeAttr("checked");
+		  		}
+		  	});
+		  	if(isChecked){
+		  		$(tag).find("input[type='radio']").prop("checked","checked");
+		  	}
+		  	layui.use(['form'],function(){
+				 layui.form().render('radio');
+			})
+		}
+		function delFile(tag,tag2) {
+			if($("."+tag2).length > 1) {
+				var contactId = $(tag).parent().parent().find(".contactId").val();
+				if(contactId != "-1"){
+					$("#hidDelContactId").val($("#hidDelContactId").val() + "," + contactId);
+				}
+				$(tag).parent().parent().remove();
+				//renderForm();
+			} else {
+				alert("只有一行不能再删除");
+			}
+		}
+		
+		/* function addFile(id,cls) {
+			var $tag = $("#" + id);
+			var contactId = $tag.find(".contactId").val();
+			if($tag.find(".isDefault1").prop("checked"))
+			{
+				$tag.find(".isDefault").val("0");
+				$tag.find(".contactId").val("-1");
+				$tag.find(".isDefault1").prop("checked","false");
+				$(cls).last().after($tag.prop("outerHTML"));
+				$tag.find(".isDefault").val("1");
+				$tag.find(".contactId").val(contactId);
+				$tag.find(".isDefault1").prop("checked","true");
+			}else
+			{
+				$(cls).last().after($tag.prop("outerHTML"));
+			}
+			renderForm();
+		} */
+	</script>
+</body>
+</html>

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>成本核算页面</title>
+		<link rel="stylesheet" href="../css/public.css" />
+		<link rel="stylesheet" href="../css/purchase.css" />
+		<link rel="stylesheet" href="../css/table.css" />
+		<link rel="stylesheet" href="../css/zy.css" />
+		<link rel="stylesheet" href="../css/my.css" />
+		<link rel="stylesheet" href="../font/iconfont.css" />
+		<style type="text/css">
+			.bgcolor{
+				background-color: #ccc;
+			}
+			.redTxt{
+				color: red;
+			}
+		</style>		
+	</head>
+
+	<body>
+		<div class="content mt-10 mb-80">
+        	<div class="container content-box">
+        		<div class="product-release-title">
+					<span class="product-release-title-content1">安捷包装(苏州)有限公司</span>
+					<p class="product-title pb-20">产品成本核算及报价计算明细表</p>
+				</div>
+				<div class="product-main-content-1">
+					<table class="base-table base-table-1 product-base-table mr-40" cellpadding="0" cellspacing="0" style="margin-left:40px!important;">
+						<tbody>
+							<tr class="fl">
+								<th valign="middle">产品名称：</th>
+								<td><input type="text" style="width:150px;" class="lg-input" name="productName" value=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">日期：</th>
+								<td colspan="2">
+									<p class="box-model">
+										<input type="text" class="input-sm fl" id="retime1" value="" name="createTime" width="150px">
+									    <i class="fl ml-10 mr-10" id="showday_retime"></i>
+									</p>									
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">类别：</th>
+								<td colspan="2" id="selectpaytime">
+									<input name="productTypeId" style="width:150px;"  class="lg-input" >
+								</td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">其他：</th>
+								<td><input type="text" style="width:150px;" class="lg-input" name="productOther" value=""></td>
+							</tr>
+							<tr class="fl">
+								<th valign="middle">产品规格：</th>
+								<td><input type="text" style="width:150px;" class="lg-input" name="productStandard" value=""></td>
+							</tr>
+							<tr class="fl" style="height: 44px;line-height: 34px;">
+								<th valign="middle">是否带盖：</th>
+								<td><label><input value="0" name="isLid" type="radio" id="isLid1" checked="">需要带盖</label><label><input value="1" name="isLid" id="isLid2" class="ml-10" type="radio">不需要带盖</label></td>
+							</tr>
+							<tr class="fl" style="height: 44px;line-height: 34px; width: 50%;">
+								<th valign="middle">&emsp;&emsp;&emsp;&emsp;设备尺寸：</th>
+								<td style="font-size: 15px;padding-top:9px;">长&ensp;<input type="text" style="width:80px;" class="md-input" name="productLength"  value="">宽&ensp;<input type="text" style="width:80px;" class="md-input" name="productWidth"  value="">高&ensp;<input type="text" style="width:78px;" class="md-input" name="productHeight"   value=""></td>
+							</tr>
+							<tr class="fl" style="height: 44px;line-height: 34px; width: 50%;">
+								<th valign="middle">内径余量：</th>
+								<td style="font-size: 15px;padding-top:9px;">长&ensp;<input type="text" style="width:65px;" class="md-input" name="productInnerLength"  value="">宽&ensp;<input type="text" style="width:65px;" class="md-input" name="productInnerWidth" value="">高&ensp;<input type="text" style="width:63px;" class="md-input" name="productInnerHeight"  value=""></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+        	</div> 	
+        	<p class="product-title-1 pt-20 pb-20">木箱重量、面积、立方数、容积及用料面积等</p>
+        	<div class="area-detail">
+        		<table  border="1" cellpadding="0" cellspacing="0">
+        			<tr>
+        				<td class="weight-600">木箱重量</td>
+        				<td><input type="text" value="" name="productBoxWeight" class="input-area"></td>
+        				<td>kg</td>
+        				<td class="weight-600">平方单价</td>
+        				<td><input type="text" value="" class="input-area" name="productSquareUnitPrice"></td>
+        				<td>元/㎡</td>
+        				<td class="weight-600">盖板外面积</td>
+        				<td><input type="text" value="" class="input-area" name="productOuterArea"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">小墙板外面积一双</td>
+        				<td><input type="text" value="" class="input-area" name="productSmallOuterArea"></td>
+        				<td>㎡</td>
+        			</tr>
+        			<tr>
+        				<td class="weight-600">木箱外面积</td>
+        				<td><input type="text" value="" class="input-area" name="productBoxOuterArea"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">立方单价</td>
+        				<td><input type="text" value="" class="input-area" name="productCubicUnitPrice"></td>
+        				<td>元/㎡</td>
+        				<td class="weight-600">盖板内面积</td>
+        				<td><input type="text" value="" class="input-area" name="productInnerArea"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">小墙板内面积一双</td>
+        				<td><input type="text" value="" class="input-area" name="productSmallInnerArea"></td>
+        				<td>㎡</td>
+        			</tr>
+        			<tr>
+        				<td class="weight-600">木箱底面积</td>
+        				<td><input type="text" value="" class="input-area" name="productBoxBottomArea"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">木箱内表面</td>
+        				<td><input type="text" value="" class="input-area" name="productBoxInternalSurface"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">大墙板外面积一双</td>
+        				<td><input type="text" value="" class="input-area" name="productBigOuterArea"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">木箱平方单价</td>
+        				<td><input type="text" value="" class="input-area" name="productBoxSquareUnitPrice"></td>
+        				<td>元/㎡</td>
+        			</tr>
+        			<tr>
+        				<td class="weight-600">木箱立方数</td>
+        				<td><input type="text" value="" class="input-area" name="productBoxCubicUnitNumber"></td>
+        				<td>m³</td>
+        				<td class="weight-600">木箱容积</td>
+        				<td><input type="text" value="" class="input-area" name="productBoxVolume"></td>
+        				<td>m³</td>
+        				<td class="weight-600">大墙板内面积一双</td>
+        				<td><input type="text" value="" class="input-area" name="productBigInnerArea"></td>
+        				<td>㎡</td>
+        				<td class="weight-600">木箱立方单价</td>
+        				<td><input type="text" value="" class="input-area" name="productBoxCubicUnitPrice"></td>
+        				<td>元/m³</td>
+        			</tr>
+        		</table>
+        	</div>
+        	<div class="size-detail" style="margin-top: 30px;">
+        		<table border="1" cellpadding="0" cellspacing="0">
+        			<tr>
+        				<th colspan="7">项目</th>
+        				<th colspan="7">成本计算</th>
+        			</tr>
+        			<tr>
+        				<td rowspan="38" class="weight-600">材料</td>
+        				<td class="weight-600">材料类别</td>
+        				<td rowspan="2" class="weight-600">部位名称</td>
+        				<td colspan="3" class="weight-600">材料规格、型号</td>
+        				<td rowspan="2" class="weight-600">数量</td>
+        				<td colspan="2" rowspan="2" class="weight-600">单位用量</td>
+        				<td rowspan="2" class="weight-600">含税单价<br/>(17%)</td>
+        				<td colspan="2" rowspan="2" class="weight-600">未税单价</td>
+        				<td rowspan="2" class="weight-600">单位成本<br/>(未税)<br/>元/每件</td>
+        				<td rowspan="2" class="weight-600">备注</td>
+        			</tr>
+        			<tr>
+        				<td rowspan="22" class="weight-600">主材料</td>
+        				<td class="weight-600">长(mm)</td>
+        				<td class="weight-600">宽(mm)</td>
+        				<td class="weight-600">厚(mm)</td>       				
+        			</tr>
+        			<tr>
+        				<td class="weight-600">箱子外径</td>
+        				<td><input type="text" name="outLength" value="" class="input-area"></td>
+        				<td><input type="text" name="outWidth" value="" class="input-area"></td>
+        				<td><input type="text" name="outHeight" value="" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td rowspan="20" class="weight-600">m³/件</td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td rowspan="20" class="weight-600">元/m³</td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">箱子内径</td>
+        				<td><input type="text" name="innerLength" value="" class="input-area"></td>
+        				<td><input type="text" name="innerWidth" value="" class="input-area"></td>
+        				<td><input type="text" name="innerHeight" value="" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">盖板</td>
+        				<td><input type="text" value="" name="gbchang" class="input-area"></td>
+        				<td><input type="text" value="" name="gbkuan" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="gbhou" class="input-area bgcolor"></td>
+        				<td><input type="text" value="" name="gbnum" class="input-area"></td>
+        				<td><input type="text" value="" name="gbdanwei" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="gbhansui" class="input-area bgcolor"></td>
+        				<td><input type="text" value="" name="gbweisui" class="input-area"></td>
+        				<td><input type="text" value="" name="gbdwchengben" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="" name="gbremark" class="input-area-1 bgcolor"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">长向边料</td>
+        				<td><input type="text" value="" name="gbcxblchang" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="gbcxblkuan" class="input-area bgcolor"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="gbcxblhou" class="input-area bgcolor"></td>
+        				<td><input type="text" value="" name="gbcxblnum" class="input-area"></td>
+        				<td><input type="text" value="" name="gbcxbldanwei" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="gbcxblhansui" class="input-area bgcolor"></td>
+        				<td><input type="text" value="" name="gbcxblweisui" class="input-area"></td>
+        				<td><input type="text" value="" name="gbcxblchenben" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="" name="gbcxblremark" class="input-area-1 bgcolor"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">宽向边料</td>
+        				<td><input type="text" value="" name="gbkxblchang" class="input-area"></td>
+        				<td><input type="text" value="" name="gbkxblkuan"class="input-area"></td>
+        				<td><input type="text" value="" name="gbkxblhou" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="gbkxblnum" class="input-area bgcolor"></td>
+        				<td><input type="text" value="" name="gbkxbldanwei" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="gbkxblhansui" class="input-area bgcolor"></td>
+        				<td><input type="text" value="" name="gbkxblweisui" class="input-area"></td>
+        				<td><input type="text" value="" name="gbkxblchenben" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="" name="gbkxblremark" class="input-area-1 bgcolor"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">大墙板</td>
+        				<td><input type="text" value="" name="dqbchang" class="input-area"></td>
+        				<td><input type="text" value="" name="dqbkuan" class="input-area"></td>
+        				<td><input type="text" value="" name="dqbhou" class="input-area"></td>
+        				<td><input type="text" value="" name="dqbnum" class="input-area"></td>
+        				<td><input type="text" value="" name="dqbdanwei" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="dqbhansui" class="input-area bgcolor"></td>
+        				<td><input type="text" value="" name="dqbweisui" class="input-area"></td>
+        				<td><input type="text" value="" name="dqbchenben" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="" name="dqbremark" class="input-area-1 bgcolor"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">长向边料</td>
+        				<td><input type="text" value="" name="dqbcxblchang" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="dqbcxblkuan" class="input-area bgcolor"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="dqbcxblhou" class="input-area bgcolor"></td>
+        				<td><input type="text" value="" name="dqbcxblnum" class="input-area"></td>
+        				<td><input type="text" value="" name="dqbcxbldanwei" class="input-area"></td>
+        				<td class="bgcolor"><input type="text" value="0" name="dqbcxblhansui" class="input-area bgcolor"></td>
+        				<td><input type="text" value="" name="dqbcxblweisui" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area" name="dqbcxblchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="dqbcxblremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">宽向边料</td>
+        				<td><input type="text" value="" name="dqbkxblchang" class="input-area"></td>
+        				<td><input type="text" value="" name="dqbkxblkuan" class="input-area"></td>
+        				<td><input type="text" value="" class="input-area" name="dqbkxblhou"></td>
+        				<td><input type="text" value="" class="input-area" name="dqbkxblnum"></td>
+        				<td><input type="text" value="" class="input-area" name="dqbkxbldanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="dqbkxblhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="dqbkxblweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="dqbkxblchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="dqbkxblremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">小墙板</td>
+        				<td><input type="text" value="" class="input-area" name="xqbchang"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbkuan"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbhou"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbnum"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbdanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="xqbhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="xqbremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">长向边料</td>
+        				<td><input type="text" value="" class="input-area" name="xqbcxblchang"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbcxblkuan"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbcxblhou"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbcxblnum"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbcxbldanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="xqbcxblhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbcxblweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbcxblchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="xqbcxblremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">宽向边料</td>
+        				<td><input type="text" value="" class="input-area" name="xqbkxblchang"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbkxblkuan"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbkxblhou"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="xqbkxblnum"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbkxbldanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="xqbkxblhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbkxblweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="xqbkxblchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="xqbkxblremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">底板</td>
+        				<td><input type="text" value="" class="input-area" name="dbchang"></td>
+        				<td><input type="text" value="" class="input-area" name="dbkuan"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor " name="dbhou"></td>
+        				<td><input type="text" value="" class="input-area" name="dbnum"></td>
+        				<td><input type="text" value="" class="input-area" name="dbdanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="dbhansui"></td>
+        				<td ><input type="text" value="0" class="input-area " name="dbweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="dbchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="dbremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">长方</td>
+        				<td><input type="text" value="" class="input-area" name="cfchang"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="cfkuan"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="cfhou"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="cfnum"></td>
+        				<td><input type="text" value="" class="input-area" name="cfdanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="cfhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="cfweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="cfchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="cfremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">短方</td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="duanfchang"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="duanfkuan"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="duanfhou"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="duanfnum"></td>
+        				<td><input type="text" value="" class="input-area" name="duanfdanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="duanfhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="duanfweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="duanfchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="duanfremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">挑方</td>
+        				<td><input type="text" value="" class="input-area" name="tfchang"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="tfkuan"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="tfhou"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="tfnum"></td>
+        				<td><input type="text" value="" class="input-area" name="tfdanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="tfhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="tfweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="tfchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="tfremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">垫方</td>
+        				<td><input type="text" value="" class="input-area" name="dianfchang"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="dianfkuan"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="dianfhou"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="dianfnum"></td>
+        				<td><input type="text" value="" class="input-area" name="dianfdanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="dianfhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="dianfweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="dianfchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="dianfremark"></td> 
+        			</tr>
+        			 <tr>
+        				<td class="weight-600 bgcolor">固定木</td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="gudingmuchang"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="gudingmukuan"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="gudingmuhou"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="gudingmunum"></td>
+        				<td><input type="text" value="" class="input-area" name="gudingmudanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="gudingmuhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="gudingmuweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="gudingmuchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="gudingmuremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600 bgcolor" >支撑料</td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="zhichenglchang"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="zhichenglkuan"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="zhichenglhou"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="zhichenglnum"></td>
+        				<td><input type="text" value="" class="input-area" name="zhichengldanwei"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="zhichenglhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="zhichenglweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="zhichenglchenben"></td>
+        				<td class="bgcolor"><input type="text" value="" class="input-area-1 bgcolor" name="zhichenglremark"></td> 
+        			</tr> 
+        			<tr>
+        				<td class="weight-600">主材用料合计</td>
+        				<td><input type="text" value="" class="input-area" name="zcylhejichang"></td>
+        				<td><input type="text" value="" class="input-area" name="zcylhejikuan"></td>
+        				<td><input type="text" value="" class="input-area" name="zcylhejihou"></td>
+        				<td><input type="text" value="" class="input-area" name="zcylhejinum"></td>
+        				<td><input type="text" value="" class="input-area" name="zcylhejidanwei"></td>
+        				<td><input type="text" value="" class="input-area" name="zcylhejihansui"></td>
+        				<td><input type="text" value="" class="input-area" name="zcylhejiweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="zcylhejichenben"></td>
+        				<td><input type="text" value="" class="input-area-1" name="zcylhejiremark"></td> 
+        			</tr>
+        			<tr>
+        				<td class="weight-600">主材损耗率可损</td>
+        				<td colspan="4"><input type="text" value="木箱" class="input-area" name="zsname"></td>
+        				<td><input type="text" value="" class="input-area" name="zsnum"></td>
+        				<td><input type="text" value="" class="input-area" name="zsbi"></td>
+        				<td>%</td>
+        				<td><input type="text" value="" class="input-area" name="zsdanwei"></td>
+        				<td><input type="text" class="input-area-1" name="zsremark"></td> 
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">主材合计：</td>
+        				<td colspan="6"><input type="text" class="input-area-1" name="zcheji"></td>
+        				<td></td>
+        			</tr>
+        			<tr>
+        				<td rowspan="15" class="weight-600">辅材</td>
+        				<td colspan="5" class="weight-600">材料名称</td>
+        				<td class="weight-600">数量</td>
+        				<td rowspan="14" class="weight-600">pcs/件</td>
+        				<td class="weight-600">含税单价</td>
+        				<td class="weight-600">未税单价</td>
+        				<td rowspan="14" class="weight-600">元/pcs</td>
+        				<td class="weight-600">未税</td>
+        				<td class="weight-600">备注</td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">雨布</td>
+        				<td><input type="text" value="" class="input-area" name="yubuprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor"   name="yubuhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="yubuweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="yubudanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="yuburemark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">真空袋</td>
+        				<td><input type="text" value="" class="input-area" name="zhenkongprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="zhenkonghansui"></td>
+        				<td><input type="text" value="" class="input-area" name="zhenkongweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="zhenkongdanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="zhenkongremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">干燥剂</td>
+        				<td><input type="text" value="" class="input-area" name="ganzhaoprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="ganzhaohansui"></td>
+        				<td><input type="text" value="" class="input-area" name="ganzhaoweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="ganzhaodanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="ganzhaoremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">PE袋</td>
+        				<td><input type="text" value="" class="input-area" name="peprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="pehansui"></td>
+        				<td><input type="text" value="" class="input-area" name="peweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="pedanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="peremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">PE膜/气泡垫/珍珠棉</td>
+        				<td><input type="text" value="" class="input-area" name="pqzprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="pqzhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="pqzweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="pqzdanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="pqzremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">钉子</td>
+        				<td><input type="text" value="" class="input-area" name="dingziprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="dingzihansui"></td>
+        				<td><input type="text" value="" class="input-area" name="dingziweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="dingzidanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="dingziremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">螺杆、自攻钉</td>
+        				<td><input type="text" value="" class="input-area" name="luoganprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor"  name="luoganhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="luoganweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="luogandanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="luoganremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">上起吊护角</td>
+        				<td><input type="text" value="" class="input-area" name="shujiaoprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="shujiaohansui"></td>
+        				<td><input type="text" value="" class="input-area" name="shujiaoweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="shujiaodanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="shujiaoremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">下起吊护角</td>
+        				<td><input type="text" value="" class="input-area" name="xhujiaoprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="xhujiaohansui"></td>
+        				<td><input type="text" value="" class="input-area" name="xhujiaoweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="xhujiaodanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="xhujiaoremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">卡扣</td>
+        				<td><input type="text" value="" class="input-area" name="kakouprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="kakouhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="kakouweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="kakoudanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="kakouremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">焊材</td>
+        				<td><input type="text" value="" class="input-area" name="hancaiprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="hancaihansui"></td>
+        				<td><input type="text" value="" class="input-area" name="hancaiweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="hancaidanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="hancairemark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">钢带</td>
+        				<td><input type="text" value="" class="input-area" name="gangdaiprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="gangdaihansui"></td>
+        				<td><input type="text" value="" class="input-area" name="gangdaiweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="gangdaidanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="gangdairemark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">钢扣</td>
+        				<td><input type="text" value="" class="input-area" name="gangkouprice"></td>
+        				<td class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="gangkouhansui"></td>
+        				<td><input type="text" value="" class="input-area" name="gangkouweisui"></td>
+        				<td><input type="text" value="" class="input-area" name="gangkoudanwei"></td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="gangkouremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">辅材合计：</td>
+        				<td colspan="6"><input type="text" value="" class="input-area" name="fucaiheji"></td>
+        				<td><input type="text" class="input-area-1" name="fucaihejiremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="7" class="weight-600">材料合计：</td>
+        				<td colspan="7"><input type="text" value="" class="input-area" name="cailiaoheji"></td>
+        			</tr>
+        			<tr>
+        				<td rowspan="9" class="weight-600">费用</td>
+        				<td colspan="2" class="weight-600">费用类别</td>
+        				<td colspan="2" class="weight-600">计量单位</td>
+        				<td colspan="2" class="weight-600">数量</td>
+        				<td colspan="4" class="weight-600">单价价格、比率</td>
+        				<td colspan="2" class="weight-600">单位成本</td>
+        				<td class="weight-600">备注</td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">人工费用</td>
+        				<td colspan="2" class="weight-600">工时</td>
+        				<td colspan="2" class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="persontime"></td>
+        				<td colspan="2" class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="personprice"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="" class="input-area-1" name="persondanwei"></td>
+        				<td class="weight-600">元/件</td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="personremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">外组装费</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td class="bgcolor" colspan="2"><input type="text" value="0" class="input-area bgcolor" name="wzzfnum"></td>
+        				<td class="bgcolor" colspan="2"><input type="text" value="0" class="input-area bgcolor" name="wzzfdanjia"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="" class="input-area-1" name="wzzfdanwei"></td>
+        				<td class="weight-600">元/件</td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="wzzfremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">熏蒸费用</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td colspan="2" class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="xznum"></td>
+        				<td colspan="2" class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="xzdanjia"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="" class="input-area-1" name="xzdanwei"></td>
+        				<td class="weight-600">元/件</td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="xzreamrk"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">吊装费用</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td colspan="2" class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="dznum"></td>
+        				<td colspan="2" class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="dzdanjia"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="" class="input-area-1" name="dzdanwei"></td>
+        				<td class="weight-600">元/件</td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="dzremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="2" class="weight-600">运输费用</td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td colspan="2" class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="yshunum"></td>
+        				<td colspan="2" class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="yshudanjia"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        				<td><input type="text" value="" class="input-area-1" name="yshudanwei"></td>
+        				<td class="weight-600">元/件</td>
+        				<td class="bgcolor"><input type="text" class="input-area-1 bgcolor" name="yshuremark"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">合计：</td>
+        				<td colspan="6"><input type="text" value="" class="input-area" name="heji"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">综合费用：</td>
+        				<td colspan="6"><input type="text" value="" class="input-area" name="zonghe"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">费用合计：</td>
+        				<td colspan="6"><input type="text" value="" class="input-area" name="fyongheji"></td>
+        				<td colspan="2" class="weight-600">元/件</td>
+        			</tr>
+        			<tr>
+        				<td colspan="7" class="weight-600">材料、费用合计：</td>
+        				<td colspan="7"><input type="text" value="" class="input-area" name="caifeiheji"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="5" class="weight-600">计划毛利润率：</td>
+        				<td colspan="5"><input type="text" value="13.33%" class="input-area" name="jihuamllv"></td>
+        				<td colspan="4" class="weight-600">企业所得税税率25%，计划净利润率10%</td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">最低报价</td>
+        				<td colspan="2" class="weight-600">未税价格</td>
+        				<td colspan="1"><input type="text" value="" class="input-area" name="zuidiweisui"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">含税价格</td>
+        				<td colspan="1"><input type="text" value="" class="input-area redTxt" name="zuidihansui"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">最低报价比(未税)</td>
+        				<td colspan="1"><input type="text" value="" class="input-area" name="zuidibaojiabi"></td>
+        			</tr>
+        			 <tr>
+        				<td colspan="4" class="weight-600">实际报价净利润分析：</td>
+        				<td colspan="10"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">实际报价</td>
+        				<td colspan="2" class="weight-600">未税价格</td>
+        				<td colspan="1"><input type="text" value="" class="input-area" name="shijiweisui"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">含税价格</td>
+        				<td colspan="1" class="bgcolor"><input type="text" value="0" class="input-area bgcolor" name="shijihansui"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">材料售价比(未税)</td>
+        				<td colspan="1"><input type="text" value="" class="input-area" name="cailiaoshoujiabi"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">不确定因素评估</td>
+        				<td colspan="2" class="weight-600">比例</td>
+        				<td colspan="1"  class="bgcolor"><input type="text" value="" class="input-area bgcolor" name="unsurebili"></td>
+        				<td colspan="1" class="weight-600">%</td>
+        				<td colspan="2" class="weight-600">金额</td>
+        				<td colspan="1"><input type="text" value="" class="input-area" name="unsureprice"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">订单支出</td>
+        				<td colspan="1"><input type="text" value="" class="input-area" name="unsurezhichu"></td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">实际净利润率</td>
+        				<td colspan="2" class="weight-600">比例</td>
+        				<td colspan="8"><input type="text" value="" class="input-area" name="shijibili"></td>
+        				<td colspan="1" class="weight-600">%</td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">预报价</td>
+        				<td colspan="2" class="weight-600">未税价格</td>
+        				<td colspan="1"><input type="text" value="" class="input-area" name="yubaojiaweisui"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        				<td colspan="2" class="weight-600">含税价格</td>
+        				<td colspan="4"><input type="text" value="" class="input-area" name="yubaojiahansui"></td>
+        				<td colspan="1" class="weight-600">元/件</td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" class="weight-600">预测净利润率</td>
+        				<td colspan="2" class="weight-600">比例</td>
+        				<td colspan="8" class="bgcolor"><input type="text" value="" class="input-area bgcolor" name="yucebili"></td>
+        				<td colspan="1" class="weight-600">%</td>
+        			</tr>
+        			<!-- <tr>
+        				<td colspan="3" class="weight-600">特殊批准理由</td>
+        				<td colspan="3"><input type="text" class="input-area"></td>
+        				<td colspan="2" class="weight-600">复.。。</td>
+        				<td colspan="2"><input type="text" class="input-area"></td>
+        				<td colspan="2" class="weight-600">制表</td>
+        				<td colspan="2"><input type="text" class="input-area"></td>
+        			</tr> -->
+        		</table>
+        		<p class="mb-40 mt-100" style="text-align: center;"><button type="button" id="supply-btn" class="orange-md-btn">计算成本</button></p>
+        	</div>
+       </div>
+       <script type="text/javascript" src="../js/jquery.min.js" ></script>
+       <script type="text/javascript" src="../laydate/laydate.js" ></script>
+       <script type="text/javascript" src="../../resources/js/base.js"></script>
+       <script type="text/javascript" src="../js/costing.js"></script>
+		<script>
+			lay('#version').html('-v'+ laydate.v);
+			
+			//执行一个laydate实例
+			laydate.render({
+			  elem: '#retime1' //指定元素
+			});
+			
+		</script>
+	</body>
+</html>

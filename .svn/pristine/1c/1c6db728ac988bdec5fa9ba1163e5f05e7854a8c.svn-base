@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>手机号验证</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+	</head>
+	<body>
+		<div class="header">
+			<div class="title">手机号验证</div>
+		</div>
+		<div class="content pt-106">
+			<div class="phone p-30">
+				<div class="row mt-30">
+					<div class="col-4 pr-10"><div class="person-100-box">中国+86</div></div>
+					<div class="col-8 pl-10"><input type="number" placeholder="请输入手机号"/></div>
+				</div>
+				<div class="row mt-30">
+					<div class="col-6 pr-10"><button class="md-blue-btn ft-30">获取验证码</button></div>
+					<div class="col-6 pl-10"><input type="number" placeholder="请输入验证码"/></div>
+				</div>
+				<div class="submit mt-30"><button class="md-blue-btn" onclick="location.href='login.html'">提交</button></div>	
+			</div>			
+		</div>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
+</html>

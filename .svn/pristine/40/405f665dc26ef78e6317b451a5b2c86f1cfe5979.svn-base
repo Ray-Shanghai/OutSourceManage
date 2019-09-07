@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdOrderInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdOrderInfo" id="sdorderinfoMap"> 
+
+		<result column="order_id" property="orderId"/>
+		<result column="order_nuber" property="orderNuber"/>
+		<result column="customer_no" property="customerNo"/>
+		<result column="customer_id" property="customerId"/>
+		<result column="customer_name" property="customerName"/>
+		<result column="customer_address" property="customerAddress"/>
+		<result column="delivery_date" property="deliveryDate"/>
+		<result column="suggest_delivery_date" property="suggestDeliveryDate"/>
+		<result column="order_price" property="orderPrice"/>
+		<result column="cost_price" property="costPrice"/>
+		<result column="commercial_price" property="commercialPrice"/>
+		<result column="procurement_user_id" property="procurementUserId"/>
+		<result column="checkout_user_id" property="checkoutUserId"/>
+		<result column="confirm_user_id" property="confirmUserId"/>
+		<result column="data_state" property="dataState"/>
+		<result column="quote_status" property="quoteStatus"/>
+		<result column="sd_id" property="sdId"/>
+		
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+		<!-- 详情表集合 -->
+		<collection property="detailList" ofType="com.sd.farmework.pojo.SdOrderDetailInfo">
+             	<id property="detailOrderId" column="detail_order_id"/>
+             	<result column="detail_order_id" property="detailOrderId"/>
+				<result column="order_id" property="orderId"/>
+				<result column="product_id" property="productId"/>
+				<result column="customer_supplies" property="customerSupplies"/>
+				<result column="product_code" property="productCode"/>
+				<result column="product_name" property="productName"/>
+				<result column="detail_length" property="detailLength"/>
+				<result column="detail_width" property="detailWidth"/>
+				<result column="detail_height" property="detailHeight"/>
+				<result column="is_lid" property="isLid"/>
+				<result column="price" property="price"/>
+				<result column="number" property="number"/>
+				<result column="cost_price" property="costPrice"/>
+				<result column="product_type_id" property="productTypeId"/>
+				<result column="product_grade_id" property="productGradeId"/>
+				<result column="immediately_inventory" property="immediatelyInventory"/>
+				<result column="discount_before_sum" property="discountBeforeSum"/>
+				<result column="money" property="money"/>
+				<result column="tax_rate" property="taxRate"/>
+				<result column="sell_tax" property="sellTax"/>
+				<result column="practical_sell_price" property="practicalSellPrice"/>
+				<result column="price_sell_sum" property="priceSellSum"/>
+				<result column="relevance_number" property="relevanceNumber"/>
+				<result column="take_out_number" property="takeOutNumber"/>
+				<result column="bom_type" property="bomType"/>
+				<result column="file_url" property="fileUrl"/>
+				<result column="file_name" property="fileName"/>
+     	</collection>
+	</resultMap>
+	<sql id="publicSql">
+		order_id,
+		order_nuber,
+		customer_no,
+		customer_id,
+		customer_name,
+		customer_address,
+		delivery_date,
+		suggest_delivery_date,
+		order_price,
+		cost_price,
+		commercial_price,
+		procurement_user_id,
+		checkout_user_id,
+		confirm_user_id,
+		data_state,
+		quote_status,
+		sd_id,
+		remark,
+		status,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME,
+		LAST_UPDATE_TIME,
+		LAST_UPDATE_USER_ID,
+		LAST_UPDATE_USER_NAME,
+		LAST_UPDATE_DEPART_ID,
+		LAST_UPDATE_DEPART_NAME
+	</sql>
+	<!-- 根据客户订单号查询订单 -->
+	<select id="queryByIdForMysql"  parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		select 
+		<include refid="publicSql"></include>
+		from sd_order_info
+		<where>
+			<if test="customerNo!=null">
+				customer_no=#{customerNo}
+			</if>
+			AND status='Y'
+		</where>
+	</select>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT 
+		t.*,d.*
+		FROM  sd_order_info t ,sd_order_detail_info d
+		where t.order_id=d.order_id and t.order_id=#{orderId}
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT 
+		<include refid="publicSql"></include>
+		FROM  sd_order_info t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT  
+		<include refid="publicSql"></include>
+		FROM  sd_order_info t 
+		<where>
+			<if test="procurementUserId!=null and procurementUserId!=''">
+				procurement_user_id=#{procurementUserId}
+			</if>
+			<if test="checkoutUserId!=null and checkoutUserId!=''">
+				and checkout_user_id=#{checkoutUserId}
+			</if>
+			<if test="acceptUserList!=null and acceptUserList!=''">
+				and order_id in
+				<foreach item="item" index="index" collection="acceptUserList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<if test="orderNuber!=null and orderNuber!=''">
+				AND order_nuber like concat('%',#{orderNuber},'%')
+			</if>
+			<if test="customerName!=null and customerName!=''">
+				AND customer_name like concat('%',#{customerName},'%')
+			</if>
+			<if test="createUserName!=null and createUserName!=''">
+				AND create_user_name like concat('%',#{createUserName},'%')
+			</if>
+			<if test="dataStateList!=null and dataStateList!=''">
+				and data_state in
+				<foreach item="item" index="index" collection="dataStateList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<!--  <if test="createUserId!=null and createUserId!=''">
+				or create_user_id=#{createUserId}
+			</if> -->
+			 <if test="dataState==null or dataState==''">
+				AND data_state!='3' and data_state!='6'
+			</if>
+			and status='Y'
+		</where>
+			order by create_time DESC
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<!-- 微信端分页 -->
+	<select id="queryListByWxPage" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT  
+		<include refid="publicSql"></include>
+		FROM  sd_order_info t 
+		<where>
+			<if test="procurementUserId!=null and procurementUserId!=''">
+				procurement_user_id=#{procurementUserId}
+			</if>
+			<if test="checkoutUserId!=null and checkoutUserId!=''">
+				and checkout_user_id=#{checkoutUserId}
+			</if>
+			<if test="acceptUserList!=null and acceptUserList!=''">
+				and order_id in
+				<foreach item="item" index="index" collection="acceptUserList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<if test="orderNuber!=null and orderNuber!=''">
+				AND order_nuber like concat('%',#{orderNuber},'%')
+			</if>
+			<if test="customerName!=null and customerName!=''">
+				AND customer_name like concat('%',#{customerName},'%')
+			</if>
+			<if test="createUserName!=null and createUserName!=''">
+				AND create_user_name like concat('%',#{createUserName},'%')
+			</if>
+		   
+			<if test="dataStateList!=null and dataStateList!=''">
+				and data_state in
+				<foreach item="item" index="index" collection="dataStateList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<!--  <if test="createUserId!=null and createUserId!=''">
+				or create_user_id=#{createUserId}
+			</if> -->
+			and status='Y'
+		</where>
+		order by create_time DESC
+		LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<!-- 微信端查询数据条数 -->
+	<select id="queryCountByWxPage"  parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_order_info 
+   		<where>
+			<if test="procurementUserId!=null and procurementUserId!=''">
+				procurement_user_id=#{procurementUserId}
+			</if>
+			<if test="checkoutUserId!=null and checkoutUserId!=''">
+				and checkout_user_id=#{checkoutUserId}
+			</if>
+			<if test="acceptUserList!=null and acceptUserList!=''">
+				and order_id in
+				<foreach item="item" index="index" collection="acceptUserList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<if test="orderNuber!=null and orderNuber!=''">
+				AND order_nuber like concat('%',#{orderNuber},'%')
+			</if>
+			<if test="customerName!=null and customerName!=''">
+				AND customer_name like concat('%',#{customerName},'%')
+			</if>
+			<if test="createUserName!=null and createUserName!=''">
+				AND create_user_name like concat('%',#{createUserName},'%')
+			</if>
+			
+			<if test="dataStateList!=null and dataStateList!=''">
+				and data_state in
+				<foreach item="item" index="index" collection="dataStateList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<!-- <if test="createUserId!=null and createUserId!=''">
+				or create_user_id=#{createUserId}
+			</if> -->
+			and status='Y'
+		</where>
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT 
+		<include refid="publicSql"></include>
+		order by create_time DESC
+		FROM  sd_order_info t 
+	</select>
+	<!-- 查询每天最大的订单编号 -->
+	<select id="queryMaxOrderNuber" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT MAX(S.order_nuber) orderNuber FROM sd_order_info s WHERE s.order_nuber like concat(#{orderNuber},'%')
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo" useGeneratedKeys="true" keyProperty="orderId">
+	insert into sd_order_info
+	(
+		order_nuber,
+		customer_no,
+		customer_id,
+		customer_name,
+		customer_address,
+		delivery_date,
+		suggest_delivery_date,
+		order_price,
+		cost_price,
+		commercial_price,
+		procurement_user_id,
+		checkout_user_id,
+		data_state,
+		sd_id,
+		remark,
+		status,
+		CREATE_TIME,
+		CREATE_USER_ID,
+		CREATE_USER_NAME,
+		CREATE_DEPART_ID,
+		CREATE_DEPART_NAME
+	)
+	values
+	(
+		#{orderNuber},
+		#{customerNo},
+		#{customerId},
+		#{customerName},
+		#{customerAddress},
+		#{deliveryDate},
+		#{suggestDeliveryDate},
+		#{orderPrice},
+		#{costPrice},
+		#{commercialPrice},
+		#{procurementUserId},
+		#{checkoutUserId},
+		#{dataState},
+		#{sdId},
+		#{remark},
+		'Y',
+		now(),
+		#{createUserId},
+		#{createUserName},
+		#{createDepartId},
+		#{createDepartName}
+	)
+	</insert>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_order_info 
+   		<where>
+			<if test="procurementUserId!=null and procurementUserId!=''">
+				procurement_user_id=#{procurementUserId}
+			</if>
+			<if test="checkoutUserId!=null and checkoutUserId!=''">
+				and checkout_user_id=#{checkoutUserId}
+			</if>
+			<if test="acceptUserList!=null and acceptUserList!=''">
+				and order_id in
+				<foreach item="item" index="index" collection="acceptUserList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<if test="orderNuber!=null and orderNuber!=''">
+				AND order_nuber like concat('%',#{orderNuber},'%')
+			</if>
+			<if test="customerName!=null and customerName!=''">
+				AND customer_name like concat('%',#{customerName},'%')
+			</if>
+			<if test="createUserName!=null and createUserName!=''">
+				AND create_user_name like concat('%',#{createUserName},'%')
+			</if>
+			
+			<if test="dataStateList!=null and dataStateList!=''">
+				and data_state in
+				<foreach item="item" index="index" collection="dataStateList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			 <if test="dataState==null or dataState==''">
+				AND data_state!='3' and data_state!='6'
+			</if>
+			<!-- <if test="createUserId!=null and createUserId!=''">
+				or create_user_id=#{createUserId}
+			</if> -->
+			and status='Y'
+		</where>
+	</select>
+	<!-- 修改订单状态 -->
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo">
+		update  sd_order_info
+		<set>
+			<if test="dataState!=null and dataState!=''">
+				data_state=#{dataState},
+			</if>
+			<if test="quoteStatus!=null and quoteStatus!=''">
+				quote_status=#{quoteStatus},
+			</if>
+			<if test="lastUpdateUserId!=null and lastUpdateUserId!=''">
+				LAST_UPDATE_USER_ID=#{lastUpdateUserId},
+			</if>
+			<if test="lastUpdateUserName!=null and lastUpdateUserName!=''">
+				LAST_UPDATE_USER_NAME=#{lastUpdateUserName},
+			</if>
+			<if test="status!=null and status!=''">
+				status=#{status},
+			</if>
+			LAST_UPDATE_TIME=now(),
+		</set>
+		WHERE order_id=#{orderId}
+	</update>
+	<!-- 查询所有订单分页 -->
+	<select id="queryListByTrack" parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultMap="sdorderinfoMap">
+		SELECT  
+		<include refid="publicSql"></include>
+		FROM  sd_order_info t 
+		<where>
+			<if test="procurementUserId!=null and procurementUserId!=''">
+				procurement_user_id=#{procurementUserId}
+			</if>
+			<if test="checkoutUserId!=null and checkoutUserId!=''">
+				and checkout_user_id=#{checkoutUserId}
+			</if>
+			<if test="acceptUserList!=null and acceptUserList!=''">
+				and order_id in
+				<foreach item="item" index="index" collection="acceptUserList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<if test="orderNuber!=null and orderNuber!=''">
+				AND order_nuber like concat('%',#{orderNuber},'%')
+			</if>
+			<if test="customerName!=null and customerName!=''">
+				AND customer_name like concat('%',#{customerName},'%')
+			</if>
+			
+			<if test="createUserName!=null and createUserName!=''">
+				AND create_user_name like concat('%',#{createUserName},'%')
+			</if>
+			<if test="dataStateList!=null and dataStateList!=''">
+				and data_state in
+				<foreach item="item" index="index" collection="dataStateList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<if test="confirmUserId!=null and confirmUserId!=''">
+				or confirm_user_id=#{confirmUserId}
+			</if>
+			<if test="createUserId!=null and createUserId!=''">
+				or create_user_id=#{createUserId}
+			</if>
+		</where>
+			order by create_time DESC
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryCountByTrack"  parameterType="com.sd.farmework.pojo.SdOrderInfo"  resultType="java.lang.Integer">
+		select count(*) from  sd_order_info t 
+		<where>
+			<if test="procurementUserId!=null and procurementUserId!=''">
+				procurement_user_id=#{procurementUserId}
+			</if>
+			<if test="checkoutUserId!=null and checkoutUserId!=''">
+				and checkout_user_id=#{checkoutUserId}
+			</if>
+			<if test="acceptUserList!=null and acceptUserList!=''">
+				and order_id in
+				<foreach item="item" index="index" collection="acceptUserList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<if test="orderNuber!=null and orderNuber!=''">
+				AND order_nuber like concat('%',#{orderNuber},'%')
+			</if>
+			<if test="customerName!=null and customerName!=''">
+				AND customer_name like concat('%',#{customerName},'%')
+			</if>
+			
+			<if test="createUserName!=null and createUserName!=''">
+				AND create_user_name like concat('%',#{createUserName},'%')
+			</if>
+			<if test="dataStateList!=null and dataStateList!=''">
+				and data_state in
+				<foreach item="item" index="index" collection="dataStateList" open="(" separator="," close=")">  
+				  	#{item}  
+				 </foreach> 
+			</if>
+			<if test="confirmUserId!=null and confirmUserId!=''">
+				or confirm_user_id=#{confirmUserId}
+			</if>
+			<if test="createUserId!=null and createUserId!=''">
+				or create_user_id=#{createUserId}
+			</if>
+		</where>
+	</select>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdOrderInfo" >
+		delete from sd_order_info where order_id=#{orderId}
+	</delete>
+	<!--修改订单信息  -->
+	<update id="updateOrderInfo" parameterType="com.sd.farmework.pojo.SdOrderInfo">
+		update sd_order_info
+		<set>
+			<if test="customerNo!=null and customerNo!=''">
+				customer_no=#{customerNo},
+			</if>
+			<if test="deliveryDate!=null and deliveryDate!=''">
+				delivery_date=#{deliveryDate},
+			</if>
+			<if test="suggestDeliveryDate!=null and suggestDeliveryDate!=''">
+				suggest_delivery_date=#{suggestDeliveryDate},
+			</if>
+			<if test="orderPrice!=null and orderPrice!=''">
+				order_price=#{orderPrice},
+			</if>
+			<if test="costPrice!=null and costPrice!=''">
+				cost_price=#{costPrice},
+			</if>
+			<if test="commercialPrice!=null and commercialPrice!=''">
+				commercial_price=#{commercialPrice},
+			</if>
+			<if test="lastUpdateTime!=null and lastUpdateTime!=''">
+				last_update_time=#{lastUpdateTime},
+			</if>
+			<if test="lastUpdateUserId!=null and lastUpdateUserId!=''">
+				last_update_user_id=#{lastUpdateUserId},
+			</if>
+			<if test="lastUpdateUserName!=null and lastUpdateUserName!=''">
+				last_update_user_name=#{lastUpdateUserName}
+			</if>
+		</set>
+		where order_id=#{orderId}
+	</update>
+</mapper> 
+

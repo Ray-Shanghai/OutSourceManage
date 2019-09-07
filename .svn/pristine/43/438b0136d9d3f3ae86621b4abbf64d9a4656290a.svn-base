@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>选择报价</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+		<link rel="stylesheet" href="css/dist/css/swiper.min.css" />
+		<style>
+			.swiper-container {
+		        width: 100%;
+		        height: 100%;
+		        overflow-y: auto;
+		    }
+		    .swiper-pagination{position: fixed;}
+		    .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+			    top: 10%;
+			    left: 0;
+			    width: 100%;
+			    bottom: auto;
+			}
+           .swiper-pagination-bullet {
+			  display: inline-block;
+			  width: 10px;
+			  height: 10px;
+			  border-radius: 10px;
+			  background: #fff;
+			  margin: 0 5px;
+			  opacity: 0.8;
+			  cursor: pointer;
+			}
+			.swiper-pagination-bullet-active {
+			  background: #007aff;
+			}
+		</style>
+	</head>
+	<body class="bgcolor-grayf8">
+		<div class="header">
+			<div class="header-left"><a class="iconfont icon-llmainpageback" onclick="window.history.go(-1)"></a></div>
+			<div class="title">选择报价</div>
+			<div class="header-right"><a class="title-search" href="javascript:void(0);"><span class="iconfont icon-baocun"></span></a></div>
+		</div>
+		<div class="content pt-106">
+			<div class="list-content">
+				<div class="title-purchase"><span class="shu-width-3"></span>订单信息<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul>
+					<li class="row">
+						<div class="col-4">客户名称：</div>
+						<div class="col-8" id="customerName"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">客户地址：</div>
+						<div class="col-8" id="customerAddress"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">交货日期：</div>
+						<div class="col-8" id="deliveryDate"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">建议交货日期：</div>
+						<div class="col-8" id="suggestDeliveryDate"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">订单价格：</div>
+						<div class="col-8" id="orderPrice"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">成本价格：</div>
+						<div class="col-8" id="costPrice" name="costPrice"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">客户订单号：</div>
+						<div class="col-8" id="customerNo"></div>
+					</li>
+				</ul>
+			</div>
+			<div class="list-content mb-30">
+				<div class="title-purchase"><span class="shu-width-3"></span>物料信息<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul class="check-material">
+				</ul>
+			</div>
+			<div class="list-content mb-30" style="background: #f8f8f8;">
+				<div class="title-purchase"><span class="shu-width-3"></span>选择报价<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul class="select-quotation">
+					<!-- <li>
+		    			<div class="table-top"><i class="iconfont icon-duihao"></i>采购员：王某某<span class="fr">300000元</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom" style="color: #366FC6;">附件：4554554.pdf</div>
+		    		</li>
+		    		<li>
+		    			<div class="table-top">采购员：王某某<span class="fr">300000元</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom" style="color: #366FC6;">附件：4554554.pdf</div>
+		    		</li>
+		    		<li>
+		    			<div class="table-top">采购员：王某某<span class="fr">300000元</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom" style="color: #366FC6;">附件：4554554.pdf</div>
+		    		</li> -->
+				</ul>
+		    </div>
+		</div>
+	    <div class="bg-tc">
+	    	<div class="close-btn"><span class="iconfont icon-chahao fr"></span></div>
+	    	<div class="bg-content">
+	    		<div class="swiper-container">
+			        <div class="swiper-wrapper">
+			            
+			           			           
+			        </div>
+			        <!-- Add Pagination -->
+			        <div class="swiper-pagination"></div>
+			    </div>
+	    	</div>
+	    </div>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/js/base.js"></script>
+    <script type="text/javascript" src="../resources/login/layui/layui.js"></script>
+    <script type="text/javascript" src="js/layer.js" ></script>
+    <script type="text/javascript" src="css/dist/js/swiper.min.js" ></script>
+    <script type="text/javascript" src="js/orderDetail.js"></script>
+     <script type="text/html" id="indexTpl">
+	{{#  layui.each(d.sdorderinfo.detailList, function(index, item){ }}
+		<li class="row">
+			<div class="col-4">产品名称：</div>
+			<div class="col-7">{{item.productName}}</div>
+			<div class="col-1"><a onclick="detailOrder()"><span class="iconfont icon-qianjin"></span><a/></div>
+		</li>
+	{{# }); }}
+	</script>
+	 <script type="text/html" id="detailTpl">
+	{{#  layui.each(d.sdorderinfo.detailList, function(index, item){ }}
+		<div class="swiper-slide">
+			            	<div class="list-content mb-30">
+								<ul>
+									<li class="row">
+										<div class="col-4">产品名称：</div>
+										<div class="col-8">{{item.productName}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">客户料号：</div>
+										<div class="col-8" >{{item.customerSupplies}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">产品代码：</div>
+										<div class="col-8" >{{item.productCode}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">成本核算：</div>
+										<div class="col-8" name="costPrice">{{item.costPrice}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">长：</div>
+										<div class="col-8" >{{item.detailLength}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">宽：</div>
+										<div class="col-8" >{{item.detailWidth}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">高：</div>
+										<div class="col-8" >{{item.detailHeight}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">是否带盖：</div>
+										<div class="col-8" >
+										{{item.isLid==0?'是':'否'}}
+										</div>
+									</li>
+									<li class="row">
+										<div class="col-4">类别：</div>
+										<div class="col-8" name="productTypeId">
+											<select name="productTypeId{{index}}" class="select" >
+											</select>
+										</div>
+									</li>
+									<li class="row">
+										<div class="col-4">材质：</div>
+										<div class="col-8" name="productGradeId">
+											<select name="productGradeId{{index}}" class="select" >
+											</select>
+										</div>
+									</li>
+									<li class="row">
+										<div class="col-4">数量：</div>
+										<div class="col-8" >{{item.number}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">即时库存：</div>
+										<div class="col-8" >{{item.immediatelyInventory}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">单价：</div>
+										<div class="col-8" >{{item.price}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">整单折前金额：</div>
+										<div class="col-8" >{{item.discountBeforeSum}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">金额：</div>
+										<div class="col-8" >{{item.money}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">税率：</div>
+										<div class="col-8" >{{item.taxRate}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">销项税额：</div>
+										<div class="col-8" >{{item.sellTax}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">实际含税单价：</div>
+										<div class="col-8" >{{item.practicalSellPrice}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">价税合计：</div>
+										<div class="col-8" >{{item.priceSellSum}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">关联数量：</div>
+										<div class="col-8" >{{item.relevanceNumber}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">出库数量：</div>
+										<div class="col-8" >{{item.takeOutNumber}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">BOM类别：</div>
+										<div class="col-8" >{{item.bomType}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">图纸信息：</div>
+										<div class="col-8"><a href="/OutSourceManage/{{item.fileUrl}}"><span class="color-blue">{{item.fileName}}</span></a></div>
+									</li>
+								</ul>
+							</div>
+			            </div>
+	{{# }); }}
+	</script>
+	 <script type="text/html" id="filtrateTpl">
+	{{#  layui.each(d.quoteList, function(index, item){ }}
+		<li onclick="chooseCaigou(this);">
+			<input type="hidden" name="orderQuoteId" value="{{item.orderQuoteId}}">
+		  <div class="table-top">采购员：{{item.createUserName}}<span class="fr">{{item.doQuote}}</span></div>
+		  <div class="table-middle">{{item.providerName}}</div>
+		  <div class="table-bottom" style="color: #366FC6;">附件：<a href="/OutSourceManage/{{item.fileUrl}}">{{item.fileName}}</a></div>
+		</li>
+	{{# }); }}
+	</script>
+	<script type="text/javascript">
+	$(function(){
+		var orid=window.location.search.split("?")[1];
+		$.ajax({
+			type : 'POST',
+			url : base.serverContent+ '/SdOrderQuote/queryList.do',
+			data:{'orderId':orid},
+			async : false,
+			success : function(data) {
+				
+				layui.use(['form','laytpl'], function(){
+					var laytpl = layui.laytpl;
+					
+					laytpl(filtrateTpl.innerHTML).render(data, function(html){
+						$(".select-quotation").html(html);
+					});
+				});
+			},error:function(){}
+		});
+	});
+	function chooseCaigou(t){
+		if($(t).children('.table-top').children('.icon-duihao').length==0){
+			 $(t).children('.table-top').prepend('<i class="iconfont icon-duihao"></i>')
+			 $(t).siblings().children('.table-top').children('.icon-duihao').remove()
+		}
+	}
+	/*提交数据*/
+	$(".title-search").click(function(){
+		if($(".icon-duihao").length==0){
+			layer.alert('请选择一个供应商', {icon: 2});
+		}else{
+			var orderQuoteId=$(".icon-duihao").parent().parent().find("input[name='orderQuoteId']").val();
+			//alert(orderQuoteId);
+			$.ajax({
+				url : base.serverContent + "/SdOrderQuote/update.do",
+				type : "post",
+				data : {orderId:orderId,orderQuoteId:orderQuoteId},
+				dataType : "json",
+				success : function(data) {
+					if (data.code == "000") {
+						layer.alert('核价成功', {
+							icon : 1
+						}, function(index) {
+							layer.close(index);
+							window.location.href = 'listOrder.html?5';
+						});
+					} else {
+						layer.alert('核价失败', {
+							icon : 2
+						});
+					}
+				},
+				error : function(data) {
+				}
+
+			});
+		}
+	})
+	</script>
+</html>

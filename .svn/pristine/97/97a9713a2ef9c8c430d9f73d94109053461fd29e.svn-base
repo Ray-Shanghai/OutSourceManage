@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdProductInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdProductInfo" id="sdproductinfoMap"> 
+
+		<result column="product_id" property="productId"/>
+		<result column="customer_supplies" property="customerSupplies"/>
+		<result column="product_code" property="productCode"/>
+		<result column="product_name" property="productName"/>
+		<result column="product_standard" property="productStandard"/>
+		<result column="product_length" property="productLength"/>
+		<result column="product_width" property="productWidth"/>
+		<result column="product_height" property="productHeight"/>
+		<result column="is_lid" property="isLid"/>
+		<result column="cost_price" property="costPrice"/>
+		<result column="product_other" property="productOther"/>
+		<result column="product_type_id" property="productTypeId"/>
+		<result column="product_grade_id" property="productGradeId"/>
+		<result column="product_inner_length" property="productInnerLength"/>
+		<result column="product_inner_width" property="productInnerWidth"/>
+		<result column="product_inner_height" property="productInnerHeight"/>
+		<result column="sd_id" property="sdId"/>
+		
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdProductInfo">
+		UPDATE sd_product_info set 
+		t.product_id=#{productId},
+		t.customer_supplies=#{customerSupplies},
+		t.product_code=#{productCode},
+		t.product_name=#{productName},
+		t.product_standard=#{productStandard},
+		t.product_length=#{productLength},
+		t.product_width=#{productWidth},
+		t.product_height=#{productHeight},
+		t.is_lid=#{isLid},
+		t.cost_price=#{costPrice},
+		t.product_other=#{productOther},
+		t.product_type_id=#{productTypeId},
+		t.product_grade_id=#{productGradeId},
+		t.product_inner_length=#{productInnerLength},
+		t.product_inner_width=#{productInnerWidth},
+		t.product_inner_height=#{productInnerHeight},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdProductInfo"  resultMap="sdproductinfoMap">
+		SELECT 
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.product_standard,
+		t.product_length,
+		t.product_width,
+		t.product_height,
+		t.is_lid,
+		t.cost_price,
+		t.product_other,
+		t.product_type_id,
+		t.product_grade_id,
+		t.product_inner_length,
+		t.product_inner_width,
+		t.product_inner_height,
+		t.sd_id
+		FROM  sd_product_info t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdProductInfo"  resultMap="sdproductinfoMap">
+		SELECT 
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.product_standard,
+		t.product_length,
+		t.product_width,
+		t.product_height,
+		t.is_lid,
+		t.cost_price,
+		t.product_other,
+		t.product_type_id,
+		t.product_grade_id,
+		t.product_inner_length,
+		t.product_inner_width,
+		t.product_inner_height,
+		t.sd_id
+		FROM  sd_product_info t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdProductInfo"  resultMap="sdproductinfoMap">
+		SELECT  
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.product_standard,
+		t.product_length,
+		t.product_width,
+		t.product_height,
+		t.is_lid,
+		t.cost_price,
+		t.product_other,
+		t.product_type_id,
+		t.product_grade_id,
+		t.product_inner_length,
+		t.product_inner_width,
+		t.product_inner_height,
+		t.sd_id
+		FROM  sd_product_info t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdProductInfo"  resultMap="sdproductinfoMap">
+		SELECT 
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.product_standard,
+		t.product_length,
+		t.product_width,
+		t.product_height,
+		t.is_lid,
+		t.cost_price,
+		t.product_other,
+		t.product_type_id,
+		t.product_grade_id,
+		t.product_inner_length,
+		t.product_inner_width,
+		t.product_inner_height,
+		t.sd_id
+		FROM  sd_product_info t 
+	</select>
+	<!-- 根据产品名称查询产品信息 -->
+	<select id="queryProductByName" parameterType="java.lang.String"  resultMap="sdproductinfoMap">
+		SELECT 
+		t.product_id,
+		t.customer_supplies,
+		t.product_code,
+		t.product_name,
+		t.product_standard,
+		t.product_length,
+		t.product_width,
+		t.product_height,
+		t.is_lid,
+		t.cost_price,
+		t.product_other,
+		t.product_type_id,
+		t.product_grade_id,
+		t.product_inner_length,
+		t.product_inner_width,
+		t.product_inner_height,
+		t.sd_id
+		FROM  sd_product_info t 
+		where t.product_name=#{productName}
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdProductInfo" useGeneratedKeys="true" keyProperty="productId">
+	insert into sd_product_info
+	(
+		customer_supplies,
+		product_code,
+		product_name,
+		product_standard,
+		product_length,
+		product_width,
+		product_height,
+		is_lid,
+		cost_price,
+		product_other,
+		product_type_id,
+		product_grade_id,
+		product_inner_length,
+		product_inner_width,
+		product_inner_height,
+		sd_id
+	)
+	values
+	(
+		#{customerSupplies},
+		#{productCode},
+		#{productName},
+		#{productStandard},
+		#{productLength},
+		#{productWidth},
+		#{productHeight},
+		#{isLid},
+		#{costPrice},
+		#{productOther},
+		#{productTypeId},
+		#{productGradeId},
+		#{productInnerLength},
+		#{productInnerWidth},
+		#{productInnerHeight},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdProductInfo">
+		delete from sd_product_info where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdProductInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_product_info where 1=1
+	</select>
+</mapper> 
+

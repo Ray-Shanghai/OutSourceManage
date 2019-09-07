@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>签到列表</title>
+		<link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../css/font/iconfont1.css">
+		<link rel="stylesheet" type="text/css" href="../css/table.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../css/my.css" />
+		<style>
+			.layui-tab-title .layui-this {
+				background: #eeeeee;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="layui-tab">
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show table-edit">
+					<form class="layui-form" id="form1" action="">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width:70px;">签到人</label>
+								<div class="layui-input-inline" style="width:110px;">
+									<input type="text" name="createUserName" lay-verify="title" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<button class="layui-btn layui-btn-normal" type="button" id="search" style="width: 150px;">查询</button>
+							</div>
+						</div>
+					</form>
+					<div class="layui-form">
+						<table class="layui-table">
+							<thead>
+								<tr>
+									<th>签到编号</th>
+									<th>签到人</th>
+									<th>签到地点</th>
+									<th>签到时间</th>
+								</tr>
+							</thead>
+							<tbody id="content">
+								
+							</tbody>
+						</table>
+							<div id="paged" class="fr page" style="text-align: center;"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+	<script type="text/javascript" src="../js/myframe.js"></script>
+    <script type="text/javascript" src="../plugins/layui/layui.js" ></script>
+	<script type="text/javascript" src="../../resources/js/base.js"></script>
+	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	<script type="text/html" id="tpl">
+	  {{# 
+		layui.each(d.rows, function(index, item){ }}
+				<tr>
+					<td>{{ item.signinId }}</td>			
+					<td>{{ item.createUserName }}</td>			
+					<td>{{ item.signinName}}</td>
+					<td>{{ item.createTime }}</td>			
+				</tr>
+			{{# }); }}
+	</script>
+	<script>
+	 layui.config({
+			base : '../js/'
+		});    
+		layui.use([ 'jquery','paging', 'form', 'element'],
+				function() {
+					var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+							paging = layui.paging(),
+							layerTips = parent.layer === undefined ? layui.layer
+									: parent.layer, //获取父窗口的layer对象
+							layer = layui.layer, //获取当前窗口的layer对象
+							form = layui.form();
+							getData({});
+							
+					function getData(data){
+						paging.init({
+							url : base.serverContet
+									+ '/personCenter/querySigninList.do', //地址
+							elem : '#content', //内容容器
+							params :data,
+							type : 'POST',
+							tempElem : '#tpl', //模块容器
+							pageConfig : { //分页参数配置
+								elem : '#paged', //分页容器
+								pageSize : base.pageSize,
+								pageIndex:1
+							//分页大小
+							}, 
+							success : function(data) { //渲染成功的回调
+								//alert("回调成功")
+								
+							},
+							fail : function(msg) { //获取数据失败的回调
+								layer.alert('获取数据失败', {icon: 2});
+							},
+							complate : function() { //完成的回调
+								
+							},
+							serverError: function(xhr, status, error) { //ajax的服务错误
+								layer.alert('服务错误', {icon: 2});
+							}
+						});
+				
+					}
+					$("#search").click(function(){
+						  getData($("#form1").serializeObject());
+					});
+				
+		});
+		
+		
+		
+	</script>
+</html>

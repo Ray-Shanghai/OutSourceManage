@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>审批人列表</title>
+    	<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/icon.css">
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+   <script src="../../../resources/js/base.js"></script>
+	<script type="text/javascript" src="../../js/myframe.js"></script>
+	<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+	<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+	<link rel="stylesheet" type="text/css" href="../../css/my.css"/>
+</head>
+<body>
+	<table id="list_data" cellspacing="0" cellpadding="0"> 
+	    <thead> 
+	        <tr>  
+	        	<th data-options="field:'approvenRuleId',width:100" >审批规则编号</th>
+	        	<th data-options="field:'approvenRuleName',width:150" >审批规则名称</th>
+	          	<th data-options="field:'approvenUnitName',width:100" >审批单位名称</th>
+	          	<th data-options="field:'approvenDepartName',width:100" >审批部门名称</th>
+	          	<th data-options="field:'approvenTeamName',width:100" >审批班组名称</th>
+	        	<th data-options="field:'approvenFunctionId',width:100" >业务类型编号</th>
+	        	<th data-options="field:'approvenFunctionName',width:100" >业务类型名称</th>
+		    </tr> 
+	    </thead> 
+	</table>  
+ 
+   </body>
+   <script type="text/javascript">
+   layui.config({
+		base : '../../js/'
+	});
+   </script>
+ 
+	<script type="text/javascript">
+	
+	 
+		
+				var approvenFunctionId ="";
+				var approvenFunctionName ="";
+				  if(window.location.search.split("?").length>1){
+				    approvenFunctionId =window.location.search.split("?")[1].split("=")[1].split("&")[0];
+				    approvenFunctionName =unescape(window.location.search.split("?")[1].split("=")[2].split("&")[0]);
+				
+				  }
+ 
+					 $('#list_data').datagrid({ 
+			        iconCls:'icon-edit',//图标 
+			        width: 800, 
+			        height: '200', 
+			        nowrap: false, 
+			        striped: true, 
+			        border: true, 
+			        collapsible:false,//是否可折叠的 
+			        fit: true,//自动大小 
+			        url:base.serverContent+'/manager/loginIn/approven/approvenFunctionRuleDataList.do?approvenFunctionId='+approvenFunctionId, 
+			        //sortName: 'code', 
+			        //sortOrder: 'desc', 
+			        remoteSort:false,  
+			        
+			        idField:'controllerMethodId', 
+			        singleSelect:true,//是否单选 
+			        pagination:false,//分页控件 
+			        rownumbers:true,//行号 
+			        onClickRow: function(index, data) {
+			        	var row = $('#list_data').datagrid('getSelected');
+			        	window.parent.document.getElementById('bottomframe').src=base.serverContet+'/backstage/sysManage/approven/approvenFunctionRulePersonList.html?approvenRuleId='+row.approvenRuleId+'&approvenRuleName='+escape(row.approvenRuleName)+'&approvenFunctionId='+row.approvenFunctionId+'&approvenFunctionName='+escape(row.approvenFunctionName);
+			        },toolbar: [{ 
+			            text: '添加', 
+			            iconCls: 'icon-add', 
+			            handler: function() { 
+			            	if(approvenFunctionId==null||approvenFunctionId==""){
+			            		alert("请选择审批类型");
+			            		
+			            		return;
+			            	}
+			            	
+			            	
+			            	var url =base.serverContet+'/backstage/sysManage/approven/addApprovenFunctionRule.html?approvenFunctionId='+approvenFunctionId+'&approvenFunctionName='+escape(approvenFunctionName);
+			            	var title ="修改部门";
+			            	var width ="800";
+			            	var height="600";
+			            	
+			            	
+			            	var funcName =function(layer,index,layero){
+			            		var body = layer.getChildFrame('body', index);
+			            		
+			            		$.ajax({  
+			                  		type : 'POST',  
+			                   		url : base.serverContet+'/manager/loginIn/SysApprovenFunctionRule/saveApprovenRuleInfo.do',  
+			                 		data: $(body).find('#J_Form').serialize(),  
+			                  		async : false,  
+			                  		success : function(data) {  
+			                    	  	if(data.code=="000"){
+			                    			layer.alert('信息保存成功',{icon : 6,yes:function(index1){
+			                    				layer.close(index1);
+			                    			 
+			                    			}});
+			                    			layer.close(index);
+			                           	  }else{
+			                          		layer.alert('信息保存失败',{icon : 6});
+			                          		layer.close(index);
+			                           	  }
+			                  		   },error : function() {}  
+			              		}); 
+			            		
+			            	}
+			            	
+			            	window.parent.opePage(url,title,width,height,funcName);
+			            	
+			             } 
+			        },{ 
+			            text: '删除', 
+			            iconCls: 'icon-remove', 
+			            handler: function() { 
+			            	var row = $('#list_data').datagrid('getSelected');
+			            	if(row==null||row==""){
+			            		alert("请选择一行数据");
+			            		return;
+			            	}
+			            	var data = {approvenRuleId:row.approvenRuleId}
+			            	$.ajax({ url: base.serverContet+"/manager/loginIn/approven/approvenFunctionRuleDelete.do",method:"POST", data: data, success: function(){
+			                    alert("删除成功");
+			        		 
+ 			
+			                   }});
+			             	
+			            } 
+			        }] 
+			      
+			    });
+   
+    			
+		
+				
+		
+	</script>
+
+</html>

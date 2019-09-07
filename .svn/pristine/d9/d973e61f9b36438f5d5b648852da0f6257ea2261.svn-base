@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdProductMaterialsMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdProductMaterials" id="sdproductmaterialsMap"> 
+
+		<result column="product_materials_id" property="productMaterialsId"/>
+		<result column="product_main_id" property="productMainId"/>
+		<result column="product_materials_type" property="productMaterialsType"/>
+		<result column="product_materials_name" property="productMaterialsName"/>
+		<result column="product_position_name" property="productPositionName"/>
+		<result column="product_materials_length" property="productMaterialsLength"/>
+		<result column="product_materials_width" property="productMaterialsWidth"/>
+		<result column="product_materials_height" property="productMaterialsHeight"/>
+		<result column="product_materials_number" property="productMaterialsNumber"/>
+		<result column="product_materials_unit_consumption" property="productMaterialsUnitConsumption"/>
+		<result column="product_materials_tax_price" property="productMaterialsTaxPrice"/>
+		<result column="product_materials_no_tax_price" property="productMaterialsNoTaxPrice"/>
+		<result column="product_materials_unit_cost" property="productMaterialsUnitCost"/>
+		<result column="sd_id" property="sdId"/>
+
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdProductMaterials">
+		UPDATE sd_product_materials set 
+		t.product_materials_id=#{productMaterialsId},
+		t.product_main_id=#{productMainId},
+		t.product_materials_type=#{productMaterialsType},
+		t.product_materials_name=#{productMaterialsName},
+		t.product_position_name=#{productPositionName},
+		t.product_materials_length=#{productMaterialsLength},
+		t.product_materials_width=#{productMaterialsWidth},
+		t.product_materials_height=#{productMaterialsHeight},
+		t.product_materials_number=#{productMaterialsNumber},
+		t.product_materials_unit_consumption=#{productMaterialsUnitConsumption},
+		t.product_materials_tax_price=#{productMaterialsTaxPrice},
+		t.product_materials_no_tax_price=#{productMaterialsNoTaxPrice},
+		t.product_materials_unit_cost=#{productMaterialsUnitCost},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdProductMaterials"  resultMap="sdproductmaterialsMap">
+		SELECT 
+		t.product_materials_id,
+		t.product_main_id,
+		t.product_materials_type,
+		t.product_materials_name,
+		t.product_position_name,
+		t.product_materials_length,
+		t.product_materials_width,
+		t.product_materials_height,
+		t.product_materials_number,
+		t.product_materials_unit_consumption,
+		t.product_materials_tax_price,
+		t.product_materials_no_tax_price,
+		t.product_materials_unit_cost,
+		t.sd_id
+		FROM  sd_product_materials t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdProductMaterials"  resultMap="sdproductmaterialsMap">
+		SELECT 
+		t.product_materials_id,
+		t.product_main_id,
+		t.product_materials_type,
+		t.product_materials_name,
+		t.product_position_name,
+		t.product_materials_length,
+		t.product_materials_width,
+		t.product_materials_height,
+		t.product_materials_number,
+		t.product_materials_unit_consumption,
+		t.product_materials_tax_price,
+		t.product_materials_no_tax_price,
+		t.product_materials_unit_cost,
+		t.sd_id
+		FROM  sd_product_materials t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdProductMaterials"  resultMap="sdproductmaterialsMap">
+		SELECT  
+		t.product_materials_id,
+		t.product_main_id,
+		t.product_materials_type,
+		t.product_materials_name,
+		t.product_position_name,
+		t.product_materials_length,
+		t.product_materials_width,
+		t.product_materials_height,
+		t.product_materials_number,
+		t.product_materials_unit_consumption,
+		t.product_materials_tax_price,
+		t.product_materials_no_tax_price,
+		t.product_materials_unit_cost,
+		t.sd_id
+		FROM  sd_product_materials t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdProductMaterials"  resultMap="sdproductmaterialsMap">
+		SELECT 
+		t.product_materials_id,
+		t.product_main_id,
+		t.product_materials_type,
+		t.product_materials_name,
+		t.product_position_name,
+		t.product_materials_length,
+		t.product_materials_width,
+		t.product_materials_height,
+		t.product_materials_number,
+		t.product_materials_unit_consumption,
+		t.product_materials_tax_price,
+		t.product_materials_no_tax_price,
+		t.product_materials_unit_cost,
+		t.sd_id
+		FROM  sd_product_materials t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdProductMaterials">
+	insert into sd_product_materials
+	(
+		product_materials_id,
+		product_main_id,
+		product_materials_type,
+		product_materials_name,
+		product_position_name,
+		product_materials_length,
+		product_materials_width,
+		product_materials_height,
+		product_materials_number,
+		product_materials_unit_consumption,
+		product_materials_tax_price,
+		product_materials_no_tax_price,
+		product_materials_unit_cost,
+		sd_id
+	)
+	values
+	(
+		#{productMaterialsId},
+		#{productMainId},
+		#{productMaterialsType},
+		#{productMaterialsName},
+		#{productPositionName},
+		#{productMaterialsLength},
+		#{productMaterialsWidth},
+		#{productMaterialsHeight},
+		#{productMaterialsNumber},
+		#{productMaterialsUnitConsumption},
+		#{productMaterialsTaxPrice},
+		#{productMaterialsNoTaxPrice},
+		#{productMaterialsUnitCost},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdProductMaterials">
+		delete from sd_product_materials where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdProductMaterials"  resultType="java.lang.Integer">
+   		select    count(*) from sd_product_materials where 1=1
+	</select>
+</mapper> 
+

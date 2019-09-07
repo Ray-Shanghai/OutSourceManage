@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdFlowInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdFlowInfo" id="sdFlowInfoMapForMysql"> 
+		<result column="flow_base_id" property="flowBaseId"/>
+ 		<result column="FLOW_NAME" property="flowName"/>
+ 		<result column="FLOW_DESC" property="flowDesc"/>
+		 <result column="SYSTEM_INFO_ID" property="systemInfoId"/>
+	</resultMap>
+	 <select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdFlowInfo"  resultMap="sdFlowInfoMapForMysql">
+		SELECT * FROM(
+		SELECT ROWNUM RW,a.*
+		FROM (
+		select flow_base_id, flow_name, flow_desc, system_info_id from sd_flow_info
+		where SYSTEM_INFO_ID=#{systemInfoId}
+		<if test="flowName != null">
+			and flow_name like '%'||#{flowName}||'%'
+		</if>
+ 		) a )
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+		 
+	</select>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdFlowInfo"  resultType="java.lang.Integer">
+   		select count(*) from sd_flow_info where SYSTEM_INFO_ID=#{systemInfoId} 
+   		<if test="flowName != null">
+			and flow_name like '%'||#{flowName}||'%'
+		</if>
+	</select>
+	
+	 <select id="queryByPkIdForMysql" parameterType="java.lang.String"  resultMap="sdFlowInfoMapForMysql">
+		select flow_base_id, flow_name, flow_desc, system_info_id from sd_flow_info
+		where flow_base_id=#{flowBaseId}
+	</select>
+	
+		 <select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdFlowInfo"  resultMap="sdFlowInfoMapForMysql">
+		select flow_base_id, flow_name, flow_desc, system_info_id from sd_flow_info
+		where system_info_id=#{systemInfoId}
+	</select>
+	 
+	 <select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdFlowInfo"  resultMap="sdFlowInfoMapForMysql">
+		select flow_base_id, flow_name, flow_desc, system_info_id from sd_flow_info
+		where system_info_id=#{systemInfoId}
+	</select>
+	
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdFlowInfo">
+		update sd_flow_info set
+		<if test="flowDesc !=null">
+		 flow_desc=#{flowDesc},
+		 </if>
+		 flow_name = #{flowName}
+		 where flow_base_id =#{flowBaseId}
+	</update>
+	
+	
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdFlowInfo" >
+		<selectKey keyProperty="flowBaseId" resultType="String" order="BEFORE">
+			select fill_str_get_seq('sd_flow_info_seq',10,'L') from dual
+		</selectKey>
+	     insert into sd_flow_info
+		   (flow_base_id,
+		    flow_name,
+		    <if test="flowDesc !=null">
+		    flow_desc,
+		    </if>
+		    system_info_id)	
+		 values
+		   (#{flowBaseId},
+		    #{flowName}, 
+		    <if test="flowDesc !=null">
+		   	 #{flowDesc}, 
+		    </if>
+		    #{systemInfoId})
+ 
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdFlowInfo">
+		delete from sd_flow_info where flow_base_id =#{flowBaseId} 
+	</delete>
+</mapper> 
+

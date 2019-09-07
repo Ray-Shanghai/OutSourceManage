@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>订单中心</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+		<link rel="stylesheet" href="css/dist/css/swiper.min.css" />
+		<style>
+			.nav-list{background: #fff;}
+			.nav-list .swiper-slide{text-align: center; height:0.8rem; line-height: 0.8rem; font-size: 0.28rem;}
+			.nav-list .swiper-slide.active{color:#366fc6; border-bottom: 3px solid #366fc6;}
+		</style>
+	</head>
+	<body class="bgcolor-grayf8">
+		<div class="header">
+			<div class="header-left"><a class="iconfont icon-llmainpageback" onclick="window.history.go(-1)"></a></div>
+			<div class="title">订单列表</div>
+		</div>
+		<div class="content pt-106 pb-100">
+			<div class="search-client">
+				<div class="row">
+					<div class="col-10 pr-10"><input type="text" name="orderNuber" placeholder="搜索订单编号"></div>
+					<div class="col-2"><a class="search-btn"><span class="iconfont icon-chaxun"></span></a></div>						
+				</div>
+		    </div>
+		    <div class="nav-list">
+		    	<div class="swiper-container">
+			        <div class="swiper-wrapper">
+			        	<div class="swiper-slide" name="2">待确认</div>
+			        	<div class="swiper-slide" name="3">待分配</div>
+			        	<div class="swiper-slide" name="4">未报价</div>
+			            <div class="swiper-slide" name="5">报价核定中</div>
+			            <div class="swiper-slide" name="6">待检验</div>
+			            <div class="swiper-slide" name="7">配料</div>
+			            <div class="swiper-slide" name="8">裁切</div>
+			            <div class="swiper-slide" name="9">生产</div>
+			            <div class="swiper-slide" name="10">完成</div>
+			            <div class="swiper-slide" name="11">验收</div>
+			            <div class="swiper-slide" name="12">完结</div>
+			            <!-- <div class="swiper-slide" name="13">订单异常</div>
+			            <div class="swiper-slide" name="14">验收不通过</div> -->
+			        </div>
+			    </div>
+		    </div>
+		    <div class="tablenav-content">
+		    	<input type="hidden" name="dataState">
+		    	<input type="hidden" id="pageIndex" value="1">
+		    	<ul id="content"> 
+		    		<!-- <li onclick="window.location.href='OrderDatail1.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">待分配</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li>
+		    		<li onclick="window.location.href='OrderDatail1.html'">
+		    			<div class="table-top">订单编号：20170913048257<span class="fr">待分配</span></div>
+		    			<div class="table-middle">上海新鹏金属制品有限公司</div>
+		    			<div class="table-bottom">共5件<span class="fr">需求送货日期：2017/09/13</span></div>
+		    		</li> -->
+		    	</ul>
+		    </div>
+		    
+		 <div class="no-list" style="display:none;" id="noDataSource">暂无数据</div>
+	    <div class="no-list no-border" style="display:none;" id="noMoreButton">没有更多了</div>
+	    
+	    <div class="no-list no-border" style="display:none;" id="moreButton">
+	    <input type="button" value="点击加载更多" id="moreBtn" >
+	    
+		</div> 
+		</div>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/js/base.js"></script>
+    <script type="text/javascript" src="../resources/login/layui/layui.js"></script>
+    <script type="text/javascript" src="css/dist/js/swiper.min.js" ></script>
+    <script type="text/javascript" src="js/wxListOrder.js"></script>
+    <script type="text/html" id="partTpl">
+		{{#  layui.each(d.rows, function(index, item){ }}
+			{{# if (item.dataState==2) { }}
+				<li onclick="window.location.href='confirmOrderDetail.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">待确认</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==3){ }}	
+				<li onclick="window.location.href='OrderDatail1.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">待分配</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==4){ }}
+				<li onclick="window.location.href='OrderDatail2.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">待报价</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==5){ }}
+				<li onclick="window.location.href='OrderDatail3.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">报价核定中</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==6){ }}
+				<li onclick="window.location.href='OrderDatail4.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">待检验</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==7){ }}	
+				<li onclick="window.location.href='OrderDatail5.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">配料</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==8){ }}
+				<li onclick="window.location.href='OrderDatail5.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">裁切</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==9){ }}
+				<li onclick="window.location.href='OrderDatail5.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">生产</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==10){ }}
+				<li onclick="window.location.href='OrderDatail5.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">完成</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==11){ }}
+				<li onclick="window.location.href='OrderDatail5.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">验收</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } else if(item.dataState==12){ }}
+				<li onclick="window.location.href='OrderDatail5.html?{{item.orderId}}'">
+		    		<div class="table-top">订单编号：{{item.orderNuber}}<span class="fr">完结</span></div>
+		    		<div class="table-middle">{{item.customerName}}</div>
+		    		<div class="table-bottom"><span class="fr">需求送货日期：{{item.deliveryDate}}</span></div>
+		    	</li>
+			{{# } }}
+		{{# }); }}
+	</script>
+    <script>
+	    var swiper = new Swiper('.swiper-container', {
+	        slidesPerView: 3.6,
+	        paginationClickable: true,
+	    });
+	    
+	    
+	    
+
+        $(function(){
+        	/*根据传递过来的状态展示不同状态的订单列表*/
+        	var state=window.location.search.split("?")[1];
+        	if(state==1){
+        		state="";
+        	}
+        	$("input[name='dataState']").val(state);
+			$(".swiper-slide[name='"+state+"']").addClass('active');
+			queryDataList(0,state);
+			$('.nav-list .swiper-slide').click(function(){
+				var navindex = $(this).index();
+				$('.nav-list .swiper-slide').removeClass('active').eq(navindex).addClass('active');
+				
+				var dataState=$(this).attr("name");
+				$("input[name='dataState']").val(dataState);
+				queryDataList(0,dataState);
+			});
+		})
+    </script>
+</html>

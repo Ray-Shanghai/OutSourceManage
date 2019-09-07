@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml">  
+<head>  
+	<meta charset="UTF-8">
+    <title>Flow</title>  
+    <link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/icon.css"/>
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+	<script src="../../../resources/js/base.js"></script>
+<script type="text/javascript" src="../../js/myframe.js"></script>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/my.css"/>
+	
+
+</head>  
+<body>  
+    <div class="easyui-layout" id="mainLayout" border="false" fit="true">  
+        <div id="topPanel" data-options="region:'north',split:true" title="审批功能类别">  
+       <iframe id="topIframe"
+					name="topIframe"  frameborder ="0"  scrolling="auto" width="100%"
+					height="290px" src="approvenFunctionList.html"></iframe>      
+        </div>  
+        <div id="centerPanel" data-options="region:'center',split:true" title="审批流规则">  
+        <iframe id="centerIframe"
+					name="centerIframe"  frameborder="0" scrolling="auto" width="100%"
+					height=290px src="approvenFunctionRuleList.html"></iframe>      
+        </div>  
+        <div id="bottomPanel" data-options="region:'south',split:true" title="审批人员">  
+       <iframe id="bottomframe"
+					name="bottomframe" frameborder="0" scrolling="auto" width="100%"
+					height="290px" src="approvenFunctionRulePersonList.html"></iframe>      
+        </div>  
+    </div>  
+    <script type="text/javascript">  
+        window.customResize = function () {  
+            var width = $(window).width() - 10;  
+            var height = $(window).height()-20;  
+            var panelHeight = parseInt(height / 3); //每个1/3高度  
+            $('#topPanel').panel('resize', { width: width, height: panelHeight-40 });  
+            $('#centerPanel').panel('resize', { width: width, height: panelHeight-100 });  
+            $('#bottomPanel').panel('resize', { width: width, height: panelHeight+80 });  
+            $('#mainLayout').layout('resize', { width: width, height: height });  
+        };  
+        
+       
+        
+    </script>  
+    <script type="text/javascript">  
+        //窗口缩放时，重绘布局控件尺寸   
+        $(function () {  
+            redraw();  
+        });  
+  
+        $(window).resize(function () {  
+            redraw();  
+        });  
+  
+        function redraw() {  
+            if (window.customResize) {  
+                customResize(); //自定义缩放函数，页面若使用多个布局控件，需自定义缩放函数处理  
+            } else {  
+                var width = $(window).width();  
+                var height = $(window).height();  
+  
+                //没有自定义缩放函数时，默认对panel，layout，treegrid，datagrid等控件进行调整  
+                $('.easyui-panel').panel('resize', { width: width, height: height });  
+                $('.easyui-layout').layout('resize', { width: width, height: height });  
+                $('.easyui-treegrid').treegrid('resize', { width: width, height: height });  
+                $('.easyui-datagrid').datagrid('resize', { width: width, height: height });  
+            }  
+        }   
+    </script>  
+       <script type="text/javascript">
+   layui.config({
+		base : '../../js/'
+	});
+   </script>
+   <script type="text/javascript">
+   
+   function opePage(url,title,width,height,funcName,isButton){
+	   
+   
+   if(isButton==undefined){
+	   isButton =true;
+	   
+   }
+	layui.use([ 'layer' ],function() {
+		var $ = layui.jquery;
+		
+		if(isButton){
+			layer.open({
+				type : 2,
+				title : title,
+				content :url,
+				area : [width+'px',height+'px' ],
+				scrollbar : false,
+				  btn:["提交"],
+				yes : function( index,layero) {
+					funcName(layer,index,layero);
+				}, cancel : function() {
+					 
+				},success: function(layero){
+				 
+				}
+			});
+		}else{
+			layer.open({
+				type : 2,
+				title : title,
+				content :url,
+				area : [width+'px',height+'px' ],
+				scrollbar : false,
+				   cancel : function() {
+					 
+				},success: function(layero){
+				 
+				}
+			});
+		}
+		
+	
+	});
+   
+   }
+   </script>
+   
+   
+   
+   
+</body>  
+</html>

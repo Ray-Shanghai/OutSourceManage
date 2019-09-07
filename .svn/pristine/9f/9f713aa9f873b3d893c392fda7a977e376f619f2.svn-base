@@ -1,0 +1,48 @@
+package com.sd.farmework.service; 
+
+import java.util.List;
+
+import com.sd.farmework.pojo.SdOrderDetailInfo;
+import com.sd.farmework.pojo.SdOrderInfo;
+import com.sd.farmework.pojo.SdProductInfo;
+
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+public interface SdOrderInfoService  extends BaseInfoService{
+	/**
+	 * 添加订单时同时检查是否可以添加
+	 * @param sdorderinfo
+	 * @param sdOrderDetailInfo
+	 * @param sdProductInfo
+	 * @throws Exception
+	 */
+	public void addOrder(SdOrderInfo sdorderinfo,SdOrderDetailInfo sdOrderDetailInfo,SdProductInfo sdProductInfo)throws Exception;
+	/**
+	 * 订单确认
+	 * @throws Exception
+	 */
+	public void comfirmOrderInfo(SdOrderInfo sdorderinfo)throws Exception;
+	/**
+	 * 状态修改更新订单信息
+	 * @param sdorderinfo
+	 * @throws Exception
+	 */
+	public void editOrder(SdOrderInfo sdorderinfo)throws Exception;
+	/**
+	 * 订单跟踪列表
+	 * @param sdOrderInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public List<SdOrderInfo> queryListByTrack(SdOrderInfo sdOrderInfo)throws Exception;
+	/**
+	 * 订单数量
+	 * @param sdOrderInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public Integer queryCountByTrack(SdOrderInfo sdOrderInfo)throws Exception;
+}

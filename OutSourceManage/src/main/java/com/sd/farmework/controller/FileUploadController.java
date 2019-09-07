@@ -1,0 +1,93 @@
+package com.sd.farmework.controller;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.sd.farmework.common.FileUpload;
+import com.sd.farmework.common.JSONUtils;
+import com.sd.farmework.common.PropertiesConstant;
+
+/**
+ * Created by shhao.
+ * Date: 17-3-1
+ * Time:11:36
+ * 处理文件上传下载
+ */
+
+@Controller
+public class FileUploadController {
+     
+	@Autowired 
+	private PropertiesConstant propertiesConstant;
+	
+    @RequestMapping("upload")
+    public void upload( HttpServletRequest request, HttpServletResponse response) throws IOException {
+        
+    	MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        Map<String, MultipartFile> map=   multipartRequest.getFileMap();
+    	
+    	Iterator<String> it= map.keySet().iterator();
+    	Map<String,String> mapResp = new HashMap<String,String>();
+     	while (it.hasNext()) {
+    		String str=it.next();
+    		
+    		String filePath = FileUpload.uploadFile(propertiesConstant,map.get(str), request);
+    		
+    		mapResp.put(map.get(str).getOriginalFilename(), filePath);
+    		
+		}
+     	 JSONUtils.objectToJson(multipartRequest, response, mapResp);
+    	
+    }
+    
+    @RequestMapping("download")
+    public void download(String fileName, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	  OutputStream os = response.getOutputStream();
+          String[]fileType=fileName.split("\\.");
+          Map<String,String> map=new HashMap<String,String>();
+          map.put("jpg", "image/jpeg;");
+          map.put("gif", "image/gif;");
+          map.put("bmp", "image/bmp;");
+          map.put("jpeg", "image/jpeg;");
+         /* map.put("xls", "application/x-xls;");
+          map.put("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;");
+          map.put("doc", "application/msword;");
+          map.put("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document;");
+          map.put("txt", "text/plain;");*/
+          map.put("pdf", "application/pdf;");
+          try {
+         	  fileName=new String(fileName.getBytes("ISO-8859-1"),"UTF-8");
+              response.reset();
+              response.setHeader("Content-Disposition", "attachment; filename=" +new String(fileName.getBytes("UTF-8"),"ISO-8859-1"));
+              response.setContentType(map.get(fileType[fileType.length-1])+"charset=utf-8");
+            //  response.setContentType("xlsx/docx; charset=utf-8");
+              response.setCharacterEncoding("UTF-8");
+              os.write(FileUtils.readFileToByteArray(FileUpload.getFile(propertiesConstant,fileName)));
+              os.flush();
+          } finally {
+              if (os != null) {
+                  os.close();
+              }
+          }
+    }
+    
+}

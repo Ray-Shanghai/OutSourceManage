@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>系统</title>
+
+<link rel="stylesheet" type="text/css"
+	href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="../../../resources/jquery-easyui-1.4.3/themes/icon.css">
+<link rel="stylesheet" type="text/css"
+	href="../../../resources/jquery-easyui-1.4.3/demo/demo.css">
+<link href="../../assets/css/dpl-min.css" rel="stylesheet"
+	type="text/css" />
+<link href="../../assets/css/bui-min.css" rel="stylesheet"
+	type="text/css" />
+<link href="../../assets/css/page-min.css" rel="stylesheet"
+	type="text/css" />
+
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript"
+	src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../../resources/js/base.js"></script>
+<script type="text/javascript"
+	src="../../../resources/loginIn/sdManage/sdFunctionTable.js"></script>
+</head>
+
+<body>
+ 		 
+		 
+			<div class="row">
+				<div class="span24">
+					<h2>查询条件</h2>
+					<form id="searchForm" class="form-horizontal" tabindex="0"
+						style="outline: none;">
+						<div class="row">
+							<div class="control-group span10">
+								<label class="control-label">功能菜单表名称：</label>
+								<div class="controls">
+									<input type="text" name="functionDbTableName"
+										class="control-text">
+								</div>
+							</div>
+							<div class="control-group span8">
+								<label class="control-label">功能菜单表描述：</label>
+								<div class="controls">
+									<input type="text" name="functionDbTableDesc"
+										class="control-text">
+								</div>
+							</div>
+							<div class="control-group span8">
+								<label class="control-label">功能菜单表类型：</label>
+								<div class="controls">
+									<select name="functionDbTableTypeId" class="control-text">
+									 <option value="" id="functionDbTableTypeId">请选择</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-actions span5">
+								<button id="btnSearch" type="submit"
+									class="button button-primary">搜索</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			 
+			<div class="search-grid-container span25">
+				<div id="grid"></div>
+			</div>
+	 
+		<script type="text/javascript" src="../../assets/js/jquery-1.8.1.min.js"></script>
+  <script type="text/javascript" src="../../assets/js/bui-min.js"></script>
+  <script src="../../../resources/js/base.js"></script>
+  <script type="text/javascript">
+  var functionId =window.location.search.split("=")[1];
+        var Grid = BUI.Grid,
+          Store = BUI.Data.Store,
+          columns = [
+            { title: '表编号',width: 90,  sortable: true, dataIndex: 'functionDbTableId'},
+            { title: '表名称', width: 130, sortable: true, dataIndex: 'functionDbTableName', selectable: true },
+            { title: '表类型',width: 70, sortable: true,  dataIndex: 'functionDbTableTypeName',  showTip: true},
+            { title: '表描述', width: 120, sortable: false, dataIndex: 'functionDbTableDesc', selectable: true },
+            { title: '状态',width: 60, sortable: true,  dataIndex: 'status',renderer:function(value,obj){
+            	return value=="Y"?"正常":"禁用";
+            }},
+            { title: '创建人' ,width: 100, sortable: false, dataIndex: 'createUserName'},
+            { title: '创建时间',width: 150, sortable: true,  dataIndex: 'createTime'}
+          ];
+ 		 
+ 		
+        var store = new Store({
+            url : base.serverContet+'/manager/loginIn/SdFunctionDbTable/queryListByPageIndex.do?functionId='+functionId,
+            autoLoad:true,
+            pageSize:10
+          }),
+          grid = new Grid.Grid({
+            render:'#grid',
+            loadMask: true,
+            forceFit:true,
+            columns : columns,
+            store: store,
+            
+            emptyDataTpl : '<div class="centered"><img alt="Crying" src="http://img03.taobaocdn.com/tps/i3/T1amCdXhXqXXXXXXXX-60-67.png"><h2>查询的数据不存在</h2></div>',
+            plugins : [Grid.Plugins.AutoFit], //勾选插件、自适应宽度插件
+            // 底部工具栏
+            tbar:{
+                items : [
+                         {text : '<i class="icon-plus"></i>新建',btnCls : 'button button-small',handler:function(){
+                        	 top.topManager.openPage({
+	        	            	    id : "functionTableAdd",
+	        	            	    href : "sdManage/sdFunctionTableColumns/addSdFunctionTableColumns.html?functionId="+functionId,
+	        	            	    title : "添加表结构信息"
+     	            		});
+                         }},
+                         {text : '<i class="icon-edit"></i>编辑',btnCls : 'button button-small',handler:function(){
+                        	var selections = grid.getSelection();
+                         	if(selections.length==1){
+                        	 	top.topManager.openPage({
+	        	            	    id : "functionTableEdit",
+	        	            	    href : "sdManage/sdFunctionTableColumns/editSdFunctionTableColumns.html?functionDbTableId="+selections[0].functionDbTableId,
+	        	            	    title : "编辑表结构信息"
+     	            			});
+                         	}else{
+                         		BUI.Message.Alert('请选择一条数据进行编辑！');
+                         	}
+                         }},
+                         {text : '<i class="icon-remove"></i>删除',btnCls : 'button button-small',handler:function(){
+                         	var selections = grid.getSelection();
+                         	
+                         	if(selections.length==1){
+                         		BUI.Message.Confirm("是否确定删除",function(obj){
+                         		
+                         		
+                         		var functionDbTableId=selections[0].functionDbTableId;
+                         		$.ajax({  
+                            		type : 'POST',  
+                             		url : base.serverContet+'/manager/loginIn/SdFunctionTable/delete.do',  
+                           			data: {functionId :functionId,functionDbTableId:functionDbTableId},  
+                            		async : false,  
+                            		success : function(data) {  
+	                              	  	if(data.code=="000"){
+	                              	  	 	setTimeout(function(){
+	                              	  	 		store.remove(selections);
+	                                         	BUI.Message.Alert('删除成功','success');
+	                                       
+	                                     	});
+	                              	  	 
+	                                     }else{
+	                                    	 window.parent.alertTip(data);
+	                                     }
+                            		},error : function() {}  
+                        		}); 
+                         		 
+                         		});
+                         	}
+                         	else{
+                         		BUI.Message.Alert('请选择一条数据删除！');
+                         	}
+                          }},
+                          {text : '<i class="icon-list-alt"></i>详情',btnCls : 'button button-small',handler:function(){
+                          	var selections = grid.getSelection();
+                          	if(selections.length==1){
+                          	 top.topManager.openPage({
+  	        	            	    id : "systemAdd",
+  	        	            	    href : "sdManage/sdFunctionTableInfo/detailSdFunctionTableInfo.html?functionDbTableId="+selections[0].functionDbTableId,
+  	        	            	    title : "详情"
+       	            		});
+                          	}
+                          	else{
+                          		BUI.Message.Alert('请选择一条数据查看详情！');
+                          	}
+                           }},
+                         {text : '<i class="icon-edit"></i>引用表',btnCls : 'button button-small',handler:function(){
+ 								var selections = grid.getSelection();
+                        	 		top.topManager.openPage({
+	        	            	    id : "functionTableUpdate",
+	        	            	    href : "sdManage/sdFunctionTableInfo/sdFunctionTableInfoIndex.html?functionId="+functionId,
+	        	            	    title : "选择表"
+     	            			});
+                        	}}
+                       ]
+                     },
+            // 顶部工具栏
+            bbar : {
+              //items 也可以在此配置
+              // pagingBar:表明包含分页栏
+              pagingBar:true
+            }
+          });
+ 
+        grid.render();
+ 
+        //创建表单，表单中的日历，不需要单独初始化
+        var form = new BUI.Form.HForm({
+          srcNode : '#searchForm'
+        }).render();
+ 
+        form.on('beforesubmit',function(ev) {
+          //序列化成对象
+          var obj = form.serializeToObject();
+          obj.start = 0; //返回第一页
+          store.load(obj);
+          return false;
+        });
+         
+        
+        //删除操作
+        function delFunction(){
+          var selections = grid.getSelection();
+          delItems(selections);
+        }
+
+        function delItems(items){
+          var ids = [];
+          BUI.each(items,function(item){
+            ids.push(item.id);
+          });
+
+          if(ids.length){
+            BUI.Message.Confirm('确认要删除选中的记录么？',function(){
+              $.ajax({
+                url : '../data/del.php',
+                dataType : 'json',
+                data : {ids : ids},
+                success : function(data){
+                  if(data.success){ //删除成功
+                   // search.load();
+                  }else{ //删除失败
+                    BUI.Message.Alert('删除失败！');
+                  }
+                }
+            });
+            },'question');
+          }
+        }
+    </script>
+<!-- script end -->
+  </div>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysUserInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysUserInfo" id="SysUserInfoMapForMysql"> 
+		 
+		<result column="DEPART_ID" property="departId"/>
+		<result column="DEPART_NAME" property="departName"/>
+		<result column="DEPART_POWER" property="departPower"/>
+		 
+		<result column="LOGIN_NAME" property="loginName"/>
+		<result column="LOGIN_PWD" property="loginPwd"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="EMPLOYE_NO" property="employeNo"/>
+		<result column="USER_NAME" property="userName"/>
+		
+		<result column="account_type" property="accountType"/>
+		
+		<result column="sex"  property="sex"/>
+		<result column="phone"  property="phone"/>
+		<result column="email"  property="email"/> 
+		<result column="qq"  property="qq"/>
+		<result column="brithday"  property="brithday"/>
+		<result column="wx_Open_Id"  property="wxOpenId"/>
+		<result column="wx_Nick_Name"  property="wxNickName"/>
+		<result column="wx_Head_Img_Url"  property="wxHeadImgUrl"/>
+		<result column="position" property="position"/>
+		
+		
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		 
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		 
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		 
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	
+	<update id="updateDepartPowerForMysql" parameterType="com.sd.farmework.pojo.SysUserInfo">
+	update sys_user_info set 
+        DEPART_POWER = #{departPower},
+        last_update_TIME=sysdate,
+        last_update_user_id = #{lastUpdateUserId},
+        last_update_user_name = #{lastUpdateUserName},
+        
+        last_update_depart_id = #{lastUpdateDepartId},
+        last_update_depart_name = #{lastUpdateDepartName},
+        
+       where  user_id = #{userId}
+	</update>
+	
+	
+	 
+	<update id="updatePwdForMysql" parameterType="com.sd.farmework.pojo.SysUserInfo">
+		update sys_user_info set 
+		login_pwd=#{loginPwd}
+			 where user_id = #{userId}
+		</update>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SysUserInfo">
+		update sys_user_info set 
+		   user_name=#{userName},
+		   position=#{position},
+		   ACCOUNT_TYPE=#{accountType},
+		   sex=#{sex},
+		   phone=#{phone},
+		   email=#{email},
+		   brithday=#{brithday},
+		   status =#{status}
+		 where user_id = #{userId}
+		
+	</update>
+	
+	<select id="queryByPkIdForMysql" parameterType="String"  resultMap="SysUserInfoMapForMysql">
+		SELECT 
+		 user_id,
+         user_name,
+         login_name,
+         login_pwd,
+         depart_id,
+         concat((case when length(t.depart_id)=9 then (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t1.depart_id,1,3))
+    	 when length(t.depart_id)=15 then concat(
+    		(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,3)  ),'-',(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,9)  )
+    		)  
+	     when length(t.depart_id)=21 then concat(
+	     	(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,3)  ),'-',(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,9)),'-',
+	         (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,15)   )
+	      )  
+
+	     else ''
+	       end),  
+        '-', depart_name)   depart_name,
+       depart_power,
+       position,
+       sex,
+       phone,
+       email,
+       qq,
+       brithday,
+       wx_open_id,
+       wx_nick_name,
+       wx_head_img_url,
+       is_online,
+       lastlogintime,
+       state,
+       account_type,
+       reg_ip,
+       reg_mac,
+       employe_no,
+       is_marray,
+       remark,
+       status,
+       create_time,
+       create_user_id,
+       create_user_name,
+       create_depart_id,
+       create_depart_name,
+       last_update_time,
+       last_update_user_id,
+       last_update_user_name,
+       last_update_depart_id,
+       last_update_depart_name
+		FROM  SYS_USER_INFO t 
+		where  USER_ID =#{userId}
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SysUserInfo"  resultMap="SysUserInfoMapForMysql">
+		select  
+      *
+  		from sys_user_info t
+		where  LOGIN_NAME =#{loginName} and LOGIN_PWD= #{loginPwd}  and STATUS = 'Y'
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SysUserInfo"  resultMap="SysUserInfoMapForMysql">
+		select user_id,
+       user_name,
+       login_name,
+       login_pwd,
+       depart_id,
+       concat((case when length(t.depart_id)=9 then (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t1.depart_id,1,3))
+    	 when length(t.depart_id)=15 then concat(
+    		(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,3)  ),'-',(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,9)  )
+    		)  
+	     when length(t.depart_id)=21 then concat(
+	     	(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,3)  ),'-',(select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,9)),'-',
+	         (select depart_name from SYS_DEPART_INFO  t1 where t1.depart_id= substr(t.depart_id,1,15)   )
+	      )  
+
+	     else ''
+	       end),  
+        '-', depart_name)   depart_name,
+       depart_power,
+       position,
+       sex,
+       phone,
+       email,
+       qq,
+       brithday,
+       wx_open_id,
+       wx_nick_name,
+       wx_head_img_url,
+       is_online,
+       lastlogintime,
+       state,
+       account_type,
+       reg_ip,
+       reg_mac,
+       employe_no,
+       is_marray,
+       remark,
+       status,
+       create_time,
+       create_user_id,
+       create_user_name,
+       create_depart_id,
+       create_depart_name,
+       last_update_time,
+       last_update_user_id,
+       last_update_user_name,
+       last_update_depart_id,
+       last_update_depart_name
+		from sys_user_info t where 1=1
+		<if test="userName!=null and userName!=''">
+			and user_name like concat('%',#{userName},'%')
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			and login_name like concat('%',#{loginName},'%')
+		</if>
+		 
+		<if test="departName!=null and departName!=''">
+			and DEPART_NAME like concat('%',#{departName},'%')
+		</if>
+		 
+		<if test="status!=null and status!=''">
+			and STATUS like concat('%',#{status},'%')
+		</if>
+		<if test="phone!=null and phone!=''">
+			and phone like concat('%',#{phone},'%')
+		</if>
+		<if test="position!=null and position!=''">
+			and position=#{position}
+		</if>
+		order by create_time desc
+		LIMIT  #{startRecod},#{pageSize}
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SysUserInfo"  resultMap="SysUserInfoMapForMysql">
+		select * from sys_user_info t 
+		<where>
+			<if test="phone!=null and phone!=''">
+				and phone like concat('%',#{phone},'%')
+			</if>
+			<if test="userName!=null and userName!=''">
+			and user_name like concat('%',#{userName},'%')
+			</if>
+			<if test="position!=null and position!=''">
+				and position=#{position}
+			</if>
+		</where>
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SysUserInfo" useGeneratedKeys="true" keyProperty="userId">
+	
+			insert into sys_user_info
+			  (
+			   user_name,
+			   login_name,
+			   login_pwd,
+			   depart_id,
+			   depart_name,
+			   position,
+			    sex,
+			   phone,
+			   email,
+			   qq,
+			   brithday,
+			   employe_no,
+			   is_marray,
+			    status,
+			   create_user_id,
+			   create_user_name,
+			   create_depart_id,
+			   create_depart_name,
+			   account_type )
+			values
+			  (
+			   #{userName},
+			   #{loginName},
+			    #{loginPwd},
+			  #{departId},
+			   #{departName},
+			   #{position},
+			   #{sex},
+			  #{phone},
+			   #{email},
+			   #{qq},
+			   #{brithday},
+			    #{employeNo},
+			   'N',
+			   #{status},
+			   #{createUserId},
+			   #{createUserName},
+			  #{createDepartId},
+			   #{createDepartName},
+			   #{accountType} )
+
+	 
+		 
+	</insert>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SysUserInfo"  resultType="java.lang.Integer">
+   		select    count(*) from SYS_USER_INFO where 1=1
+		<if test="userName!=null and userName!=''">
+			and user_name like concat('%',#{userName},'%')
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			and login_name like concat('%',#{loginName},'%')
+		</if>
+		 
+		<if test="departName!=null and departName!=''">
+			and DEPART_NAME like concat('%',#{departName},'%')
+		</if>
+		 
+		<if test="status!=null and status!=''">
+			and STATUS like concat('%',#{status},'%')
+		</if>
+		<if test="phone!=null and phone!=''">
+			and phone like concat('%',#{phone},'%')
+		</if>
+		<if test="position!=null and position!=''">
+			and position=#{position}
+		</if>
+	</select>
+	<update id="updateUserByParmForMysql" parameterType="com.sd.farmework.pojo.SysUserInfo">
+		update sys_user_info set 
+			login_name=#{phone},
+		    phone=#{phone},
+		    user_name=#{userName}
+		 where phone = #{oldPhone}
+		
+	</update>
+	<update id="deleteUserByParmForMysql" parameterType="com.sd.farmework.pojo.SysUserInfo">
+		delete from  sys_user_info 
+		 where phone = #{oldPhone}
+		
+	</update>
+	<!-- 通过openid获取用户信息 -->
+	<select id="queryUserByOpenId" parameterType="com.sd.farmework.pojo.SysUserInfo" resultMap="SysUserInfoMapForMysql">
+		select * from sys_user_info where wx_open_id=#{wxOpenId}
+	</select>
+	<!-- 修改wxopenId -->
+	<update id="updateUser" parameterType="com.sd.farmework.pojo.SysUserInfo" >
+		update sys_user_info set wx_open_id=#{wxOpenId} where user_id=#{userId}
+	</update>
+</mapper> 
+

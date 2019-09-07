@@ -1,0 +1,34 @@
+{
+    "code": 0,
+    "msg": "获取成功",
+    "list": [
+        {
+        	"id":1,
+            "company": "公司名称",
+            "adress":"桐乡市xxx",
+            "name": "王二",
+            "phone":"15254553682"
+        },
+        {
+        	"id":2,
+            "company": "公司名称",
+            "adress":"桐乡市xxx",
+            "name": "张三丰",
+            "phone":"15254553682"
+            
+        },{
+        	"id":3,
+            "company": "公司名称",
+            "adress":"桐乡市xxx",
+            "name": "张三丰",
+            "phone":"15254553682"
+        },{
+        	"id":4,
+            "company": "公司名称",
+            "adress":"桐乡市xxx",
+            "name": "张三丰",
+            "phone":"15254553682"
+        }
+    ],
+    "count": 57
+}

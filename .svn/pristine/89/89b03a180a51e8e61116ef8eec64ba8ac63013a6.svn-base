@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>地图</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+		<style>
+			.my-map{width:100%; height:50%; display: block;}
+			.amap-container{height: 100%;}	    
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="header-left"><a class="iconfont icon-llmainpageback" href="my.html"></a></div>
+			<div class="title">地图</div>
+			<div class="header-right"><a class="title-search" href="javascript:void(0);">签到</a></div>
+		</div>
+		<div class="content pt-106" style="width: 100%; height: 100%;">
+			<div id="wrap" class="my-map">
+		        <div id="mapContainer"></div>
+		   </div>
+		    <div class="title-purchase" style="border: none;"><span class="shu-width-3"></span>我的位置</div>
+		   <div class="adress-my">
+		   	  <ul>
+		   	  	<li class="active">
+		   	  		<div class="adress-name">[位置]</div>
+		   	  		<div class="adress-detail">上海市宝山区铁力路1050号宝果实业</div>
+		   	  		<div class="iconfont icon-duihao1 move"></div>
+		   	  	</li>
+		   	  	<li>
+		   	  		<div class="adress-name">上海宝钢铁岭</div>
+		   	  		<div class="adress-detail">上海市宝山区铁力路1099号</div>
+		   	  	</li>
+		   	  	<li>
+		   	  		<div class="adress-name">上海宝山区海尚明城</div>
+		   	  		<div class="adress-detail">上海市宝山区铁峰路555弄1-25号</div>
+		   	  	</li>
+		   	  	<li>
+		   	  		<div class="adress-name">上海宝山区友谊家园</div>
+		   	  		<div class="adress-detail">上海市宝山区铁力路1050号宝果实业</div>
+		   	  	</li>
+		   	  </ul>
+		   </div>
+		</div>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
+    <script type="text/javascript" src="js/layer.js" ></script>
+    <script>
+    	$(document).ready(function(){
+    		$('.adress-all').click(function(){
+    			$(this).addClass('select-adress').siblings().removeClass('select-adress');
+    		})
+    	})
+    	
+    	$('.adress-my ul li').click(function(){
+		if($(this).children('.move').length==0){
+		 $(this).prepend('<div class="iconfont icon-duihao1 move"></div>')
+		 $(this).addClass('active').siblings().removeClass('active')
+		 $(this).siblings().children('.move').remove()
+		}
+	})
+    </script>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=8325164e247e15eea68b59e89200988b"></script>
+    <script>
+    !function(){
+        var infoWindow, map, level = 16,
+            center = {lng: 121.340064, lat: 31.317463},
+            features = [];
+ 
+        function loadFeatures(){
+            for(var feature, data, i = 0, len = features.length, j, jl, path; i < len; i++){
+                data = features[i];
+                switch(data.type){
+                    case "Marker":
+                        feature = new AMap.Marker({ map: map, position: new AMap.LngLat(data.lnglat.lng, data.lnglat.lat),
+                            zIndex: 3, extData: data, offset: new AMap.Pixel(data.offset.x, data.offset.y), title: data.name,
+                            content: '<div class="icon icon-' + data.icon + ' icon-'+ data.icon +'-' + data.color +'"></div>' });
+                        break;
+                    case "Polyline":
+                        for(j = 0, jl = data.lnglat.length, path = []; j < jl; j++){
+                            path.push(new AMap.LngLat(data.lnglat[j].lng, data.lnglat[j].lat));
+                        }
+                        feature = new AMap.Polyline({ map: map, path: path, extData: data, zIndex: 2,
+                            strokeWeight: data.strokeWeight, strokeColor: data.strokeColor, strokeOpacity: data.strokeOpacity });
+                        break;
+                    case "Polygon":
+                        for(j = 0, jl = data.lnglat.length, path = []; j < jl; j++){
+                            path.push(new AMap.LngLat(data.lnglat[j].lng, data.lnglat[j].lat));
+                        }
+                        feature = new AMap.Polygon({ map: map, path: path, extData: data, zIndex: 1,
+                            strokeWeight: data.strokeWeight, strokeColor: data.strokeColor, strokeOpacity: data.strokeOpacity,
+                            fillColor: data.fillColor, fillOpacity: data.fillOpacity });
+                        break;
+                    default: feature = null;
+                }
+                if(feature){ AMap.event.addListener(feature, "click", mapFeatureClick); }
+            }
+        }
+ 
+        function mapFeatureClick(e){
+            if(!infoWindow){ infoWindow = new AMap.InfoWindow({autoMove: true}); }
+            var extData = e.target.getExtData();
+            infoWindow.setContent("<h5>" + extData.name + "</h5><div>" + extData.desc + "</div>");
+            infoWindow.open(map, e.lnglat);
+        }
+ 
+        map = new AMap.Map("mapContainer", {center: new AMap.LngLat(center.lng, center.lat), level: level});
+        new AMap.TileLayer.RoadNet({map: map, zIndex: 2});
+        loadFeatures();
+ 
+        map.on('complete', function(){
+            map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function(){
+                map.addControl(new AMap.ToolBar);
+            map.addControl(new AMap.OverView({isOpen: true}));
+            map.addControl(new AMap.Scale);
+            });
+        })
+         
+    }();
+    </script>
+</html>

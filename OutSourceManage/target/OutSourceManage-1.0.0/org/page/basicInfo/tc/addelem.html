@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>功能栏</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" type="text/css" href="../../../css/common.css" />
+		<link rel="stylesheet" href="../../../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../../css/my.css" />
+		<link rel="stylesheet" href="../../../css/font/iconfont1.css" />
+	</head>
+
+	<body>
+		<div class="function-content">
+			<div class="function-left">
+				<div class="title">未使用的查询条件</div>
+				<div class="function-box">
+					<ul id="items">
+						<li class="">客户列表</li>
+						<li>客户列表1</li>
+						<li>客户列表2</li>
+						<li>客户列表3</li>
+						<li>客户列表4</li>
+						<li>客户列表5</li>
+						<li>客户列表6</li>
+						<li>客户列表7</li>
+						<li>客户列表8</li>
+						<li>客户列表9</li>
+						<li>客户列表10</li>
+					</ul>
+				</div>
+			</div>
+			<div class="function-middle">
+				<div class="box-btn" id="up"><span class="fa fa-arrow-up"></span></div>
+				<div class="box-btn" id="down"><span class="fa fa-arrow-down"></span></div>
+				<div class="box-btn" id="right"><span class="fa fa-arrow-right"></span></div>
+				<div class="box-btn" id="left"><span class="fa fa-arrow-left"></span></div>
+				<div class="box-btn" id="allRight"><span class="fa fa-angle-double-right" style="font-size: 20px; font-weight: 600;"></span></div>
+				<div class="box-btn" id="allLeft"><span class="fa fa-angle-double-left" style="font-size: 20px; font-weight: 600;"></span></div>
+			</div>
+			<div class="function-right">
+				<div class="title">已使用的查询条件</div>
+				<div class="function-box">
+					<ul id="items1">
+						<li class="">客户列表11</li>
+						<li>客户列表12</li>
+						<li>客户列表13</li>
+						<li>客户列表14</li>
+						<li>客户列表15</li>
+						<li>客户列表16</li>
+						<li>客户列表17</li>
+						<li>客户列表18</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../js/Sortable.min.js"></script>
+	<script type="text/javascript" src="../../../plugins/layui/layui.js"></script>
+	<script>
+		var el = document.getElementById('items');
+		new Sortable(el);
+
+		var el = document.getElementById('items1');
+		new Sortable(el);
+
+		layui.use('layer', function() {
+			var layer = layui.layer;
+		});
+
+		$(function() {
+			$('.function-box ul li').click(function() {
+				if($(this).hasClass('selected')) {
+					$(this).removeClass('selected');
+				} else {
+					$(this).addClass('selected');
+				};
+			});
+			//上移
+			$('#up').click(function() {
+				var selectedNumber = $('.function-box ul li.selected').length;
+				if(selectedNumber == 1) {
+					$('.function-box ul li.selected').prev().before($('.function-box ul li.selected'))
+				}
+				if(selectedNumber > 1) {
+					layer.alert('只能选择一个上移');
+				}
+			});
+			//下移
+			$('#down').click(function() {
+				var selectedNumber = $('.function-box ul li.selected').length;
+				if(selectedNumber == 1) {
+					$('.function-box ul li.selected').next().after($('.function-box ul li.selected'))
+				}
+				if(selectedNumber > 1) {
+					layer.alert('只能选择一个下移');
+				}
+			});
+			//选中右移
+			$('#right').click(function() {
+				$('#items1').append($('#items li.selected'));
+			});
+			//选中左移
+			$('#left').click(function() {
+				$('#items').append($('#items1 li.selected'));
+			});
+			//全部右移
+			$('#allRight').click(function() {
+				$('#items1').append($('.function-box ul li'));
+			});
+			//全部左移			
+			$('#allLeft').click(function() {
+				$('#items').append($('.function-box ul li'));
+			});
+
+		})
+	</script>
+
+</html>

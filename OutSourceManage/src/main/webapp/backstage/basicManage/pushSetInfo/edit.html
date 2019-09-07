@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>提成信息</title>
+
+<link rel="stylesheet" type="text/css" href="../../../resources/jquery-easyui-1.4.3/themes/gray/easyui.css">
+<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript" src="../../../resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script src="../../../resources/js/base.js"></script>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<link rel="stylesheet" href="../../plugins/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="../../css/my.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+<style type="text/css">
+   .layui-form-radio{
+   		margin:0;
+   }
+ </style>
+</head>
+<body>
+	<div class="easyui-layout" fit="true">
+		<form class="layui-form  ml-30" id="frm1" name="frm1">
+			<input type="hidden" id="pushSetId" name="pushSetId"/>
+			<div class="layui-form-item mt-10">
+				<div class="layui-inline">
+					<label class="layui-form-label" style ="width:80px">提成名称：</label>
+					<div class="layui-input-inline dx-input-required">
+						<input type="text" name="pushSetName" id="pushSetName" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label" style ="width:80px">提成比例：</label>
+					<div class="layui-input-inline dx-input-required">
+						<input type="text" name="pushNum" id="pushNum" lay-verify="required" autocomplete="off" placeholder="请输入数字" class="layui-input">%
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label" style ="width:80px">备注：</label>
+					<div class="layui-input-inline dx-input-required">
+						<textarea placeholder="请输入内容" id="remark" name="remark" class="layui-textarea"></textarea>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript">
+		var pushSetId = window.location.search.split("?")[1];
+		layui.config({
+			base : '../../js/'
+		});
+		layui.use([ 'paging', 'form', 'element' ], function() {
+			var $ = layui.jquery, element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+			paging = layui.paging(),
+			layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
+			layer = layui.layer, //获取当前窗口的layer对象
+			form = layui.form();
+			
+			//查询修改数据
+			$.ajax({
+				type : 'POST',
+				url: base.serverContet+'/SdPushSetInfo/queryByPkId.do', //地址
+				data:{'pkId':pushSetId},
+				async : false,//同步  
+				success : function(data) {
+					if(data.code=="000"){
+						$("#pushSetId").val(data.rows.pushSetId);
+						$("#pushSetName").val(data.rows.pushSetName);
+						$("#pushNum").val(data.rows.pushNum);
+						$("#remark").val(data.rows.remark);
+					}
+					layui.form().render();	
+				},
+				error : function() {
+				}
+			}); 
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>选择检验人员</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+		<link rel="stylesheet" href="css/dist/css/swiper.min.css" />
+		<style>
+			.swiper-container {
+		        width: 100%;
+		        height: 100%;
+		        overflow-y: auto;
+		    }
+		    .swiper-pagination{position: fixed;}
+		    .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+			    top: 10%;
+			    left: 0;
+			    width: 100%;
+			    bottom: auto;
+			}
+           .swiper-pagination-bullet {
+			  display: inline-block;
+			  width: 10px;
+			  height: 10px;
+			  border-radius: 10px;
+			  background: #fff;
+			  margin: 0 5px;
+			  opacity: 0.8;
+			  cursor: pointer;
+			}
+			.swiper-pagination-bullet-active {
+			  background: #007aff;
+			}
+		</style>
+	</head>
+	<body class="bgcolor-grayf8">
+		<div class="header">
+			<div class="header-left"><a class="iconfont icon-llmainpageback" onclick="window.history.go(-1)"></a></div>
+			<div class="title">选择检验人员</div>
+			<div class="header-right"><a class="title-search" href="javascript:void(0);"><span class="iconfont icon-baocun"></span></a></div>
+		</div>
+		<div class="content pt-106">
+			<div class="list-content">
+				<div class="title-purchase"><span class="shu-width-3"></span>订单信息<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul>
+					<li class="row">
+						<div class="col-4">客户名称：</div>
+						<div class="col-8" id="customerName"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">客户地址：</div>
+						<div class="col-8" id="customerAddress"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">交货日期：</div>
+						<div class="col-8" id="deliveryDate"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">建议交货日期：</div>
+						<div class="col-8" id="suggestDeliveryDate"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">订单价格：</div>
+						<div class="col-8" id="orderPrice"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">成本价格：</div>
+						<div class="col-8" id="costPrice"></div>
+					</li>
+					<li class="row">
+						<div class="col-4">商务报价：</div>
+						<div class="col-8" id="commercialPrice"></div>
+					</li>
+				</ul>
+			</div>
+			<div class="list-content mb-30">
+				<div class="title-purchase"><span class="shu-width-3"></span>物料信息<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul class="check-material">
+				</ul>
+			</div>
+			<div class="list-content mb-30" style="background: #f8f8f8;">
+				<div class="title-purchase"><span class="shu-width-3"></span>选择检验人员<span class="fr iconfont icon-icon-test rotate"></span></div>
+				<ul>
+					<li class="row">
+				  	  	<div class="col-4">检验人员：</div>
+				  	  	<div class="col-8">
+				  	  	 	<div class="select-box" onclick="tabletc()">点击选择检验员<span class="iconfont icon-icon-test fr pr-10"></span></div>
+				  	  	 	<input type="hidden" name="acceptUserName">
+				  	  	</div>
+				   </li>
+					<!-- <li class="row">
+				  	  	<div class="col-4">备注：</div>
+				  	  	<div class="col-8">
+				  	  	 	<textarea></textarea>
+				  	  	</div>
+				    </li> -->
+				</ul>
+		    </div>
+		</div>
+	    <div class="bg-tc">
+	    	<div class="close-btn"><span class="iconfont icon-chahao fr"></span></div>
+	    	<div class="bg-content">
+	    		<div class="swiper-container">
+			        <div class="swiper-wrapper">
+			          			           
+			        </div>
+			        <!-- Add Pagination -->
+			        <div class="swiper-pagination"></div>
+			    </div>
+	    	</div>
+	    </div>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/js/base.js"></script>
+    <script type="text/javascript" src="../resources/login/layui/layui.js"></script>
+    <script type="text/javascript" src="js/layer.js" ></script>
+    <script type="text/javascript" src="css/dist/js/swiper.min.js" ></script>
+    <script type="text/javascript" src="js/orderDetail.js"></script>
+     <script type="text/html" id="indexTpl">
+	{{#  layui.each(d.sdorderinfo.detailList, function(index, item){ }}
+		<li class="row">
+			<div class="col-4">产品名称：</div>
+			<div class="col-7">{{item.productName}}</div>
+			<div class="col-1"><a onclick="detailOrder()"><span class="iconfont icon-qianjin"></span><a/></div>
+		</li>
+	{{# }); }}
+	</script>
+	 <script type="text/html" id="detailTpl">
+	{{#  layui.each(d.sdorderinfo.detailList, function(index, item){ }}
+		<div class="swiper-slide">
+			            	<div class="list-content mb-30">
+								<ul>
+									<li class="row">
+										<div class="col-4">产品名称：</div>
+										<div class="col-8">{{item.productName}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">客户料号：</div>
+										<div class="col-8" >{{item.customerSupplies}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">产品代码：</div>
+										<div class="col-8" >{{item.productCode}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">成本核算：</div>
+										<div class="col-8">{{item.costPrice}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">长：</div>
+										<div class="col-8" >{{item.detailLength}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">宽：</div>
+										<div class="col-8" >{{item.detailWidth}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">高：</div>
+										<div class="col-8" >{{item.detailHeight}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">是否带盖：</div>
+										<div class="col-8" >
+										{{item.isLid==0?'是':'否'}}
+										</div>
+									</li>
+									<li class="row">
+										<div class="col-4">类别：</div>
+										<div class="col-8" name="productTypeId">
+											<select name="productTypeId{{index}}" class="select" >
+											</select>
+										</div>
+									</li>
+									<li class="row">
+										<div class="col-4">材质：</div>
+										<div class="col-8" name="productGradeId">
+											<select name="productGradeId{{index}}" class="select" >
+											</select>
+										</div>
+									</li>
+									<li class="row">
+										<div class="col-4">数量：</div>
+										<div class="col-8" >{{item.number}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">即时库存：</div>
+										<div class="col-8" >{{item.immediatelyInventory}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">单价：</div>
+										<div class="col-8" >{{item.price}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">整单折前金额：</div>
+										<div class="col-8" >{{item.discountBeforeSum}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">金额：</div>
+										<div class="col-8" >{{item.money}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">税率：</div>
+										<div class="col-8" >{{item.taxRate}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">销项税额：</div>
+										<div class="col-8" >{{item.sellTax}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">实际含税单价：</div>
+										<div class="col-8" >{{item.practicalSellPrice}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">价税合计：</div>
+										<div class="col-8" >{{item.priceSellSum}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">关联数量：</div>
+										<div class="col-8" >{{item.relevanceNumber}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">出库数量：</div>
+										<div class="col-8" >{{item.takeOutNumber}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">BOM类别：</div>
+										<div class="col-8" >{{item.bomType}}</div>
+									</li>
+									<li class="row">
+										<div class="col-4">图纸信息：</div>
+										<div class="col-8"><a href="/OutSourceManage/{{item.fileUrl}}"><span class="color-blue">{{item.fileName}}</span></a></div>
+									</li>
+								</ul>
+							</div>
+			            </div>
+	{{# }); }}
+	</script>
+    <script>
+		//	弹出层
+		function tabletc(){
+			$.ajax({
+				type : 'POST',
+				url : base.serverContent+ '/manager/loginIn/SysUserInfo/queryList.do',
+				data : {"position":"5"},
+				async : false,
+				success : function(data) {
+					if(data.code=="000"){
+						var liHtml="";
+						for(var i=0;i<data.rows.length;i++){
+							liHtml+="<li>"+data.rows[i].userName+"<input type='hidden'  value='"+data.rows[i].userId+"'></li>"
+						}
+						layer.open({
+				    		   className: 'select-class-1',
+							    title: [
+							      '人员选择',
+							      'background-color: #34425d; color:#fff;'
+							    ]
+							    ,content: '<div class="abc-class-1"><ul>'+liHtml+'</ul></div>'
+							    ,shade: 'background-color: rgba(0,0,0,.3)'
+							    ,btn: ['确定', '取消']
+							    ,yes: function(index){
+							    	$(".select-box").html("");
+							    	var acceptUserName="";
+							    	$(".ad-color").each(function(index){
+							    		if(index+1<$(".ad-color").length){
+							    			$(".select-box").append($(this).html().substring(0,$(this).html().indexOf("<input"))+",");
+							    			acceptUserName+=$(this).children("input:first-child").val()+",";
+							    		}else{
+							    			$(".select-box").append($(this).html().substring(0,$(this).html().indexOf("<input")));
+							    			acceptUserName+=$(this).children("input:first-child").val();
+							    		}
+							    	})
+							    	//alert(acceptUserName);
+							    	$("input[name='acceptUserName']").val(acceptUserName);
+							    	
+							    	layer.close(index);
+							    } 
+							  });
+					}
+				},
+				error:function(){}
+			});
+			
+    	
+	      $('.abc-class-1 ul li').click(function(){
+	      	if($(this).hasClass('ad-color')){
+	      	 $(this).removeClass('ad-color');
+	      	}else{
+	      	  $(this).addClass('ad-color');
+	      	 }
+	      
+		  })
+		}
+		/*提交表单*/
+		$(".title-search").click(function(){
+			if(base.isNotBlank($("input[name='acceptUserName']").val())){
+				
+				var dataJson={
+						 userNames:$(".select-box").html(),
+						 orderId:orderId,
+						 acceptUserName:$("input[name='acceptUserName']").val(),
+						 assignType:2,
+						 isLook:0
+				 }
+				$.ajax({
+					type : 'POST',
+					url : base.serverContent+ '/SdOrderAssign/add.do',
+					data : dataJson,
+					async : false,
+					success : function(data) {
+						if(data.code=="000"){
+							layer.alert('指派成功', {icon: 1},
+									function(index){
+										layer.close(index);
+										window.location.href='listOrder.html?6';
+									}		
+								);
+						}else{
+							layer.alert('指派失败',{icon:2});
+						}
+					},
+					error:function(){}
+				});
+			}else{
+				layer.alert("请至少选择一位检验员",{icon:3});
+			}
+		})
+		
+	
+    </script>
+</html>

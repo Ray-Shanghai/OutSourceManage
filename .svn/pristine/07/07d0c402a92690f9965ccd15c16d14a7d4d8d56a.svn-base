@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes"/> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>新增订单</title>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+	</head>
+	<body class="bgcolor-grayf8">
+		<div class="header">
+			<div class="header-left"><a class="iconfont icon-llmainpageback" href="index.html"></a></div>
+			<div class="title">新增订单</div>
+			<div class="header-right"><a class="title-search" href="javascript:void(0);"><span class="iconfont icon-baocun"></span></a></div>
+		</div>
+		<div class="content pt-106">
+			<div class="list-content">
+				<div class="title-purchase"><span class="shu-width-3"></span>订单信息</div>
+				<ul>
+					<li class="row">
+						<div class="col-4">客户名称：</div>
+						<div class="col-8"><input type="text"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4">客户地址：</div>
+						<div class="col-8"><input type="text"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4">交货日期：</div>
+						<div class="col-8"><input type="text"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4">建议交货日期：</div>
+						<div class="col-8"><input type="text"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4">订单价格：</div>
+						<div class="col-8"><input type="text"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4">成本价格：</div>
+						<div class="col-8"><input type="text"/></div>
+					</li>
+					<li class="row">
+						<div class="col-4">商务报价：</div>
+						<div class="col-8"><input type="text"/></div>
+					</li>
+				</ul>
+			</div>
+			<div class="list-content" style="background: #f8f8f8;">
+				<div class="title-purchase"><span class="shu-width-3"></span>物料信息</div>
+				<div class="info-supply mb-30 bgcolor-white">
+					<ul>
+						<li class="row">
+							<div class="col-4">客户料号：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">产品代码：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">产品名称：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">长：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">宽：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">高：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">是否带盖：</div>
+							<div class="col-8"><select><option>是</option><option>否</option></select></div>
+						</li>
+						<li class="row">
+							<div class="col-4">数量：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">类别：</div>
+							<div class="col-8"><select><option>类别一</option><option>类别二</option><option>类别三</option></select></div>
+						</li>
+						<li class="row">
+							<div class="col-4">材质：</div>
+							<div class="col-8"><select><option>实木</option><option>实木</option><option>实木</option></select></div>
+						</li>
+						<li class="row">
+							<div class="col-4">即时库存：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">单价：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">整单折前金额：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">金额：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">税率：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">销项税额：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">实际含税单价：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">价税合计：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">关联数量：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">出库数量：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+						<li class="row">
+							<div class="col-4">BOM类别：</div>
+							<div class="col-8"><input type="text"/></div>
+						</li>
+					</ul>
+					<div class="delete-info"><span class="iconfont icon-jianhao color-red" onclick="delFile(this)"></span></div>
+				</div>
+			</div>	
+		</div>
+		<div class="add-info"><span class="iconfont icon-tianjia" onclick="addFile()"></span></div>
+	</body>
+	<script src="js/rem.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
+    <script type="text/javascript" src="js/layer.js" ></script>
+    <script>
+    					//   添加删除 
+		function addFile() {
+			var len = $(".info-supply").length;
+			var tag = $(".info-supply").eq(len-1);
+			
+			var htmlStr =  $(tag).prop("outerHTML");
+				tag.after(htmlStr);
+				 
+		  $(".info-supply").eq(len).find("input").each(function(index,obj){
+		  		$(obj).val("");
+		  });
+		 }
+
+		function delFile(tag) {
+			if($(".info-supply").length > 1) {
+				$(tag).parent().parent().remove();
+			} else {
+				alert("只有一行不能再删除");
+			}
+		}
+    </script>
+</html>

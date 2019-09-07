@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SysDictionaryTypeInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SysDictionaryTypeInfo" id="SysDictionaryTypeInfoMap"> 
+
+		<result column="DICTIONARY_TYPE_ID" property="dictionaryTypeId"/>
+		<result column="DICTIONARY_TYPE_NAME" property="dictionaryTypeName"/>
+		<result column="DICTIONARY_TYPE_DESC" property="dictionaryTypeDesc"/>
+		
+		<!-- 系统公共属性 必须按照规定存取数据start -->
+		<result column="REMARK" property="remark"/>
+		<result column="STATUS" property="status"/>
+		
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="CREATE_USER_ID" property="createUserId"/>
+		<result column="CREATE_USER_NAME" property="createUserName"/>
+		<result column="CREATE_DEPART_ID" property="createDepartId"/>
+		<result column="CREATE_DEPART_NAME" property="createDepartName"/>
+		 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="LAST_UPDATE_USER_ID" property="lastUpdateUserId"/>
+		<result column="LAST_UPDATE_USER_NAME" property="lastUpdateUserName"/>
+		<result column="LAST_UPDATE_DEPART_ID" property="lastUpdateDepartId"/>
+		<result column="LAST_UPDATE_DEPART_NAME" property="lastUpdateDepartName"/>
+		<!-- 系统公共属性 必须按照规定存取数据end -->
+
+	</resultMap>
+	<update id="update" parameterType="com.sd.farmework.pojo.SysDictionaryTypeInfo">
+		UPDATE SYS_DICTIONARY_TYPE_INFO set 
+			DICTIONARY_TYPE_NAME=#{dictionaryTypeName},
+			DICTIONARY_TYPE_DESC=#{dictionaryTypeDesc},
+			
+			last_update_TIME = sysDate,
+	       	last_update_user_id = #{lastUpdateUserId},
+	       	last_update_user_name = #{lastUpdateUserName},
+	       	last_update_depart_id = #{lastUpdateDepartId},
+	       	last_update_depart_name = #{lastUpdateDepartName} 
+		where DICTIONARY_TYPE_ID = #{dictionaryTypeId} 
+	</update>
+	<select id="queryByPkId" parameterType="com.sd.farmework.pojo.SysDictionaryTypeInfo"  resultMap="SysDictionaryTypeInfoMap">
+		SELECT 
+			t.DICTIONARY_TYPE_ID,
+			t.DICTIONARY_TYPE_NAME,
+			t.DICTIONARY_TYPE_DESC,
+			t.REMARK,
+			t.STATUS,
+			t.create_time,
+	       	t.create_user_id,
+	       	t.create_user_name,
+	       	t.create_depart_id,
+	       	t.create_depart_name,
+	       	t.last_update_time,
+	        t.last_update_user_id,
+	        t.last_update_user_name,
+	        t.last_update_depart_id,
+	        t.last_update_depart_name 
+		FROM  SYS_DICTIONARY_TYPE_INFO t 
+		where DICTIONARY_TYPE_ID = #{dictionaryTypeId} 
+	</select>
+	
+	<select id="query" parameterType="com.sd.farmework.pojo.SysDictionaryTypeInfo"  resultMap="SysDictionaryTypeInfoMap">
+		SELECT 
+			t.DICTIONARY_TYPE_ID,
+			t.DICTIONARY_TYPE_NAME,
+			t.DICTIONARY_TYPE_DESC,
+			t.REMARK,
+			t.STATUS,
+			t.create_time,
+	       	t.create_user_id,
+	       	t.create_user_name,
+	       	t.create_depart_id,
+	       	t.create_depart_name,
+	       	t.last_update_time,
+	        t.last_update_user_id,
+	        t.last_update_user_name,
+	        t.last_update_depart_id,
+	        t.last_update_depart_name 
+		FROM  SYS_DICTIONARY_TYPE_INFO t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPage" parameterType="com.sd.farmework.pojo.SysDictionaryTypeInfo"  resultMap="SysDictionaryTypeInfoMap">
+		<![CDATA[ 
+		SELECT * FROM( SELECT ROWNUM RW,a.* FROM (
+			SELECT  t.DICTIONARY_TYPE_ID,
+					t.DICTIONARY_TYPE_NAME,
+					t.DICTIONARY_TYPE_DESC,
+					t.REMARK,
+					t.STATUS,
+					t.create_time,
+			       	t.create_user_id,
+			       	t.create_user_name,
+			       	t.create_depart_id,
+			       	t.create_depart_name,
+			       	t.last_update_time,
+			        t.last_update_user_id,
+			        t.last_update_user_name,
+			        t.last_update_depart_id,
+			        t.last_update_depart_name 
+			FROM  SYS_DICTIONARY_TYPE_INFO t 
+ 		) a 
+		WHERE RW between #{pageSize} * (#{currPage} - 1) + 1 AND (#{pageSize} * (#{currPage} - 1)) + #{pageSize}
+		]]> 
+	</select>
+	<select id="queryList" parameterType="com.sd.farmework.pojo.SysDictionaryTypeInfo"  resultMap="SysDictionaryTypeInfoMap">
+		SELECT 
+			t.DICTIONARY_TYPE_ID,
+			t.DICTIONARY_TYPE_NAME,
+			t.DICTIONARY_TYPE_DESC,
+			t.REMARK,
+			t.STATUS,
+			t.create_time,
+	       	t.create_user_id,
+	       	t.create_user_name,
+	       	t.create_depart_id,
+	       	t.create_depart_name,
+	       	t.last_update_time,
+	        t.last_update_user_id,
+	        t.last_update_user_name,
+	        t.last_update_depart_id,
+	        t.last_update_depart_name 
+		FROM  SYS_DICTIONARY_TYPE_INFO t 
+		where  1 =1 
+	</select>
+	<insert id="add" parameterType="com.sd.farmework.pojo.SysDictionaryTypeInfo">
+	
+		<selectKey keyProperty="dictionaryTypeId" resultType="String" order="BEFORE">
+			select fill_str_get_seq('sys_dictionary_type_info_seq',10,'L') from dual
+		</selectKey>
+		insert into SYS_DICTIONARY_TYPE_INFO
+		(
+			DICTIONARY_TYPE_ID,
+			DICTIONARY_TYPE_NAME,
+			DICTIONARY_TYPE_DESC,
+			remark,
+	       	status,
+	       	create_time,
+	       	create_user_id,
+	        create_user_name,
+	       	create_depart_id,
+	        create_depart_name
+		)
+		values
+		(
+			#{dictionaryTypeId},
+			#{dictionaryTypeName},
+			#{dictionaryTypeDesc},
+			#{remark},
+			#{status},
+			sysDate,
+			#{createUserId},
+			#{createUserName},
+			#{createDepartId},
+			#{createDepartName}
+		)
+	</insert>
+	<delete id="delete"  parameterType="com.sd.farmework.pojo.SysDictionaryTypeInfo">
+		delete from SYS_DICTIONARY_TYPE_INFO where 1=2 
+	</delete>
+	<select id="queryCount"  parameterType="com.sd.farmework.pojo.SysDictionaryTypeInfo"  resultType="java.lang.Integer">
+   		select    count(*) from SYS_DICTIONARY_TYPE_INFO where 1=1
+	</select>
+</mapper> 
+

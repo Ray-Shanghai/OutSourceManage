@@ -1,0 +1,17 @@
+package com.sd.farmework.service; 
+
+import com.sd.farmework.common.BaseInfo;
+
+/** 
+ * 组织架构表
+ * @author Administrator 
+ * 
+ */ 
+public interface SysUserInfoService  extends BaseInfoService{ 
+	/**
+	 * 设置部门权限
+	 * @param obj
+	 */
+	public void updateDepartPower(BaseInfo obj);
+	public void updatePwd(BaseInfo obj);
+}

@@ -1,0 +1,204 @@
+package com.sd.farmework.pojo; 
+
+import java.util.List;
+
+import com.sd.farmework.common.BaseInfo; 
+
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+public class SdOrderInfo extends BaseInfo{ 
+	//主键 
+	private int orderId; 
+	//订单编号(yyMMdd0001) 
+	private String orderNuber;
+	//客户订单号
+	private String customerNo;
+	//客户主键 
+	private String customerId; 
+	//客户名称 
+	private String customerName; 
+	//客户地址 
+	private String customerAddress; 
+	//交货日期 
+	private String deliveryDate; 
+	//建议交货日期 
+	private String suggestDeliveryDate; 
+	//订单价格 
+	private String orderPrice; 
+	//成本价格 
+	private String costPrice; 
+	//商务报价 
+	private String commercialPrice; 
+	//采购经理 
+	private String procurementUserId; 
+	//检验经理 
+	private String checkoutUserId; 
+	//数据状态 
+	private String dataState;
+	//报价状态（Y可筛选报价）
+	private String quoteStatus;
+	//系统框架主键 
+	private String sdId; 
+	//详情表集合
+	private List<SdOrderDetailInfo> detailList;
+	//采购员或检验员可操作订单集合
+	private List<String> acceptUserList;
+	//订单状态集合
+	private List<String> dataStateList;
+	 
+	
+	public String getCustomerNo() {
+		return customerNo;
+	}
+	public void setCustomerNo(String customerNo) {
+		this.customerNo = customerNo;
+	}
+	public List<String> getDataStateList() {
+		return dataStateList;
+	}
+	public void setDataStateList(List<String> dataStateList) {
+		this.dataStateList = dataStateList;
+	}
+	public List<String> getAcceptUserList() {
+		return acceptUserList;
+	}
+	public void setAcceptUserList(List<String> acceptUserList) {
+		this.acceptUserList = acceptUserList;
+	}
+	public String getQuoteStatus() {
+		return quoteStatus;
+	}
+	public void setQuoteStatus(String quoteStatus) {
+		this.quoteStatus = quoteStatus;
+	}
+	public List<SdOrderDetailInfo> getDetailList() {
+		return detailList;
+	}
+	public void setDetailList(List<SdOrderDetailInfo> detailList) {
+		this.detailList = detailList;
+	}
+	public SdOrderInfo(){
+	}
+    public SdOrderInfo(int orderId,String orderNuber,String customerId,String customerName,String customerAddress,String deliveryDate,String suggestDeliveryDate,String orderPrice,String costPrice,String commercialPrice,String procurementUserId,String checkoutUserId,String dataState,String sdId){
+		this.orderId=orderId;
+		this.orderNuber=orderNuber;
+		this.customerId=customerId;
+		this.customerName=customerName;
+		this.customerAddress=customerAddress;
+		this.deliveryDate=deliveryDate;
+		this.suggestDeliveryDate=suggestDeliveryDate;
+		this.orderPrice=orderPrice;
+		this.costPrice=costPrice;
+		this.commercialPrice=commercialPrice;
+		this.procurementUserId=procurementUserId;
+		this.checkoutUserId=checkoutUserId;
+		this.dataState=dataState;
+		this.sdId=sdId;
+	}
+    public SdOrderInfo(String orderNuber,String customerId,String customerName,String customerAddress,String deliveryDate,String suggestDeliveryDate,String orderPrice,String costPrice,String commercialPrice,String procurementUserId,String checkoutUserId,String dataState,String sdId){
+		this.orderNuber=orderNuber;
+		this.customerId=customerId;
+		this.customerName=customerName;
+		this.customerAddress=customerAddress;
+		this.deliveryDate=deliveryDate;
+		this.suggestDeliveryDate=suggestDeliveryDate;
+		this.orderPrice=orderPrice;
+		this.costPrice=costPrice;
+		this.commercialPrice=commercialPrice;
+		this.procurementUserId=procurementUserId;
+		this.checkoutUserId=checkoutUserId;
+		this.dataState=dataState;
+		this.sdId=sdId;
+	}
+	public void setorderId(int orderId){ 
+		this.orderId=orderId;
+	}
+	public int getorderId(){ 
+		return this.orderId;
+	}
+	public void setorderNuber(String orderNuber){ 
+		this.orderNuber=orderNuber;
+	}
+	public String getorderNuber(){ 
+		return this.orderNuber;
+	}
+	public void setcustomerId(String customerId){ 
+		this.customerId=customerId;
+	}
+	public String getcustomerId(){ 
+		return this.customerId;
+	}
+	public void setcustomerName(String customerName){ 
+		this.customerName=customerName;
+	}
+	public String getcustomerName(){ 
+		return this.customerName;
+	}
+	public void setcustomerAddress(String customerAddress){ 
+		this.customerAddress=customerAddress;
+	}
+	public String getcustomerAddress(){ 
+		return this.customerAddress;
+	}
+	public void setdeliveryDate(String deliveryDate){ 
+		this.deliveryDate=deliveryDate;
+	}
+	public String getdeliveryDate(){ 
+		return this.deliveryDate;
+	}
+	public void setsuggestDeliveryDate(String suggestDeliveryDate){ 
+		this.suggestDeliveryDate=suggestDeliveryDate;
+	}
+	public String getsuggestDeliveryDate(){ 
+		return this.suggestDeliveryDate;
+	}
+	public void setorderPrice(String orderPrice){ 
+		this.orderPrice=orderPrice;
+	}
+	public String getorderPrice(){ 
+		return this.orderPrice;
+	}
+	public void setcostPrice(String costPrice){ 
+		this.costPrice=costPrice;
+	}
+	public String getcostPrice(){ 
+		return this.costPrice;
+	}
+	public void setcommercialPrice(String commercialPrice){ 
+		this.commercialPrice=commercialPrice;
+	}
+	public String getcommercialPrice(){ 
+		return this.commercialPrice;
+	}
+	public void setprocurementUserId(String procurementUserId){ 
+		this.procurementUserId=procurementUserId;
+	}
+	public String getprocurementUserId(){ 
+		return this.procurementUserId;
+	}
+	public void setcheckoutUserId(String checkoutUserId){ 
+		this.checkoutUserId=checkoutUserId;
+	}
+	public String getcheckoutUserId(){ 
+		return this.checkoutUserId;
+	}
+	public void setdataState(String dataState){ 
+		this.dataState=dataState;
+	}
+	public String getdataState(){ 
+		return this.dataState;
+	}
+	public void setsdId(String sdId){ 
+		this.sdId=sdId;
+	}
+	public String getsdId(){ 
+		return this.sdId;
+	}
+	@Override
+	public String toString() {
+		return "SdOrderInfo[orderId=" + orderId+",orderNuber=" + orderNuber+",customerId=" + customerId+",customerName=" + customerName+",customerAddress=" + customerAddress+",deliveryDate=" + deliveryDate+",suggestDeliveryDate=" + suggestDeliveryDate+",orderPrice=" + orderPrice+",costPrice=" + costPrice+",commercialPrice=" + commercialPrice+",procurementUserId=" + procurementUserId+",checkoutUserId=" + checkoutUserId+",dataState=" + dataState+",sdId=" + sdId+"]";
+	}
+}

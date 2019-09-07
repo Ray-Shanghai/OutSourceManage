@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sd.farmework.mapper.SdCustomerInfoMapper"> 
+
+	<resultMap type="com.sd.farmework.pojo.SdCustomerInfo" id="sdcustomerinfoMap"> 
+
+		<result column="customer_id" property="customerId"/>
+		<result column="customer_name" property="customerName"/>
+		<result column="customer_address" property="customerAddress"/>
+		<result column="sd_id" property="sdId"/>
+
+	</resultMap>
+	<update id="updateForMysql" parameterType="com.sd.farmework.pojo.SdCustomerInfo">
+		UPDATE sd_customer_info set 
+		t.customer_id=#{customerId},
+		t.customer_name=#{customerName},
+		t.customer_address=#{customerAddress},
+		t.sd_id=#{sdId}
+		where 1=1 
+	</update>
+	<select id="queryByPkIdForMysql" parameterType="com.sd.farmework.pojo.SdCustomerInfo"  resultMap="sdcustomerinfoMap">
+		SELECT 
+		t.customer_id,
+		t.customer_name,
+		t.customer_address,
+		t.sd_id
+		FROM  sd_customer_info t 
+		where  1 =1 
+	</select>
+	<select id="queryForMysql" parameterType="com.sd.farmework.pojo.SdCustomerInfo"  resultMap="sdcustomerinfoMap">
+		SELECT 
+		t.customer_id,
+		t.customer_name,
+		t.customer_address,
+		t.sd_id
+		FROM  sd_customer_info t 
+		where  1 =1 
+	</select>
+	<select id="queryListByPageForMysql" parameterType="com.sd.farmework.pojo.SdCustomerInfo"  resultMap="sdcustomerinfoMap">
+		SELECT  
+		t.customer_id,
+		t.customer_name,
+		t.customer_address,
+		t.sd_id
+		FROM  sd_customer_info t 
+		   LIMIT  #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryListForMysql" parameterType="com.sd.farmework.pojo.SdCustomerInfo"  resultMap="sdcustomerinfoMap">
+		SELECT 
+		t.customer_id,
+		t.customer_name,
+		t.customer_address,
+		t.sd_id
+		FROM  sd_customer_info t 
+	</select>
+	<insert id="addForMysql" parameterType="com.sd.farmework.pojo.SdCustomerInfo">
+	insert into sd_customer_info
+	(
+		customer_id,
+		customer_name,
+		customer_address,
+		sd_id
+	)
+	values
+	(
+		#{customerId},
+		#{customerName},
+		#{customerAddress},
+		#{sdId}
+	)
+	</insert>
+	<delete id="deleteForMysql" parameterType="com.sd.farmework.pojo.SdCustomerInfo">
+		delete from sd_customer_info where 1=2 
+	</delete>
+	<select id="queryCountForMysql"  parameterType="com.sd.farmework.pojo.SdCustomerInfo"  resultType="java.lang.Integer">
+   		select    count(*) from sd_customer_info where 1=1
+	</select>
+</mapper> 
+

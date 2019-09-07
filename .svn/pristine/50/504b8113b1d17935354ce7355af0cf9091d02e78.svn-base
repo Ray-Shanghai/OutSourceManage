@@ -1,0 +1,26 @@
+package com.sd.farmework.service.impl; 
+
+import com.sd.farmework.service.SdOrderAssignService; 
+
+import org.springframework.stereotype.Service; 
+
+import com.sd.farmework.mapper.SdOrderAssignMapper; 
+
+import org.springframework.beans.factory.annotation.Autowired; 
+
+/** 
+ * test
+ * @author Administrator 
+ * 
+ */ 
+ @Service
+public class SdOrderAssignServiceImpl extends BaseInfoServiceImpl implements SdOrderAssignService{ 
+    @Autowired
+    private SdOrderAssignMapper baseMapper;
+    public SdOrderAssignMapper getBaseMapper(){
+     return baseMapper;
+    }
+    public void setBaseMapper(SdOrderAssignMapper baseMapper){
+    	this.baseMapper = baseMapper;
+    }
+}
